@@ -1,0 +1,25 @@
+<article>
+  <section class="page-hero" style="padding-bottom: 2.5rem;">
+    <div class="container">
+      <div class="section-eyebrow center fade-up d0">{{ article.published_at | time_tag: format: 'date' }}</div>
+      <h1 class="fade-up d1">{{ article.title | escape }}</h1>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      {%- if article.image -%}
+        <div class="article-hero-img">
+          {{ article.image | image_url: width: 1600 | image_tag: widths: '800, 1200, 1600', sizes: '(min-width: 1000px) 960px, 100vw', alt: article.title }}
+        </div>
+      {%- endif -%}
+      <div class="page-content rte">{{ article.content }}</div>
+      <div class="page-content" style="margin-top: 3rem;">
+        <a href="{{ blog.url }}" class="text-link">{{ 'blogs.back' | t }}</a>
+      </div>
+    </div>
+  </section>
+</article>
+
+{% schema %}
+{ "name": "Article", "settings": [] }
+{% endschema %}

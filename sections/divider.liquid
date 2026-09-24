@@ -1,0 +1,13 @@
+<div class="divider-section" style="padding: {{ section.settings.spacing }}px 0;">
+  {% render 'flourish' %}
+</div>
+
+{% schema %}
+{
+  "name": "Gold divider",
+  "settings": [
+    { "type": "range", "id": "spacing", "label": "Vertical spacing", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "Gold divider" }]
+}
+{% endschema %}

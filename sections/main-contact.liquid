@@ -1,0 +1,70 @@
+<section class="section" style="padding-top: 1rem;" id="shipping">
+  <div class="container">
+    <div class="split" style="align-items: start;">
+      <div class="reveal">
+        {% render 'heading', tag: 'h2', text: section.settings.details_heading, emphasis: section.settings.details_heading_emphasis, class: 'contact-h2' %}
+        <div class="contact-list">
+          {%- if settings.contact_email != blank -%}
+            <a href="mailto:{{ settings.contact_email }}" class="contact-card">
+              <span class="icon">{% render 'icon', name: 'mail', size: 18 %}</span>
+              <span><span class="t">{{ 'sections.contact.email' | t }}</span><span class="s">{{ settings.contact_email }}</span></span>
+            </a>
+          {%- endif -%}
+          {%- if settings.contact_phone != blank -%}
+            <a href="tel:{{ settings.contact_phone | remove: ' ' }}" class="contact-card">
+              <span class="icon">{% render 'icon', name: 'phone', size: 18 %}</span>
+              <span><span class="t">{{ 'sections.contact.call' | t }}</span><span class="s">{{ settings.contact_phone }}</span></span>
+            </a>
+          {%- endif -%}
+          {%- if settings.whatsapp_number != blank -%}
+            <a href="https://wa.me/{{ settings.whatsapp_number | remove: ' ' | remove: '+' }}" class="contact-card" target="_blank" rel="noopener">
+              <span class="icon">{% render 'icon', name: 'whatsapp', size: 18 %}</span>
+              <span><span class="t">{{ 'sections.contact.whatsapp' | t }}</span><span class="s">{{ settings.whatsapp_display | default: settings.whatsapp_number }}</span></span>
+            </a>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.shipping_text != blank -%}
+          <div class="section-eyebrow">{{ section.settings.shipping_heading | escape }}</div>
+          <div class="rte">{{ section.settings.shipping_text }}</div>
+        {%- endif -%}
+        {%- if page.content != blank -%}
+          <div class="rte" style="margin-top: 2rem;">{{ page.content }}</div>
+        {%- endif -%}
+      </div>
+
+      <div class="reveal">
+        {% render 'heading', tag: 'h2', text: section.settings.form_heading, emphasis: section.settings.form_heading_emphasis, class: 'contact-h2' %}
+        {%- form 'contact', id: 'ContactForm', class: 'stack' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-success" role="status">{{ section.settings.success | escape }}</p>
+          {%- else -%}
+            {%- if form.errors -%}
+              <div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>
+            {%- endif -%}
+            <input class="field" type="text" name="contact[name]" value="{{ form.name }}" placeholder="{{ 'sections.contact.name' | t }}" aria-label="{{ 'sections.contact.name' | t }}" autocomplete="name" required>
+            <input class="field" type="email" name="contact[email]" value="{{ form.email }}" placeholder="{{ 'sections.contact.email_address' | t }}" aria-label="{{ 'sections.contact.email_address' | t }}" autocomplete="email" required>
+            <input class="field" type="tel" name="contact[phone]" value="{{ form.phone }}" placeholder="{{ 'sections.contact.phone' | t }}" aria-label="{{ 'sections.contact.phone' | t }}" autocomplete="tel">
+            <textarea class="field" name="contact[body]" rows="5" placeholder="{{ 'sections.contact.message' | t }}" aria-label="{{ 'sections.contact.message' | t }}" required>{{ form.body }}</textarea>
+            <button type="submit" class="btn btn-gold">{{ 'sections.contact.send' | t }}</button>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact details & form",
+  "settings": [
+    { "type": "paragraph", "content": "Email, phone and WhatsApp are edited in Theme settings › Contact. Any text in the page's content (Online Store › Pages) is shown under the details." },
+    { "type": "text", "id": "details_heading", "label": "Details heading", "default": "Contact" },
+    { "type": "text", "id": "details_heading_emphasis", "label": "Details heading (italic gold part)", "default": "details" },
+    { "type": "text", "id": "shipping_heading", "label": "Shipping heading", "default": "Shipping & Returns" },
+    { "type": "richtext", "id": "shipping_text", "label": "Shipping text", "default": "<p>Free shipping on orders above ₹999. Dispatched within 2–3 business days across India. For any issue with your order, reach out within 7 days of delivery.</p>" },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Send us" },
+    { "type": "text", "id": "form_heading_emphasis", "label": "Form heading (italic gold part)", "default": "a message" },
+    { "type": "text", "id": "success", "label": "Success message", "default": "Thank you — we’ll get back to you shortly." }
+  ]
+}
+{% endschema %}

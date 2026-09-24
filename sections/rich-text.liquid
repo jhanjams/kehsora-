@@ -1,0 +1,29 @@
+<section class="section">
+  <div class="container reveal" style="text-align: center;">
+    {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow center">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+    <div style="max-width: 40rem; margin: 0 auto 1.2rem;">
+      {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+    </div>
+    {%- if section.settings.text != blank -%}
+      <div class="rte" style="max-width: 36rem; margin: 0 auto 2.2rem;">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="btn btn-gold">{{ section.settings.button_label | escape }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Statement",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our standard" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Formulated with purpose," },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "not filler." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Every generic oil on the market is a broad-spectrum guess. Kehsora is built the opposite way — real, potent ingredients, chosen for exactly what they do, infused properly rather than diluted for a label.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the Range" },
+    { "type": "url", "id": "button_link", "label": "Button link", "default": "/collections/all" }
+  ],
+  "presets": [{ "name": "Statement" }]
+}
+{% endschema %}

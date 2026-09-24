@@ -1,0 +1,36 @@
+<section class="section" id="{{ section.settings.anchor | default: 'our-story' | handle }}">
+  <div class="container">
+    <div class="split">
+      <div class="story-quote reveal">
+        <p>{{ section.settings.quote | escape }}</p>
+        {%- if section.settings.quote_caption != blank -%}<span>{{ section.settings.quote_caption | escape }}</span>{%- endif -%}
+      </div>
+      <div class="reveal">
+        {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+        {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+        <div class="rte">{{ section.settings.text }}</div>
+        {%- if section.settings.link_label != blank -%}
+          <a href="{{ section.settings.link | default: '/pages/ingredients' }}" class="text-link">{{ section.settings.link_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Our story",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "our-story", "info": "Menus can link here with /#our-story" },
+    { "type": "textarea", "id": "quote", "label": "Pull quote", "default": "“Nothing on the shelf actually worked — so she made her own.”" },
+    { "type": "text", "id": "quote_caption", "label": "Quote caption", "default": "How Kehsora began" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our story" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "It started with a mother," },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "not a marketing plan." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Kehsora began the way real Ayurvedic hair care always has — at home. A mother formulating her own oil from scratch, using real, purposeful ingredients, because nothing on the shelf actually worked.</p><p>That’s still the standard today. We talked to real people before building further — mall interviews that told us the problem was never the ingredients, it was the format. Some people love the ritual of oiling. Others simply don’t have the time. So we built for both: potent concentrates that mix into what you already use, and serums for the days there’s no time to spare.</p>" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Read about our ingredients" },
+    { "type": "url", "id": "link", "label": "Link", "info": "Leave empty to link to /pages/ingredients" }
+  ],
+  "presets": [{ "name": "Our story" }]
+}
+{% endschema %}

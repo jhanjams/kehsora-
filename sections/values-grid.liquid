@@ -1,0 +1,57 @@
+<section class="{% if section.settings.compact %}section-tight{% else %}section{% endif %}">
+  <div class="container">
+    {%- if section.settings.heading != blank or section.settings.heading_emphasis != blank -%}
+      <div class="section-head center reveal">
+        {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow center">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+        {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+      </div>
+    {%- endif -%}
+    <div class="value-grid reveal-stagger{% if section.settings.columns == '3' %} cols-3{% endif %}">
+      {%- for block in section.blocks -%}
+        <div class="value-item" {{ block.shopify_attributes }}>
+          <div class="value-icon">{% render 'icon', name: block.settings.icon, size: 26 %}</div>
+          <h4>{{ block.settings.title | escape }}</h4>
+          <p>{{ block.settings.text | escape }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Values grid",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Kehsora standard" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Every bottle, held to" },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "the same rule" },
+    { "type": "select", "id": "columns", "label": "Columns on desktop", "default": "4", "options": [{ "value": "3", "label": "3" }, { "value": "4", "label": "4" }] },
+    { "type": "checkbox", "id": "compact", "label": "Compact spacing", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "leaf", "options": [
+          { "value": "leaf", "label": "Leaf" }, { "value": "star", "label": "Star" }, { "value": "clock", "label": "Clock" },
+          { "value": "mix", "label": "Mixing" }, { "value": "heart", "label": "Heart" }, { "value": "flask", "label": "Flask" },
+          { "value": "chart", "label": "Research" }, { "value": "shield", "label": "Shield" }, { "value": "truck", "label": "Truck" },
+          { "value": "drop", "label": "Drop" }
+        ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "Rooted in Ayurveda" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Traditional heat-infusion formulation, not a shortcut dressed up with a Sanskrit name." }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Values grid",
+      "blocks": [
+        { "type": "value" }, { "type": "value" }, { "type": "value" }, { "type": "value" }
+      ]
+    }
+  ]
+}
+{% endschema %}

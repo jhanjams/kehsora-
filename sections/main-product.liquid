@@ -1,0 +1,184 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'product-form-' | append: section.id
+  assign kicker = product.metafields.custom.kicker.value | default: product.type
+  assign benefits = product.metafields.custom.benefits.value
+  assign featured_media = current_variant.featured_media | default: product.featured_media
+  assign main_alt = featured_media.alt | default: product.title
+-%}
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="{{ 'products.product.breadcrumb' | t }}">
+    <a href="{{ routes.root_url }}">{{ 'sections.header.home' | t }}</a> &nbsp;/&nbsp;
+    {%- if collection -%}
+      <a href="{{ collection.url }}">{{ collection.title | escape }}</a> &nbsp;/&nbsp;
+    {%- else -%}
+      <a href="{{ routes.all_products_collection_url }}">{{ 'products.product.shop' | t }}</a> &nbsp;/&nbsp;
+    {%- endif -%}
+    <span class="current">{{ product.title | escape }}</span>
+  </nav>
+</div>
+
+<section class="section" style="padding-top: 2rem;" data-pdp data-section-id="{{ section.id }}">
+  <div class="container">
+    <div class="pdp">
+
+      <div class="pdp-gallery">
+        <div class="pdp-gallery-main" data-gallery-main>
+          {%- if featured_media -%}
+            {{ featured_media.preview_image | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 860px) 55vw, 100vw', loading: 'eager', fetchpriority: 'high', alt: main_alt }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        {%- if product.media.size > 1 -%}
+          <div class="pdp-thumbs">
+            {%- for media in product.media -%}
+              {%- capture media_srcset -%}
+                {{- media.preview_image | image_url: width: 600 }} 600w, {{ media.preview_image | image_url: width: 900 }} 900w, {{ media.preview_image | image_url: width: 1200 }} 1200w, {{ media.preview_image | image_url: width: 1400 }} 1400w
+              {%- endcapture -%}
+              {%- assign thumb_alt = media.alt | default: product.title -%}
+              <button type="button" class="pdp-thumb{% if media.id == featured_media.id %} active{% endif %}" data-media-id="{{ media.id }}" data-src="{{ media.preview_image | image_url: width: 1400 }}" data-srcset="{{ media_srcset | strip }}" data-alt="{{ thumb_alt | escape }}" aria-label="{{ 'products.product.view_image' | t: number: forloop.index }}">
+                {{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div>
+        {%- if kicker != blank -%}<div class="pdp-kicker">{{ kicker | upcase | escape }}</div>{%- endif -%}
+        <h1>{{ product.title | escape }}</h1>
+        <div style="margin-top: 0.8rem;">{% render 'rating', product: product, long: true %}</div>
+
+        {% render 'price', product: product, variant: current_variant, class: 'pdp-price-row' %}
+
+        {%- if product.description != blank -%}
+          <div class="pdp-desc rte">{{ product.description }}</div>
+        {%- endif -%}
+
+        {%- if benefits != blank -%}
+          <div class="ingredient-benefits">
+            {%- for benefit in benefits -%}<span class="ingredient-benefit-chip">{{ benefit | escape }}</span>{%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- form 'product', product, id: form_id, data-product-form: '', data-pdp-form: '', novalidate: 'novalidate' -%}
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              {%- assign option_index = forloop.index0 -%}
+              <fieldset class="size-select" data-option-index="{{ option_index }}">
+                <legend class="label-sm">{{ option.name | escape }}</legend>
+                <div class="size-options">
+                  {%- for value in option.values -%}
+                    {%- assign value_name = value.name | default: value -%}
+                    <input type="radio" class="visually-hidden" id="{{ section.id }}-{{ option_index }}-{{ forloop.index0 }}" name="option-{{ section.id }}-{{ option_index }}" value="{{ value_name | escape }}"{% if option.selected_value == value_name %} checked{% endif %} data-option-input>
+                    <label class="size-opt" for="{{ section.id }}-{{ option_index }}-{{ forloop.index0 }}">{{ value_name | escape }}</label>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+          <div class="pdp-actions">
+            <div class="qty qty-lg">
+              <button type="button" data-qty-step="-1" aria-label="{{ 'cart.decrease_generic' | t }}">&minus;</button>
+              <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="{{ 'cart.quantity' | t }}" data-pdp-qty>
+              <button type="button" data-qty-step="1" aria-label="{{ 'cart.increase_generic' | t }}">+</button>
+            </div>
+            <button type="submit" name="add" class="btn btn-ghost-gold" data-add-button{% unless current_variant.available %} disabled{% endunless %}>
+              {%- if current_variant.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+            </button>
+            {%- if section.settings.show_buy_now -%}
+              <button type="button" class="btn btn-gold" data-buy-now{% unless current_variant.available %} disabled{% endunless %}>{{ 'products.product.buy_now' | t }}</button>
+            {%- endif -%}
+          </div>
+        {%- endform -%}
+
+        <script type="application/json" data-variants-json>{{ product.variants | json }}</script>
+
+        {%- capture perks -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'perk' -%}
+              <div class="pdp-perk" {{ block.shopify_attributes }}>{% render 'icon', name: block.settings.icon, size: 16 %} {{ block.settings.text | escape }}</div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if perks != blank -%}<div class="pdp-perks">{{ perks }}</div>{%- endif -%}
+
+        <div>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'accordion' -%}
+              {%- liquid
+                assign mf = blank
+                if block.settings.metafield != blank
+                  assign mf_parts = block.settings.metafield | split: '.'
+                  assign mf_ns = mf_parts | first
+                  assign mf_key = mf_parts | last
+                  assign mf = product.metafields[mf_ns][mf_key]
+                endif
+              -%}
+              {%- capture accordion_body -%}
+                {%- if mf != blank -%}
+                  {%- if mf.type == 'rich_text_field' -%}
+                    {{ mf | metafield_tag }}
+                  {%- elsif mf.type contains 'list.' -%}
+                    <ul>{%- for v in mf.value -%}<li>{{ v | escape }}</li>{%- endfor -%}</ul>
+                  {%- else -%}
+                    <p>{{ mf.value | escape | newline_to_br }}</p>
+                  {%- endif -%}
+                {%- else -%}
+                  {{ block.settings.content }}
+                {%- endif -%}
+              {%- endcapture -%}
+              {%- if accordion_body != blank -%}
+                <div class="accordion-item{% if block.settings.open %} open{% endif %}" {{ block.shopify_attributes }}>
+                  <button type="button" class="accordion-trigger" aria-expanded="{% if block.settings.open %}true{% else %}false{% endif %}">{{ block.settings.title | escape }} <span class="plus" aria-hidden="true">+</span></button>
+                  <div class="accordion-panel"><div class="accordion-panel-inner"><div class="rte">{{ accordion_body }}</div></div></div>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json">{{ product | structured_data }}</script>
+
+{% schema %}
+{
+  "name": "Product details",
+  "settings": [
+    { "type": "paragraph", "content": "Product text comes from Shopify. Optional product metafields: custom.kicker (small gold line above the title), custom.benefits (list of short benefits shown as chips), custom.short_benefit and custom.badge (used on product cards)." },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true, "info": "Adds the item and goes straight to Shopify checkout." }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Perk",
+      "limit": 4,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [
+          { "value": "truck", "label": "Truck" }, { "value": "leaf", "label": "Leaf" }, { "value": "shield", "label": "Shield" },
+          { "value": "heart", "label": "Heart" }, { "value": "clock", "label": "Clock" }, { "value": "star", "label": "Star" }
+        ] },
+        { "type": "text", "id": "text", "label": "Text", "default": "Free shipping above ₹999" }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "How to Use" },
+        { "type": "text", "id": "metafield", "label": "Product metafield (optional)", "info": "e.g. custom.ingredients — when the product has this metafield, it is shown instead of the text below." },
+        { "type": "richtext", "id": "content", "label": "Text (used when no metafield value)" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+      ]
+    }
+  ]
+}
+{% endschema %}

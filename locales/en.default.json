@@ -1,0 +1,239 @@
+{
+  "general": {
+    "meta": {
+      "tagged": "tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "page_of": "Page {{ current }} of {{ total }}"
+    },
+    "password_page": {
+      "notify": "Notify me",
+      "thanks": "Thank you — we’ll let you know when we open.",
+      "owner": "Store owner? Enter password",
+      "password": "Password",
+      "enter": "Enter"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content"
+  },
+  "sections": {
+    "announcement": {
+      "label": "Announcements"
+    },
+    "header": {
+      "menu": "Main menu",
+      "mobile_menu": "Mobile menu",
+      "shop_all": "Shop All",
+      "search": "Search",
+      "cart": "Cart",
+      "open_menu": "Open menu",
+      "close_menu": "Close menu",
+      "close_search": "Close search",
+      "search_hint": "Press enter to search",
+      "home": "Home",
+      "account": "Account"
+    },
+    "footer": {
+      "call": "Call",
+      "whatsapp": "WhatsApp",
+      "rights": "All rights reserved."
+    },
+    "hero": {
+      "scroll": "SCROLL"
+    },
+    "newsletter": {
+      "email": "Email address"
+    },
+    "contact": {
+      "email": "Email",
+      "call": "Call",
+      "whatsapp": "WhatsApp",
+      "name": "Your name",
+      "email_address": "Email address",
+      "phone": "Phone (optional)",
+      "message": "How can we help?",
+      "send": "Send Message"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "buy_now": "Buy Now",
+      "price_from": "From",
+      "regular_price": "Regular price",
+      "percent_off": "{{ percent }}% OFF",
+      "rating": "{{ rating }} out of {{ max }} stars",
+      "reviews": "reviews",
+      "breadcrumb": "Breadcrumb",
+      "shop": "Shop",
+      "view_image": "View image {{ number }}",
+      "placeholder_kicker": "YOUR PRODUCT",
+      "placeholder_title": "Select a product in the theme editor"
+    }
+  },
+  "collections": {
+    "title": "Collections",
+    "all": "All",
+    "filter_by_concern": "Filter by concern",
+    "product_count": {
+      "one": "{{ count }} product",
+      "other": "{{ count }} products"
+    },
+    "clear": "Clear",
+    "empty": "Nothing matches that yet.",
+    "view_all": "View all products"
+  },
+  "search": {
+    "eyebrow": "Search",
+    "title": "Search the range",
+    "results_for": "Results for",
+    "placeholder": "Search rosemary, hair fall, scalp…",
+    "submit": "Search",
+    "result_count": {
+      "one": "{{ count }} result",
+      "other": "{{ count }} results"
+    },
+    "no_results": "Nothing matches that yet."
+  },
+  "cart": {
+    "title": "Your Cart",
+    "your": "Your",
+    "cart": "cart",
+    "close": "Close cart",
+    "empty": "Your cart is empty.",
+    "shop_the_range": "Shop the range",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "view_cart": "View cart",
+    "update": "Update cart",
+    "note": "Order note",
+    "continue": "Continue Shopping",
+    "order": "Order",
+    "summary": "summary",
+    "shipping": "Shipping",
+    "free": "Free",
+    "calculated_at_checkout": "Calculated at checkout",
+    "total": "Total",
+    "taxes_note": "Taxes and shipping calculated at secure Shopify checkout.",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "decrease": "Decrease quantity for {{ product }}",
+    "increase": "Increase quantity for {{ product }}",
+    "decrease_generic": "Decrease quantity",
+    "increase_generic": "Increase quantity",
+    "free_shipping_remaining_html": "You’re {{ amount }} away from <strong>free shipping</strong>",
+    "free_shipping_unlocked_html": "You’ve unlocked <strong>free shipping</strong> ✦",
+    "added": "Added to cart",
+    "error": "Something went wrong. Please try again.",
+    "proceed_to_checkout": "Proceed to Checkout"
+  },
+  "templates": {
+    "404": {
+      "title": "This page has",
+      "title_emphasis": "wandered off",
+      "subtext": "The page you were looking for doesn’t exist or has moved.",
+      "home": "Back home"
+    }
+  },
+  "blogs": {
+    "journal": "Journal",
+    "empty": "No articles yet.",
+    "back": "Back to the journal"
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Your {{ value }} gift card",
+      "subtext": "A gift from Kehsora",
+      "code": "Gift card code",
+      "remaining": "{{ balance }} left",
+      "expired": "This gift card has expired or is disabled.",
+      "shop_link": "Shop the range"
+    }
+  },
+  "customer": {
+    "account": {
+      "eyebrow": "Account",
+      "hello": "Hello, {{ name }}",
+      "orders": "Order history",
+      "details": "Account details",
+      "addresses": "Addresses ({{ count }})",
+      "logout": "Log out",
+      "back": "Back to account"
+    },
+    "login": {
+      "title": "Log in",
+      "submit": "Sign in",
+      "forgot": "Forgot your password?",
+      "create": "Create account",
+      "guest": "Continue as guest"
+    },
+    "recover": {
+      "title": "Reset your password",
+      "submit": "Send reset link",
+      "success": "We’ve sent you an email with a link to update your password."
+    },
+    "register": {
+      "title": "Create account",
+      "submit": "Create",
+      "marketing": "Email me about new concentrates and restocks",
+      "have_account": "Already have an account? Log in"
+    },
+    "orders": {
+      "order": "Order",
+      "date": "Date",
+      "status": "Status",
+      "total": "Total",
+      "none": "You haven’t placed any orders yet."
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "cancelled": "Cancelled on {{ date }}",
+      "product": "Product",
+      "quantity": "Quantity",
+      "track": "Track shipment",
+      "billing": "Billing address",
+      "shipping": "Shipping address"
+    },
+    "addresses": {
+      "title": "Your addresses",
+      "default": "Default",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you want to delete this address?",
+      "add": "Add a new address",
+      "set_default": "Set as default address",
+      "save": "Save address"
+    },
+    "activate": {
+      "title": "Activate account",
+      "subtext": "Create a password to activate your account.",
+      "submit": "Activate",
+      "decline": "Decline invitation"
+    },
+    "reset": {
+      "title": "Reset password",
+      "subtext": "Enter a new password for your account.",
+      "submit": "Reset password"
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "address1": "Address",
+      "address2": "Apartment, suite, etc.",
+      "city": "City",
+      "country": "Country",
+      "province": "State",
+      "zip": "PIN code",
+      "phone": "Phone"
+    }
+  }
+}

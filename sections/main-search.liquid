@@ -1,0 +1,64 @@
+<section class="page-hero" style="padding-bottom: 2rem;">
+  {% render 'mandala', class: 'hero-mandala', id: section.id, petals: 12 %}
+  <div class="container">
+    <div class="section-eyebrow center fade-up d0">{{ 'search.eyebrow' | t }}</div>
+    <h1 class="fade-up d1">
+      {%- if search.performed -%}{{ 'search.results_for' | t }} <em>&ldquo;{{ search.terms | escape }}&rdquo;</em>{%- else -%}{{ 'search.title' | t }}{%- endif -%}
+    </h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-form-inline fade-up d2">
+      <input type="hidden" name="options[prefix]" value="last">
+      <input class="field" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'search.placeholder' | t }}" aria-label="{{ 'search.placeholder' | t }}">
+      <button type="submit" class="btn btn-gold">{{ 'search.submit' | t }}</button>
+    </form>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 1rem;">
+  <div class="container">
+    {%- if search.performed -%}
+      {%- paginate search.results by 24 -%}
+        <div class="shop-toolbar">
+          <div class="shop-count">{{ 'search.result_count' | t: count: search.results_count }} <a href="{{ routes.all_products_collection_url }}">{{ 'collections.view_all' | t }}</a></div>
+        </div>
+        {%- if search.results_count == 0 -%}
+          <div class="shop-empty">
+            <p>{{ 'search.no_results' | t }}</p>
+            <a href="{{ routes.all_products_collection_url }}" class="btn btn-outline btn-sm">{{ 'collections.view_all' | t }}</a>
+          </div>
+        {%- else -%}
+          <div class="product-grid">
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'product-card', card_product: item %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- capture other_results -%}
+            {%- for item in search.results -%}
+              {%- unless item.object_type == 'product' -%}
+                <a href="{{ item.url }}">{{ item.title | escape }} <span>{{ item.object_type }}</span></a>
+              {%- endunless -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if other_results != blank -%}<div class="search-other">{{ other_results }}</div>{%- endif -%}
+        {%- endif -%}
+        {%- if paginate.pages > 1 -%}
+          <nav class="pagination" aria-label="{{ 'general.pagination.label' | t }}">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a>{%- endif -%}
+            <span class="current">{{ 'general.pagination.page_of' | t: current: paginate.current_page, total: paginate.pages }}</span>
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- else -%}
+      <div class="shop-empty"><a href="{{ routes.all_products_collection_url }}" class="btn btn-outline btn-sm">{{ 'collections.view_all' | t }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search results",
+  "settings": []
+}
+{% endschema %}

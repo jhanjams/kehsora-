@@ -1,0 +1,21 @@
+{%- comment -%}
+  Star rating from the standard Shopify review metafields
+  (reviews.rating / reviews.rating_count), written by Shopify Product Reviews,
+  Judge.me, Loox, etc. Renders nothing when a product has no reviews.
+{%- endcomment -%}
+{%- assign rating_value = product.metafields.reviews.rating.value -%}
+{%- if rating_value != blank -%}
+  {%- liquid
+    assign scale = rating_value.scale_max | default: 5
+    assign rating_percent = rating_value.rating | times: 100.0 | divided_by: scale | round: 1
+    assign rating_count = product.metafields.reviews.rating_count
+  -%}
+  <div class="product-rating">
+    <span class="stars" style="--rating: {{ rating_percent }}%;" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    <span class="visually-hidden">{{ 'products.product.rating' | t: rating: rating_value.rating, max: scale }}</span>
+    <span aria-hidden="true">{{ rating_value.rating | round: 1 }}</span>
+    {%- if rating_count != blank %}
+      <span>({{ rating_count }}{% if long %} {{ 'products.product.reviews' | t }}{% endif %})</span>
+    {%- endif %}
+  </div>
+{%- endif -%}

@@ -1,0 +1,45 @@
+{%- layout none -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    {%- assign title_value = gift_card.initial_value | money -%}
+    <title>{{ 'gift_cards.issued.title' | t: value: title_value }} &ndash; {{ shop.name }}</title>
+    {{ 'kehsora.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+    {{ content_for_header }}
+  </head>
+  <body>
+    <main class="section" style="text-align: center;">
+      <div class="container" style="max-width: 36rem;">
+        <a href="{{ shop.url }}" class="nav-logo" style="display: inline-block; margin-bottom: 3rem;">{{ shop.name | escape }}</a>
+        <div class="section-eyebrow center">{{ 'gift_cards.issued.subtext' | t }}</div>
+        {%- assign initial_value = gift_card.initial_value | money_without_trailing_zeros -%}
+        <h1>{{ 'gift_cards.issued.title' | t: value: initial_value }}</h1>
+        {%- if gift_card.enabled == false or gift_card.expired -%}
+          <p style="margin-top: 1rem;">{{ 'gift_cards.issued.expired' | t }}</p>
+        {%- endif -%}
+        <div class="summary-card" style="position: static; margin: 3rem 0 2rem;">
+          <div class="label-sm">{{ 'gift_cards.issued.code' | t }}</div>
+          <p style="font-family: var(--font-brand); font-size: 2rem; color: var(--cream); letter-spacing: 0.08em;">{{ gift_card.code | format_code }}</p>
+          {%- if gift_card.balance != gift_card.initial_value -%}
+            {%- assign balance_value = gift_card.balance | money -%}
+            <p class="fine">{{ 'gift_cards.issued.remaining' | t: balance: balance_value }}</p>
+          {%- endif -%}
+          <div id="QrCode" data-identifier="{{ gift_card.qr_identifier }}" style="display: inline-block; margin-top: 1.5rem; padding: 10px; background: #fff;"></div>
+        </div>
+        <div class="hero-ctas" style="margin-top: 0;">
+          <a href="{{ shop.url }}" class="btn btn-gold">{{ 'gift_cards.issued.shop_link' | t }}</a>
+        </div>
+      </div>
+    </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var el = document.getElementById('QrCode');
+        if (el && window.QRCode) new QRCode(el, { text: el.dataset.identifier, width: 120, height: 120 });
+      });
+    </script>
+  </body>
+</html>

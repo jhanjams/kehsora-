@@ -1,0 +1,43 @@
+{%- liquid
+  assign source = section.settings.collection
+  if source == blank
+    assign source = collections['all']
+  endif
+  assign shown = 0
+-%}
+{%- capture related_cards -%}
+  {%- for related in source.products limit: 13 -%}
+    {%- if related.id != product.id and shown < section.settings.limit -%}
+      {% render 'product-card', card_product: related %}
+      {%- assign shown = shown | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if shown > 0 -%}
+  {% render 'flourish' %}
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+          {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+        </div>
+      </div>
+      <div class="product-grid reveal-stagger">{{ related_cards }}</div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "You may also like",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Complete the routine" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "You may" },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "also like" },
+    { "type": "collection", "id": "collection", "label": "Products from", "info": "Leave empty to use all products. The current product is always left out." },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 2, "max": 8, "step": 1, "default": 4 }
+  ],
+  "presets": [{ "name": "You may also like" }]
+}
+{% endschema %}

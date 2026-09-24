@@ -1,0 +1,41 @@
+{%- if section.blocks.size > 0 -%}
+  <div class="trust-strip">
+    <div class="container">
+      {%- for block in section.blocks -%}
+        <div class="trust-item" {{ block.shopify_attributes }}>{% render 'icon', name: block.settings.icon, size: 18 %} {{ block.settings.text | escape }}</div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Trust strip",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "leaf", "options": [
+          { "value": "leaf", "label": "Leaf" }, { "value": "heart", "label": "Heart" }, { "value": "drop", "label": "Drop" },
+          { "value": "flask", "label": "Flask" }, { "value": "shield", "label": "Shield" }, { "value": "truck", "label": "Truck" },
+          { "value": "star", "label": "Star" }, { "value": "clock", "label": "Clock" }
+        ] },
+        { "type": "text", "id": "text", "label": "Text", "default": "Plant Powered" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Trust strip",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "leaf", "text": "Plant Powered" } },
+        { "type": "item", "settings": { "icon": "heart", "text": "Cruelty Free" } },
+        { "type": "item", "settings": { "icon": "drop", "text": "Paraben Free" } },
+        { "type": "item", "settings": { "icon": "flask", "text": "Silicone Free" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

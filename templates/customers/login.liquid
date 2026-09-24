@@ -1,0 +1,45 @@
+<section class="page-hero" style="padding-bottom: 2rem;">
+  <div class="container">
+    <div class="section-eyebrow center">{{ 'customer.account.eyebrow' | t }}</div>
+    <h1>{{ 'customer.login.title' | t }}</h1>
+  </div>
+</section>
+<section class="section" style="padding-top: 1rem;">
+  <div class="container account-wrap">
+    <div id="login-panel">
+      {%- form 'customer_login', class: 'stack' -%}
+        {%- if form.errors -%}<div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <input class="field" type="email" name="customer[email]" placeholder="{{ 'customer.fields.email' | t }}" aria-label="{{ 'customer.fields.email' | t }}" autocomplete="email" required>
+        {%- if form.password_needed -%}
+          <input class="field" type="password" name="customer[password]" placeholder="{{ 'customer.fields.password' | t }}" aria-label="{{ 'customer.fields.password' | t }}" autocomplete="current-password" required>
+        {%- endif -%}
+        <button type="submit" class="btn btn-gold">{{ 'customer.login.submit' | t }}</button>
+      {%- endform -%}
+      <div class="account-links">
+        <a href="#recover" data-toggle-recover>{{ 'customer.login.forgot' | t }}</a>
+        <a href="{{ routes.account_register_url }}">{{ 'customer.login.create' | t }}</a>
+      </div>
+    </div>
+
+    <div id="recover" style="margin-top: 4rem;">
+      <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">{{ 'customer.recover.title' | t }}</h2>
+      {%- form 'recover_customer_password', class: 'stack' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form-success">{{ 'customer.recover.success' | t }}</p>
+        {%- else -%}
+          {%- if form.errors -%}<div class="form-message form-message--error">{{ form.errors | default_errors }}</div>{%- endif -%}
+          <input class="field" type="email" name="email" placeholder="{{ 'customer.fields.email' | t }}" aria-label="{{ 'customer.fields.email' | t }}" autocomplete="email" required>
+          <button type="submit" class="btn btn-outline">{{ 'customer.recover.submit' | t }}</button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+
+    {%- if shop.checkout.guest_login -%}
+      <div style="margin-top: 4rem;">
+        {%- form 'guest_login', class: 'stack' -%}
+          <button type="submit" class="btn btn-outline">{{ 'customer.login.guest' | t }}</button>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>

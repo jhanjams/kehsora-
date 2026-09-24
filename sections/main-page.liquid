@@ -1,0 +1,17 @@
+<section class="page-hero" style="padding-bottom: 2rem;">
+  <div class="container">
+    <h1 class="fade-up d1">{{ page.title | escape }}</h1>
+  </div>
+</section>
+<section class="section" style="padding-top: 1rem;">
+  <div class="container">
+    <div class="page-content rte">{{ page.content }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page content",
+  "settings": []
+}
+{% endschema %}

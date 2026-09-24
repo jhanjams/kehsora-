@@ -1,0 +1,64 @@
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+        {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+      </div>
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: '/pages/ingredients' }}" class="btn btn-outline btn-sm">{{ section.settings.button_label | escape }}</a>
+      {%- endif -%}
+    </div>
+    <div class="niche-row reveal-stagger">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign niche_product = block.settings.product
+          assign niche_image = block.settings.image | default: niche_product.featured_image
+          assign niche_name = block.settings.name | default: niche_product.title
+          assign niche_link = block.settings.link | default: niche_product.url
+        -%}
+        <a href="{{ niche_link | default: '#' }}" class="niche" {{ block.shopify_attributes }}>
+          <div class="arch-frame">
+            {%- if niche_image != blank -%}
+              {{ niche_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 1080px) 20vw, (min-width: 560px) 33vw, 50vw', alt: niche_name }}
+            {%- else -%}
+              {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <h4>{{ niche_name | escape }}</h4>
+          {%- if block.settings.subtitle != blank -%}<p>{{ block.settings.subtitle | escape }}</p>{%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ingredient arches",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What’s actually inside" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Five ingredients," },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "chosen with purpose" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Full Ingredient Guide" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Leave empty to link to /pages/ingredients" }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product", "info": "Uses the product's image and link automatically." },
+        { "type": "image_picker", "id": "image", "label": "Image (overrides product image)" },
+        { "type": "text", "id": "name", "label": "Name (overrides product title)", "default": "Rosemary" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Scalp circulation" },
+        { "type": "url", "id": "link", "label": "Link (overrides product link)" }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    { "name": "Ingredient arches", "blocks": [{ "type": "ingredient" }, { "type": "ingredient" }, { "type": "ingredient" }] }
+  ]
+}
+{% endschema %}

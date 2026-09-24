@@ -1,0 +1,98 @@
+{%- liquid
+  assign coll_heading = collection.title
+  assign coll_emphasis = ''
+  if collection.handle == 'all' or collection.handle == 'frontpage'
+    if section.settings.all_heading != blank or section.settings.all_heading_emphasis != blank
+      assign coll_heading = section.settings.all_heading
+      assign coll_emphasis = section.settings.all_heading_emphasis
+    endif
+  endif
+-%}
+<section class="page-hero">
+  {% render 'mandala', class: 'hero-mandala', id: section.id, petals: 12 %}
+  <div class="container">
+    {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow center fade-up d0">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+    {% render 'heading', tag: 'h1', text: coll_heading, emphasis: coll_emphasis, class: 'fade-up d1' %}
+    {%- if collection.description != blank -%}
+      <div class="rte fade-up d2" style="max-width: 38rem; margin: 1.6rem auto 0;">{{ collection.description }}</div>
+    {%- elsif section.settings.all_text != blank and collection.handle == 'all' -%}
+      <p class="fade-up d2">{{ section.settings.all_text | escape }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+<section class="section" style="padding-top: 1rem;">
+  <div class="container">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <div class="shop-toolbar">
+        {%- if section.blocks.size > 0 -%}
+          <nav class="concern-tabs" aria-label="{{ 'collections.filter_by_concern' | t }}">
+            <a href="{{ collection.url }}" class="concern-tab{% if current_tags == blank %} active{% endif %}">{{ 'collections.all' | t }}</a>
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign tag_handle = block.settings.tag | handle
+                assign is_active = false
+                for t in current_tags
+                  assign t_handle = t | handle
+                  if t_handle == tag_handle
+                    assign is_active = true
+                  endif
+                endfor
+              -%}
+              <a href="{{ collection.url }}/{{ tag_handle }}" class="concern-tab{% if is_active %} active{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+            {%- endfor -%}
+          </nav>
+        {%- endif -%}
+        <div class="shop-count">
+          {{ 'collections.product_count' | t: count: collection.products_count }}
+          {%- if current_tags != blank %}<a href="{{ collection.url }}">{{ 'collections.clear' | t }}</a>{% endif -%}
+        </div>
+      </div>
+
+      {%- if collection.products.size > 0 -%}
+        <div class="product-grid">
+          {%- for product in collection.products -%}
+            {% render 'product-card', card_product: product %}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="shop-empty">
+          <p>{{ 'collections.empty' | t }}</p>
+          <a href="{{ collection.url }}" class="btn btn-outline btn-sm">{{ 'collections.view_all' | t }}</a>
+        </div>
+      {%- endif -%}
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="{{ 'general.pagination.label' | t }}">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a>{%- endif -%}
+          <span class="current">{{ 'general.pagination.page_of' | t: current: paginate.current_page, total: paginate.pages }}</span>
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The full range" },
+    { "type": "paragraph", "content": "Collections show their own title and description. The fields below are used on the all-products page (/collections/all)." },
+    { "type": "text", "id": "all_heading", "label": "All products heading", "default": "Concentrates," },
+    { "type": "text", "id": "all_heading_emphasis", "label": "All products heading (italic gold part)", "default": "made to work" },
+    { "type": "textarea", "id": "all_text", "label": "All products text", "default": "Five hero ingredients, each at real concentration. Mix into the oil you already love, or apply directly for a high-potency treatment." },
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "filter",
+      "name": "Concern filter",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Hair Fall" },
+        { "type": "text", "id": "tag", "label": "Product tag", "default": "Hair Fall", "info": "Products with this tag appear under this filter." }
+      ]
+    }
+  ]
+}
+{% endschema %}

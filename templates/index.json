@@ -1,0 +1,345 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Ayurvedic hair care, reformulated",
+        "heading_line_1": "Rooted in",
+        "heading_line_2": "what actually works",
+        "text": "Real, potent ingredients — not diluted formulas dressed up in an Ayurvedic label. Hair oil concentrates built to mix into the routine you already trust.",
+        "button_1_label": "Shop Bestsellers",
+        "button_1_link": "/collections/all",
+        "button_2_label": "Explore Ingredients",
+        "button_2_link": "",
+        "video_url": "",
+        "show_mandala": true,
+        "show_scroll_cue": true
+      }
+    },
+    "trust": {
+      "type": "trust-strip",
+      "blocks": {
+        "t0": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "text": "Plant Powered"
+          }
+        },
+        "t1": {
+          "type": "item",
+          "settings": {
+            "icon": "heart",
+            "text": "Cruelty Free"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "icon": "drop",
+            "text": "Paraben Free"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "icon": "flask",
+            "text": "Silicone Free"
+          }
+        }
+      },
+      "block_order": [
+        "t0",
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {}
+    },
+    "bestsellers": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "The crowd favourites",
+        "heading": "Formulated for",
+        "heading_emphasis": "real results",
+        "collection": "",
+        "products_to_show": 4,
+        "button_label": "Explore All",
+        "button_link": "/collections/all",
+        "anchor": "bestsellers"
+      }
+    },
+    "note": {
+      "type": "manifesto",
+      "settings": {
+        "eyebrow": "A note from Kehsora",
+        "quote": "<p>Most hair oils put just enough of a “hero” ingredient on the label to <em>tell a good story.</em> We put in enough to actually <em>change the ending.</em></p>",
+        "cite": "The Kehsora Standard",
+        "show_mandala": true
+      }
+    },
+    "concern": {
+      "type": "concern-tabs",
+      "blocks": {
+        "c0": {
+          "type": "concern",
+          "settings": {
+            "label": "Hair Fall",
+            "product": "bhringraj-hair-oil-concentrate",
+            "eyebrow": "Why Bhringraj?",
+            "heading": "The",
+            "heading_emphasis": "ruler of hair",
+            "text": "<p>Bhringraj literally translates to “ruler of hair” in Sanskrit — used in Ayurvedic texts for thousands of years. Most commercial versions use a trace amount, diluted into filler oil. Ours is properly heat-infused, so it’s concentrated enough to actually reduce fall and support new growth.</p>",
+            "link_label": "Discover the concentrate"
+          }
+        },
+        "c1": {
+          "type": "concern",
+          "settings": {
+            "label": "Dandruff & Scalp",
+            "product": "jojoba-hair-oil-concentrate",
+            "eyebrow": "Why Jojoba?",
+            "heading": "Balance,",
+            "heading_emphasis": "not buildup",
+            "text": "<p>Jojoba closely mimics your scalp’s own natural sebum, which means it absorbs instead of sitting heavy. Ideal for an oily scalp, dandruff-prone hair, or anyone who finds traditional oils too greasy to use daily.</p>",
+            "link_label": "Discover the concentrate"
+          }
+        },
+        "c2": {
+          "type": "concern",
+          "settings": {
+            "label": "Growth & Density",
+            "product": "pumpkin-seed-hair-oil-concentrate",
+            "eyebrow": "Why Pumpkin Seed?",
+            "heading": "Density,",
+            "heading_emphasis": "backed by research",
+            "text": "<p>Rich in zinc and essential fatty acids, pumpkin seed is one of the few natural ingredients with real modern research behind it — linked to reduced thinning and improved density, not just tradition.</p>",
+            "link_label": "Discover the concentrate"
+          }
+        },
+        "c3": {
+          "type": "concern",
+          "settings": {
+            "label": "Dryness & Shine",
+            "product": "sweet-almond-hair-oil-concentrate",
+            "eyebrow": "Why Sweet Almond?",
+            "heading": "Softness &",
+            "heading_emphasis": "natural shine",
+            "text": "<p>Rich in Vitamin E, sweet almond softens hair, adds natural shine, and strengthens strands against breakage — a gentle, everyday formulation for dry or dull hair.</p>",
+            "link_label": "Discover the concentrate"
+          }
+        }
+      },
+      "block_order": [
+        "c0",
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "eyebrow": "Curate your hair care",
+        "heading": "Shop by",
+        "heading_emphasis": "concern"
+      }
+    },
+    "divider_1": {
+      "type": "divider",
+      "settings": {
+        "spacing": 0
+      }
+    },
+    "values": {
+      "type": "values-grid",
+      "blocks": {
+        "v0": {
+          "type": "value",
+          "settings": {
+            "icon": "leaf",
+            "title": "Rooted in Ayurveda",
+            "text": "Traditional heat-infusion formulation, not a shortcut dressed up with a Sanskrit name."
+          }
+        },
+        "v1": {
+          "type": "value",
+          "settings": {
+            "icon": "star",
+            "title": "Real Concentration",
+            "text": "No trace amounts for the label — enough of the hero ingredient to actually work."
+          }
+        },
+        "v2": {
+          "type": "value",
+          "settings": {
+            "icon": "clock",
+            "title": "Small-Batch Made",
+            "text": "Formulated in limited runs, so potency and consistency never get diluted at scale."
+          }
+        },
+        "v3": {
+          "type": "value",
+          "settings": {
+            "icon": "mix",
+            "title": "Mixes Into Your Routine",
+            "text": "Blend our concentrates into the oil you already use — no need to abandon what works."
+          }
+        },
+        "v4": {
+          "type": "value",
+          "settings": {
+            "icon": "heart",
+            "title": "Cruelty Free",
+            "text": "Never tested on animals, formulated and finished with the same standard throughout."
+          }
+        },
+        "v5": {
+          "type": "value",
+          "settings": {
+            "icon": "flask",
+            "title": "Paraben & Silicone Free",
+            "text": "Nothing that coats or masks — just what your scalp and hair actually need."
+          }
+        },
+        "v6": {
+          "type": "value",
+          "settings": {
+            "icon": "chart",
+            "title": "Research-Led Formulation",
+            "text": "Every ingredient chosen for a documented, specific benefit — not a trend."
+          }
+        },
+        "v7": {
+          "type": "value",
+          "settings": {
+            "icon": "shield",
+            "title": "One Brand, Every Concern",
+            "text": "Hair fall, dandruff, dryness, thinning — one trusted range instead of five brands."
+          }
+        }
+      },
+      "block_order": [
+        "v0",
+        "v1",
+        "v2",
+        "v3",
+        "v4",
+        "v5",
+        "v6",
+        "v7"
+      ],
+      "settings": {
+        "eyebrow": "The Kehsora standard",
+        "heading": "Every bottle, held to",
+        "heading_emphasis": "the same rule",
+        "columns": "4",
+        "compact": false
+      }
+    },
+    "ingredients": {
+      "type": "ingredient-niches",
+      "blocks": {
+        "n0": {
+          "type": "ingredient",
+          "settings": {
+            "product": "rosemary-hair-oil-concentrate",
+            "name": "Rosemary",
+            "subtitle": "Scalp circulation",
+            "link": "/pages/ingredients#rosemary"
+          }
+        },
+        "n1": {
+          "type": "ingredient",
+          "settings": {
+            "product": "bhringraj-hair-oil-concentrate",
+            "name": "Bhringraj",
+            "subtitle": "Reduces hair fall",
+            "link": "/pages/ingredients#bhringraj"
+          }
+        },
+        "n2": {
+          "type": "ingredient",
+          "settings": {
+            "product": "pumpkin-seed-hair-oil-concentrate",
+            "name": "Pumpkin Seed",
+            "subtitle": "Density & thickness",
+            "link": "/pages/ingredients#pumpkin-seed"
+          }
+        },
+        "n3": {
+          "type": "ingredient",
+          "settings": {
+            "product": "jojoba-hair-oil-concentrate",
+            "name": "Jojoba",
+            "subtitle": "Lightweight balance",
+            "link": "/pages/ingredients#jojoba"
+          }
+        },
+        "n4": {
+          "type": "ingredient",
+          "settings": {
+            "product": "sweet-almond-hair-oil-concentrate",
+            "name": "Sweet Almond",
+            "subtitle": "Shine & softness",
+            "link": "/pages/ingredients#sweet-almond"
+          }
+        }
+      },
+      "block_order": [
+        "n0",
+        "n1",
+        "n2",
+        "n3",
+        "n4"
+      ],
+      "settings": {
+        "eyebrow": "What’s actually inside",
+        "heading": "Five ingredients,",
+        "heading_emphasis": "chosen with purpose",
+        "button_label": "Full Ingredient Guide",
+        "button_link": ""
+      }
+    },
+    "divider_2": {
+      "type": "divider",
+      "settings": {
+        "spacing": 0
+      }
+    },
+    "story": {
+      "type": "story",
+      "settings": {
+        "anchor": "our-story",
+        "quote": "“Nothing on the shelf actually worked — so she made her own.”",
+        "quote_caption": "How Kehsora began",
+        "eyebrow": "Our story",
+        "heading": "It started with a mother,",
+        "heading_emphasis": "not a marketing plan.",
+        "text": "<p>Kehsora began the way real Ayurvedic hair care always has — at home. A mother formulating her own oil from scratch, using real, purposeful ingredients, because nothing on the shelf actually worked.</p><p>That’s still the standard today. We talked to real people before building further — mall interviews that told us the problem was never the ingredients, it was the format. Some people love the ritual of oiling. Others simply don’t have the time. So we built for both: potent concentrates that mix into what you already use, and serums for the days there’s no time to spare.</p>",
+        "link_label": "Read about our ingredients",
+        "link": ""
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Join the",
+        "heading_emphasis": "Kehsora circle",
+        "text": "Early access to new concentrates, restocks, and the occasional honest note from the founder.",
+        "button_label": "Subscribe",
+        "success": "Welcome to the circle — watch your inbox."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "trust",
+    "bestsellers",
+    "note",
+    "concern",
+    "divider_1",
+    "values",
+    "ingredients",
+    "divider_2",
+    "story",
+    "newsletter"
+  ]
+}

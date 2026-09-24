@@ -1,0 +1,116 @@
+{
+  "sections": {
+    "header": {
+      "type": "page-hero",
+      "settings": {
+        "eyebrow": "What’s actually inside",
+        "heading": "No trace amounts.",
+        "heading_emphasis": "No filler stories.",
+        "text": "Most hair oils put just enough of a “hero” ingredient on the label to tell a good story — not enough to actually work. Here’s exactly what’s in Kehsora, and why each one earned its place.",
+        "show_mandala": true,
+        "compact": false
+      }
+    },
+    "details": {
+      "type": "ingredient-details",
+      "blocks": {
+        "rosemary": {
+          "type": "ingredient",
+          "settings": {
+            "product": "rosemary-hair-oil-concentrate",
+            "number": "01",
+            "kicker": "Growth & circulation",
+            "name": "Rosemary",
+            "anchor": "rosemary",
+            "text": "<p>Rosemary has been used for centuries — not just in cooking, but as a remedy for scalp health across the Mediterranean and in Ayurveda alike. It works by improving blood circulation to the scalp, meaning hair follicles receive more of what they need to actually grow stronger.</p><p>It also carries natural antimicrobial and anti-inflammatory properties, calming an irritated or flaky scalp along the way.</p>",
+            "benefits": "Scalp circulation, Follicle strength, Calms irritation",
+            "link_label": "Shop Rosemary"
+          }
+        },
+        "bhringraj": {
+          "type": "ingredient",
+          "settings": {
+            "product": "bhringraj-hair-oil-concentrate",
+            "number": "02",
+            "kicker": "Hair fall & roots",
+            "name": "Bhringraj",
+            "anchor": "bhringraj",
+            "text": "<p>Bhringraj literally translates to “ruler of hair” in Sanskrit — a name it’s carried in classical Ayurvedic texts for thousands of years, long before “hair growth serums” existed. It’s known to stimulate hair follicles and improve scalp circulation, supporting stronger roots and reduced hair fall over time.</p><p>It’s also traditionally used to slow premature greying, and its natural cooling properties help with an overheated, stressed scalp.</p>",
+            "benefits": "Reduces hair fall, Strengthens roots, Cooling & calming",
+            "link_label": "Shop Bhringraj"
+          }
+        },
+        "pumpkin-seed": {
+          "type": "ingredient",
+          "settings": {
+            "product": "pumpkin-seed-hair-oil-concentrate",
+            "number": "03",
+            "kicker": "Density & thickness",
+            "name": "Pumpkin Seed",
+            "anchor": "pumpkin-seed",
+            "text": "<p>Unlike our other ingredients, pumpkin seed isn’t part of ancient Ayurvedic tradition — it’s a newer addition, backed by modern research rather than centuries of folklore. It’s rich in zinc, fatty acids, and antioxidants, and some clinical studies have specifically linked it to reduced hair thinning.</p><p>Cold-pressed to preserve its natural nutrients, it’s one of the few ingredients here with real lab evidence behind it.</p>",
+            "benefits": "Supports density, Zinc-rich, Research-backed",
+            "link_label": "Shop Pumpkin Seed"
+          }
+        },
+        "jojoba": {
+          "type": "ingredient",
+          "settings": {
+            "product": "jojoba-hair-oil-concentrate",
+            "number": "04",
+            "kicker": "Scalp & balance",
+            "name": "Jojoba",
+            "anchor": "jojoba",
+            "text": "<p>Jojoba closely mimics your scalp’s own natural sebum, which means it absorbs rather than sits heavy on top — ideal for an oily scalp or anyone who finds traditional oils too greasy to use regularly. It’s naturally lightweight and non-comedogenic.</p><p>Gentle enough for daily use, it works well as both a concentrate mixed into a heavier oil, and applied directly for a fast-absorbing, non-greasy finish.</p>",
+            "benefits": "Lightweight, Balances oily scalp, Fast-absorbing",
+            "link_label": "Shop Jojoba"
+          }
+        },
+        "sweet-almond": {
+          "type": "ingredient",
+          "settings": {
+            "product": "sweet-almond-hair-oil-concentrate",
+            "number": "05",
+            "kicker": "Shine & softness",
+            "name": "Sweet Almond",
+            "anchor": "sweet-almond",
+            "text": "<p>Rich in Vitamin E, sweet almond is a deeply nourishing addition formulated to soften hair, add natural shine, and strengthen strands against breakage. It’s gentle enough to work well across most hair types, including sensitive scalps.</p><p>A dependable, everyday ingredient for dry, dull, or brittle hair that needs consistent conditioning rather than an intensive treatment.</p>",
+            "benefits": "Adds shine, Softens hair, Reduces breakage",
+            "link_label": "Shop Sweet Almond"
+          }
+        }
+      },
+      "block_order": [
+        "rosemary",
+        "bhringraj",
+        "pumpkin-seed",
+        "jojoba",
+        "sweet-almond"
+      ],
+      "settings": {}
+    },
+    "divider": {
+      "type": "divider",
+      "settings": {
+        "spacing": 0
+      }
+    },
+    "statement": {
+      "type": "rich-text",
+      "settings": {
+        "eyebrow": "Our standard",
+        "heading": "Formulated with purpose,",
+        "heading_emphasis": "not filler.",
+        "text": "<p>Every generic oil on the market is a broad-spectrum guess. Kehsora is built the opposite way — real, potent ingredients, chosen for exactly what they do, infused properly rather than diluted for a label.</p>",
+        "button_label": "Shop the Range",
+        "button_link": "/collections/all"
+      }
+    }
+  },
+  "order": [
+    "header",
+    "details",
+    "divider",
+    "statement"
+  ]
+}

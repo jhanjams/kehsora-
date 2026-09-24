@@ -1,0 +1,29 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "a1": { "type": "announcement", "settings": { "text": "30ml now ₹349 · was ₹499", "link": "" } },
+        "a2": { "type": "announcement", "settings": { "text": "Free shipping above ₹999", "link": "" } },
+        "a3": { "type": "announcement", "settings": { "text": "Plant powered, always", "link": "" } },
+        "a4": { "type": "announcement", "settings": { "text": "Rooted in Ayurveda", "link": "" } },
+        "a5": { "type": "announcement", "settings": { "text": "Small-batch made", "link": "" } }
+      },
+      "block_order": ["a1", "a2", "a3", "a4", "a5"],
+      "settings": { "speed": 60 }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "logo_text": "kehsora",
+        "logo_height": 40,
+        "search_placeholder": "Search rosemary, hair fall, scalp…",
+        "search_suggestions": "Hair fall, Dandruff, Growth, Shine, Rosemary"
+      }
+    }
+  },
+  "order": ["announcement-bar", "header"]
+}

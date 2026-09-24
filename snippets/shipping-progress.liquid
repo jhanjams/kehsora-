@@ -1,0 +1,22 @@
+{%- comment -%} Free-shipping progress based on the theme setting and the live cart total. {%- endcomment -%}
+{%- liquid
+  assign threshold = settings.free_shipping_threshold | times: 100
+-%}
+{%- if settings.free_shipping_threshold > 0 and cart.item_count > 0 -%}
+  {%- liquid
+    assign remaining = threshold | minus: cart.total_price
+    assign percent = cart.total_price | times: 100 | divided_by: threshold
+    assign remaining_money = remaining | money
+    if percent > 100
+      assign percent = 100
+    endif
+  -%}
+  <div class="ship-progress">
+    {%- if remaining > 0 -%}
+      {{ 'cart.free_shipping_remaining_html' | t: amount: remaining_money }}
+    {%- else -%}
+      {{ 'cart.free_shipping_unlocked_html' | t }}
+    {%- endif -%}
+    <div class="ship-bar"><span style="width: {{ percent }}%"></span></div>
+  </div>
+{%- endif -%}

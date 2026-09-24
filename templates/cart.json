@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "eyebrow": "Almost yours",
+        "show_note": false,
+        "show_additional_buttons": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,29 @@
+<section class="page-hero" style="padding-bottom: 2rem;">
+  <div class="container">
+    <h1 class="fade-up d1">{{ 'collections.title' | t }}</h1>
+  </div>
+</section>
+<section class="section" style="padding-top: 1rem;">
+  <div class="container">
+    <div class="niche-row">
+      {%- for coll in collections -%}
+        {%- assign coll_image = coll.featured_image | default: coll.products.first.featured_image -%}
+        <a href="{{ coll.url }}" class="niche">
+          <div class="arch-frame">
+            {%- if coll_image != blank -%}
+              {{ coll_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 1080px) 20vw, 50vw', alt: coll.title }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <h4>{{ coll.title | escape }}</h4>
+          <p>{{ 'collections.product_count' | t: count: coll.products_count }}</p>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Collections list", "settings": [] }
+{% endschema %}

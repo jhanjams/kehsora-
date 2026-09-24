@@ -1,0 +1,49 @@
+{%- liquid
+  assign featured = section.settings.collection
+  if featured == blank
+    assign featured = collections['all']
+  endif
+  assign limit = section.settings.products_to_show
+-%}
+<section class="section" id="{{ section.settings.anchor | default: section.id | handle }}">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+        {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+      </div>
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: featured.url }}" class="btn btn-outline btn-sm">{{ section.settings.button_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="product-grid reveal-stagger">
+      {%- if featured.products_count > 0 -%}
+        {%- for product in featured.products limit: limit -%}
+          {% render 'product-card', card_product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..limit) -%}
+          {% render 'product-card', card_product: blank %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The crowd favourites" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Formulated for" },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "real results" },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Leave empty to show all products." },
+    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore All" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "bestsellers", "info": "Lets menus link to this section, e.g. /#bestsellers" }
+  ],
+  "presets": [{ "name": "Featured products" }]
+}
+{% endschema %}

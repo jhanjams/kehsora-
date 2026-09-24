@@ -1,0 +1,75 @@
+<section class="hero">
+  {%- if section.settings.show_mandala -%}
+    {% render 'mandala', class: 'hero-mandala', id: section.id, petals: 12 %}
+  {%- endif -%}
+
+  <svg class="hero-arch-outline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1,100 L1,40 C1,18 22,1 50,1 C78,1 99,18 99,40 L99,100" fill="none" stroke="#C9A36A" stroke-width="1" opacity="0.45" vector-effect="non-scaling-stroke"/>
+  </svg>
+  <div class="hero-arch" aria-hidden="true">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(min-width: 600px) 540px, 80vw', class: 'hero-arch-image', loading: 'eager', fetchpriority: 'high', alt: '' }}
+    {%- else -%}
+      <div class="hero-fallback"></div>
+    {%- endif -%}
+    {%- if section.settings.video != blank -%}
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', class: 'hero-video', image_size: '1200x' }}
+    {%- elsif section.settings.video_url != blank -%}
+      <video class="hero-video" src="{{ section.settings.video_url }}" autoplay muted loop playsinline preload="metadata"></video>
+    {%- endif -%}
+  </div>
+
+  <div class="hero-content">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="hero-eyebrow fade-up d0">{{ section.settings.eyebrow | escape }}</div>
+    {%- endif -%}
+    <h1>
+      {%- if section.settings.heading_line_1 != blank -%}<span class="line"><span>{{ section.settings.heading_line_1 | escape }}</span></span>{%- endif -%}
+      {%- if section.settings.heading_line_2 != blank -%}<span class="line"><span><em>{{ section.settings.heading_line_2 | escape }}</em></span></span>{%- endif -%}
+    </h1>
+    {%- if section.settings.text != blank -%}
+      <p class="fade-up d1">{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.button_1_label != blank or section.settings.button_2_label != blank -%}
+      <div class="hero-ctas fade-up d2">
+        {%- if section.settings.button_1_label != blank -%}
+          <a href="{{ section.settings.button_1_link | default: routes.all_products_collection_url }}" class="btn btn-gold">{{ section.settings.button_1_label | escape }}</a>
+        {%- endif -%}
+        {%- if section.settings.button_2_label != blank -%}
+          <a href="{{ section.settings.button_2_link | default: '/pages/ingredients' }}" class="btn btn-outline">{{ section.settings.button_2_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.show_scroll_cue -%}
+    <div class="hero-scroll-cue" aria-hidden="true">
+      <span>{{ 'sections.hero.scroll' | t }}</span>
+      <div class="stem"></div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Hero (arch window)",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Ayurvedic hair care, reformulated" },
+    { "type": "text", "id": "heading_line_1", "label": "Heading line 1", "default": "Rooted in" },
+    { "type": "text", "id": "heading_line_2", "label": "Heading line 2 (italic gold)", "default": "what actually works" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Real, potent ingredients — not diluted formulas dressed up in an Ayurvedic label. Hair oil concentrates built to mix into the routine you already trust." },
+    { "type": "text", "id": "button_1_label", "label": "Primary button label", "default": "Shop Bestsellers" },
+    { "type": "url", "id": "button_1_link", "label": "Primary button link", "default": "/collections/all" },
+    { "type": "text", "id": "button_2_label", "label": "Secondary button label", "default": "Explore Ingredients" },
+    { "type": "url", "id": "button_2_link", "label": "Secondary button link", "info": "Leave empty to link to /pages/ingredients" },
+    { "type": "header", "content": "Inside the arch" },
+    { "type": "paragraph", "content": "Leave empty for the candle-lit maroon glow. Warm, dark, slow footage works best (oil pouring, a dropper, the bottle turning)." },
+    { "type": "video", "id": "video", "label": "Video (uploaded to Shopify)" },
+    { "type": "url", "id": "video_url", "label": "Or direct .mp4 video URL" },
+    { "type": "image_picker", "id": "image", "label": "Or still image" },
+    { "type": "checkbox", "id": "show_mandala", "label": "Show rotating mandala", "default": true },
+    { "type": "checkbox", "id": "show_scroll_cue", "label": "Show scroll cue", "default": true }
+  ],
+  "presets": [{ "name": "Hero (arch window)" }]
+}
+{% endschema %}

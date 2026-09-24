@@ -1,0 +1,82 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "perk_1": {
+          "type": "perk",
+          "settings": {
+            "icon": "truck",
+            "text": "Free shipping above ₹999"
+          }
+        },
+        "perk_2": {
+          "type": "perk",
+          "settings": {
+            "icon": "leaf",
+            "text": "Plant powered"
+          }
+        },
+        "perk_3": {
+          "type": "perk",
+          "settings": {
+            "icon": "shield",
+            "text": "Paraben & silicone free"
+          }
+        },
+        "how_to_use": {
+          "type": "accordion",
+          "settings": {
+            "title": "How to Use",
+            "metafield": "custom.how_to_use",
+            "open": true,
+            "content": "<p><strong>Mix with a base oil:</strong> Blend the 30ml concentrate into 150ml of your regular base oil (coconut, sesame, or almond oil) for a lighter, everyday formulation. Shake well before each use. For 50ml, mix into 250ml of base oil — same 1:5 ratio.</p><p><strong>Apply directly:</strong> For targeted, high-potency use, apply a few drops of the concentrate directly onto the scalp and massage in circular motions. Leave in for at least 30 minutes or overnight before washing.</p><p>Use 2–3 times a week for visible results within 4–6 weeks.</p>"
+          }
+        },
+        "ingredients": {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "metafield": "custom.ingredients",
+            "open": false,
+            "content": ""
+          }
+        },
+        "shipping": {
+          "type": "accordion",
+          "settings": {
+            "title": "Shipping & Returns",
+            "metafield": "",
+            "open": false,
+            "content": "<p>Free shipping on orders above ₹999. Dispatched within 2–3 business days. Questions? Reach us at <a href=\"mailto:info@kehsora.com\" title=\"Email Kehsora\">info@kehsora.com</a> or WhatsApp us at 63038 71560.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "perk_1",
+        "perk_2",
+        "perk_3",
+        "how_to_use",
+        "ingredients",
+        "shipping"
+      ],
+      "settings": {
+        "show_buy_now": true
+      }
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {
+        "eyebrow": "Complete the routine",
+        "heading": "You may",
+        "heading_emphasis": "also like",
+        "collection": "",
+        "limit": 4
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related"
+  ]
+}

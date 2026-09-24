@@ -1,0 +1,23 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "footer" } },
+        "brand": { "type": "menu", "settings": { "heading": "Brand", "menu": "brand" } },
+        "support": { "type": "menu", "settings": { "heading": "Support", "menu": "support" } }
+      },
+      "block_order": ["shop", "brand", "support"],
+      "settings": {
+        "logo_text": "kehsora",
+        "tagline": "Ayurvedic hair care, reformulated. Real ingredients, real results — not trends.",
+        "show_contact": true,
+        "show_wordmark": true,
+        "signoff": "Made with care, rooted in Ayurveda."
+      }
+    }
+  },
+  "order": ["footer"]
+}

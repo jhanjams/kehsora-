@@ -1,0 +1,38 @@
+{%- comment -%}
+  One line in the cart drawer or cart page.
+  Usage: {% render 'cart-line', item: item, line: forloop.index, on_page: true %}
+{%- endcomment -%}
+{%- assign line_alt = item.product.title -%}
+<div class="cart-line" data-cart-line="{{ line }}">
+  <a class="cart-line-img" href="{{ item.url }}">
+    {%- if item.image -%}
+      {{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: line_alt }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </a>
+  <div>
+    <a href="{{ item.url }}" class="cart-line-name">{{ item.product.title | escape }}</a>
+    <div class="cart-line-meta">
+      {%- unless item.product.has_only_default_variant -%}{{ item.variant.title | escape }} &middot; {% endunless -%}
+      {{ item.final_price | money }}
+      {%- for p in item.properties -%}
+        {%- assign first_char = p.first | slice: 0 -%}
+        {%- if p.last != blank and first_char != '_' -%}<div class="cart-line-options">{{ p.first }}: {{ p.last }}</div>{%- endif -%}
+      {%- endfor -%}
+      {%- if item.selling_plan_allocation -%}<div class="cart-line-options">{{ item.selling_plan_allocation.selling_plan.name }}</div>{%- endif -%}
+    </div>
+    <div class="qty">
+      <button type="button" data-qty-change data-line="{{ line }}" data-qty="{{ item.quantity | minus: 1 }}" aria-label="{{ 'cart.decrease' | t: product: item.product.title | escape }}">&minus;</button>
+      <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric" data-qty-input data-line="{{ line }}"{% if on_page %} form="cart-form"{% endif %} aria-label="{{ 'cart.quantity' | t }}">
+      <button type="button" data-qty-change data-line="{{ line }}" data-qty="{{ item.quantity | plus: 1 }}" aria-label="{{ 'cart.increase' | t: product: item.product.title | escape }}">+</button>
+    </div>
+  </div>
+  <div>
+    <div class="cart-line-price">
+      {%- if item.original_line_price > item.final_line_price -%}<span class="price-was">{{ item.original_line_price | money }}</span><br>{%- endif -%}
+      {{ item.final_line_price | money }}
+    </div>
+    <a href="{{ item.url_to_remove }}" class="cart-line-remove" data-cart-remove data-line="{{ line }}">{{ 'cart.remove' | t }}</a>
+  </div>
+</div>

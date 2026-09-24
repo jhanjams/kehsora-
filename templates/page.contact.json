@@ -1,0 +1,92 @@
+{
+  "sections": {
+    "header": {
+      "type": "page-hero",
+      "settings": {
+        "eyebrow": "Get in touch",
+        "heading": "We’re here",
+        "heading_emphasis": "to help",
+        "text": "Questions about an order, an ingredient, or just want to say hello — reach us any of these ways.",
+        "show_mandala": true,
+        "compact": false
+      }
+    },
+    "main": {
+      "type": "main-contact",
+      "settings": {
+        "details_heading": "Contact",
+        "details_heading_emphasis": "details",
+        "shipping_heading": "Shipping & Returns",
+        "shipping_text": "<p>Free shipping on orders above ₹999. Dispatched within 2–3 business days across India. For any issue with your order, reach out within 7 days of delivery.</p>",
+        "form_heading": "Send us",
+        "form_heading_emphasis": "a message",
+        "success": "Thank you — we’ll get back to you shortly."
+      }
+    },
+    "divider": {
+      "type": "divider",
+      "settings": {
+        "spacing": 0
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q0": {
+          "type": "question",
+          "settings": {
+            "question": "How do I use a concentrate?",
+            "answer": "<p>Blend the 30ml concentrate into 150ml of your regular base oil (coconut, sesame or almond) — or 50ml into 250ml. Same 1:5 ratio. Shake well before each use.</p>"
+          }
+        },
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Can I apply it directly?",
+            "answer": "<p>Yes. For targeted, high-potency use, apply a few drops directly to the scalp and massage in circular motions. Leave in for at least 30 minutes or overnight before washing.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "When will I see results?",
+            "answer": "<p>Use 2–3 times a week for visible results within 4–6 weeks.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "<p>Orders are dispatched within 2–3 business days across India. Shipping is free on orders above ₹999.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Something wrong with my order?",
+            "answer": "<p>Reach out within 7 days of delivery at <a href=\"mailto:info@kehsora.com\" title=\"Email Kehsora\">info@kehsora.com</a> or WhatsApp 63038 71560 and we’ll make it right.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q0",
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "anchor": "faq",
+        "eyebrow": "FAQs",
+        "heading": "Good",
+        "heading_emphasis": "questions"
+      }
+    }
+  },
+  "order": [
+    "header",
+    "main",
+    "divider",
+    "faq"
+  ]
+}

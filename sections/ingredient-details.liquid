@@ -1,0 +1,66 @@
+<section class="section" style="padding-top: 1rem;">
+  <div class="container">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign ing_product = block.settings.product
+        assign ing_image = block.settings.image | default: ing_product.featured_image
+        assign ing_name = block.settings.name | default: ing_product.title
+        assign ing_anchor = block.settings.anchor | default: ing_name | handle
+        assign chips = block.settings.benefits | split: ','
+      -%}
+      <div class="ingredient-detail{% cycle '', ' reverse' %}" id="{{ ing_anchor }}" {{ block.shopify_attributes }}>
+        <div class="ingredient-media reveal">
+          {%- if block.settings.number != blank -%}<span class="big-index" aria-hidden="true">{{ block.settings.number | escape }}</span>{%- endif -%}
+          <div class="arch-frame">
+            {%- if ing_image != blank -%}
+              {{ ing_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '440, 660, 900', sizes: '(min-width: 860px) 440px, 90vw', alt: ing_name }}
+            {%- else -%}
+              {{ 'product-3' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="ingredient-detail-num">
+            {%- if block.settings.number != blank -%}{{ block.settings.number | escape }} &mdash; {% endif -%}
+            {{- block.settings.kicker | upcase | escape -}}
+          </div>
+          <h2>{{ ing_name | escape }}</h2>
+          <div class="rte">{{ block.settings.text }}</div>
+          {%- if block.settings.benefits != blank -%}
+            <div class="ingredient-benefits">
+              {%- for chip in chips -%}<span class="ingredient-benefit-chip">{{ chip | strip | escape }}</span>{%- endfor -%}
+            </div>
+          {%- endif -%}
+          {%- if ing_product != blank and block.settings.link_label != blank -%}
+            <a href="{{ ing_product.url }}" class="text-link">{{ block.settings.link_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ingredient details",
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product", "info": "Uses the product's image and links to it." },
+        { "type": "image_picker", "id": "image", "label": "Image (overrides product image)" },
+        { "type": "text", "id": "number", "label": "Number", "default": "01" },
+        { "type": "text", "id": "kicker", "label": "Kicker", "default": "Growth & circulation" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Rosemary" },
+        { "type": "text", "id": "anchor", "label": "Anchor ID", "info": "Defaults to the name, e.g. /pages/ingredients#rosemary" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Describe what this ingredient does and why it earned its place.</p>" },
+        { "type": "text", "id": "benefits", "label": "Benefits", "info": "Comma-separated", "default": "Scalp circulation, Follicle strength, Calms irritation" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop the concentrate" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "Ingredient details", "blocks": [{ "type": "ingredient" }] }]
+}
+{% endschema %}

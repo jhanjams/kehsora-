@@ -1,0 +1,31 @@
+{%- comment -%}
+  Price row: current price, compare-at price, % off. Reads Shopify prices only.
+  Usage: {% render 'price', product: product %}  or  {% render 'price', product: product, variant: variant %}
+{%- endcomment -%}
+{%- liquid
+  if variant
+    assign price_amount = variant.price
+    assign compare_amount = variant.compare_at_price
+  else
+    assign price_amount = product.price
+    assign compare_amount = product.compare_at_price
+  endif
+  assign on_sale = false
+  assign percent_off = 0
+  if compare_amount > price_amount
+    assign on_sale = true
+    assign percent_off = compare_amount | minus: price_amount | times: 100 | divided_by: compare_amount
+  endif
+-%}
+<div class="product-price-row{% if class != blank %} {{ class }}{% endif %}" data-price-row>
+  <span class="price-now" data-price-now>
+    {%- if variant == blank and product.price_varies -%}{{ 'products.product.price_from' | t }} {% endif -%}
+    {{- price_amount | money -}}
+  </span>
+  <span class="price-was" data-price-was{% unless on_sale %} hidden{% endunless %}>
+    {%- if on_sale -%}<span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>{{ compare_amount | money }}{%- endif -%}
+  </span>
+  <span class="price-off" data-price-off{% unless on_sale %} hidden{% endunless %}>
+    {%- if on_sale -%}{{ 'products.product.percent_off' | t: percent: percent_off }}{%- endif -%}
+  </span>
+</div>

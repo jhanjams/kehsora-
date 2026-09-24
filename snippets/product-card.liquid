@@ -1,0 +1,61 @@
+{%- comment -%}
+  Editorial product card. Everything comes from the Shopify product:
+    - image: product featured media
+    - badge: metafield custom.badge, or a tag like "badge:Bestseller"
+    - kicker: metafield custom.kicker, falls back to product type
+    - benefit line: metafield custom.short_benefit
+    - rating: review app metafields (if present)
+    - price / compare-at: Shopify prices
+  Usage: {% render 'product-card', card_product: product %}
+{%- endcomment -%}
+{%- if card_product != blank -%}
+  {%- liquid
+    assign badge = card_product.metafields.custom.badge.value
+    if badge == blank
+      for tag in card_product.tags
+        assign tag_lower = tag | downcase
+        if tag_lower contains 'badge:'
+          assign badge = tag | split: ':' | last | strip
+          break
+        endif
+      endfor
+    endif
+    assign kicker = card_product.metafields.custom.kicker.value | default: card_product.type
+    assign benefit = card_product.metafields.custom.short_benefit.value
+    assign card_variant = card_product.selected_or_first_available_variant
+    assign image_alt = card_product.featured_media.alt | default: card_product.title
+  -%}
+  <article class="product-card" data-handle-card="{{ card_product.handle }}">
+    <a href="{{ card_product.url }}" class="product-card-media" tabindex="-1" aria-hidden="true">
+      {%- if badge != blank -%}<span class="product-badge">{{ badge | upcase | escape }}</span>{%- endif -%}
+      {%- if card_product.featured_media -%}
+        {{ card_product.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 1080px) 25vw, (min-width: 560px) 50vw, 50vw', alt: image_alt }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </a>
+    <div class="product-card-body">
+      {%- if kicker != blank -%}<div class="product-card-kicker">{{ kicker | upcase | escape }}</div>{%- endif -%}
+      <h3><a href="{{ card_product.url }}">{{ card_product.title | escape }}</a></h3>
+      {%- if benefit != blank -%}<p class="product-card-benefit">{{ benefit | escape }}</p>{%- endif -%}
+      {%- render 'rating', product: card_product -%}
+      {%- render 'price', product: card_product, variant: card_variant -%}
+      {%- form 'product', card_product, class: 'product-card-form', data-product-form: '', novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ card_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="btn btn-ghost-gold btn-sm btn-block"{% unless card_variant.available %} disabled{% endunless %}>
+          {%- if card_variant.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+        </button>
+      {%- endform -%}
+    </div>
+  </article>
+{%- else -%}
+  <article class="product-card">
+    <div class="product-card-media">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+    <div class="product-card-body">
+      <div class="product-card-kicker">{{ 'products.product.placeholder_kicker' | t }}</div>
+      <h3>{{ 'products.product.placeholder_title' | t }}</h3>
+      <div class="product-price-row"><span class="price-now">{{ 34900 | money }}</span></div>
+    </div>
+  </article>
+{%- endif -%}

@@ -1,0 +1,16 @@
+<section class="page-hero" style="padding: clamp(6rem, 12vw, 10rem) 0;">
+  {% render 'mandala', class: 'hero-mandala', id: section.id, petals: 12 %}
+  <div class="container">
+    <div class="section-eyebrow center fade-up d0">404</div>
+    <h1 class="fade-up d1">{{ 'templates.404.title' | t }} <em>{{ 'templates.404.title_emphasis' | t }}</em></h1>
+    <p class="fade-up d2">{{ 'templates.404.subtext' | t }}</p>
+    <div class="hero-ctas fade-up d3">
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn-gold">{{ 'cart.shop_the_range' | t }}</a>
+      <a href="{{ routes.root_url }}" class="btn btn-outline">{{ 'templates.404.home' | t }}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "404 page", "settings": [] }
+{% endschema %}

@@ -1,0 +1,39 @@
+<section class="section" id="{{ section.settings.anchor | default: 'faq' | handle }}">
+  <div class="container" style="max-width: 820px;">
+    <div class="section-head center reveal">
+      {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow center">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+      {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+    </div>
+    <div class="reveal">
+      {%- for block in section.blocks -%}
+        <div class="accordion-item" {{ block.shopify_attributes }}>
+          <button type="button" class="accordion-trigger" aria-expanded="false">{{ block.settings.question | escape }} <span class="plus" aria-hidden="true">+</span></button>
+          <div class="accordion-panel"><div class="accordion-panel-inner"><div class="rte">{{ block.settings.answer }}</div></div></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "faq" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "FAQs" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Good" },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "questions" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "How do I use a concentrate?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Answer the question here.</p>" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "FAQ", "blocks": [{ "type": "question" }] }]
+}
+{% endschema %}

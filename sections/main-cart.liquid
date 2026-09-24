@@ -1,0 +1,70 @@
+<div data-cart-section data-section-id="{{ section.id }}" data-cart-page>
+  <section class="page-hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow center fade-up d0">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+      <h1 class="fade-up d1">{{ 'cart.your' | t }} <em>{{ 'cart.cart' | t }}</em></h1>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 1rem;">
+    <div class="container">
+      {%- if cart.item_count > 0 -%}
+        <div class="cart-page">
+          <div>
+            {% render 'shipping-progress' %}
+            <form action="{{ routes.cart_url }}" method="post" id="cart-form" novalidate>
+              {%- for item in cart.items -%}
+                {% render 'cart-line', item: item, line: forloop.index, on_page: true %}
+              {%- endfor -%}
+              <button type="submit" name="update" class="btn btn-outline btn-sm cart-update-btn">{{ 'cart.update' | t }}</button>
+            </form>
+            {%- if section.settings.show_note -%}
+              <div style="margin-top: 2rem;">
+                <label class="label-sm" for="cart-note">{{ 'cart.note' | t }}</label>
+                <textarea class="field" id="cart-note" name="note" form="cart-form" data-cart-note>{{ cart.note }}</textarea>
+              </div>
+            {%- endif -%}
+            <a href="{{ routes.all_products_collection_url }}" class="btn btn-outline btn-sm" style="margin-top: 2rem;">{{ 'cart.continue' | t }}</a>
+          </div>
+
+          <aside class="summary-card">
+            <h3>{{ 'cart.order' | t }} <em>{{ 'cart.summary' | t }}</em></h3>
+            <div class="summary-row"><span>{{ 'cart.subtotal' | t }}</span><span>{{ cart.items_subtotal_price | money }}</span></div>
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <div class="summary-row"><span>{{ discount.title | escape }}</span><span>&minus;{{ discount.total_allocated_amount | money }}</span></div>
+            {%- endfor -%}
+            <div class="summary-row">
+              <span>{{ 'cart.shipping' | t }}</span>
+              <span>
+                {%- assign threshold = settings.free_shipping_threshold | times: 100 -%}
+                {%- if settings.free_shipping_threshold > 0 and cart.total_price >= threshold -%}{{ 'cart.free' | t }}{%- else -%}{{ 'cart.calculated_at_checkout' | t }}{%- endif -%}
+              </span>
+            </div>
+            <div class="summary-row total"><span>{{ 'cart.total' | t }}</span><span>{{ cart.total_price | money }}</span></div>
+            <button type="submit" name="checkout" form="cart-form" class="btn btn-gold btn-block">{{ 'cart.proceed_to_checkout' | t }}</button>
+            {%- if section.settings.show_additional_buttons and additional_checkout_buttons -%}
+              <div class="additional-checkout-buttons" style="margin-top: 0.8rem;">{{ content_for_additional_checkout_buttons }}</div>
+            {%- endif -%}
+            <p class="fine">{{ 'cart.taxes_note' | t }}</p>
+          </aside>
+        </div>
+      {%- else -%}
+        <div class="cart-empty" style="padding: 2rem 0 4rem;">
+          <p>{{ 'cart.empty' | t }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn-gold">{{ 'cart.shop_the_range' | t }}</a>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Almost yours" },
+    { "type": "checkbox", "id": "show_note", "label": "Show order note", "default": false },
+    { "type": "checkbox", "id": "show_additional_buttons", "label": "Show express checkout buttons (Shop Pay, etc.)", "default": false }
+  ]
+}
+{% endschema %}

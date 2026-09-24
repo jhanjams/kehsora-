@@ -1,0 +1,14 @@
+{%- comment -%}
+  Heading with an optional italic gold phrase, e.g. "Shop by <em>concern</em>".
+  Usage: {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis, class: '' %}
+{%- endcomment -%}
+{%- liquid
+  assign heading_tag = tag | default: 'h2'
+-%}
+{%- if text != blank or emphasis != blank -%}
+  <{{ heading_tag }}{% if class != blank %} class="{{ class }}"{% endif %}>
+    {{- text | escape -}}
+    {%- if text != blank and emphasis != blank %} {% endif -%}
+    {%- if emphasis != blank %}<em>{{ emphasis | escape }}</em>{% endif -%}
+  </{{ heading_tag }}>
+{%- endif -%}

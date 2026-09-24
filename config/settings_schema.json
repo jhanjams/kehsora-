@@ -1,0 +1,112 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Kehsora",
+    "theme_version": "1.0.0",
+    "theme_author": "Kehsora",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/"
+  },
+  {
+    "name": "Colours",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "The whole site sits on one continuous deep maroon."
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background (deep maroon)",
+        "default": "#280710"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text (warm ivory)",
+        "default": "#F7F0E4"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (brass gold)",
+        "default": "#C9A36A"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_light",
+        "label": "Accent light (italic headings)",
+        "default": "#E6CB9C"
+      }
+    ]
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32 × 32px PNG. When empty, a gold “k” monogram is used."
+      }
+    ]
+  },
+  {
+    "name": "Contact",
+    "settings": [
+      {
+        "type": "text",
+        "id": "contact_email",
+        "label": "Email",
+        "default": "info@kehsora.com"
+      },
+      {
+        "type": "text",
+        "id": "contact_phone",
+        "label": "Phone",
+        "default": "+91 63038 71560"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp number",
+        "default": "+916303871560",
+        "info": "With country code, digits only, e.g. +916303871560"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_display",
+        "label": "WhatsApp number as displayed",
+        "default": "63038 71560"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "When a product is added",
+        "default": "drawer",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Open cart drawer"
+          },
+          {
+            "value": "page",
+            "label": "Go to cart page"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold (in store currency)",
+        "default": 999,
+        "info": "Shows a progress bar in the cart. Set 0 to hide. This only displays progress; set the actual free-shipping rate in Settings › Shipping and delivery."
+      }
+    ]
+  }
+]

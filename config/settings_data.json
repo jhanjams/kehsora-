@@ -1,0 +1,22 @@
+{
+  "current": {
+    "color_background": "#280710",
+    "color_text": "#F7F0E4",
+    "color_accent": "#C9A36A",
+    "color_accent_light": "#E6CB9C",
+    "contact_email": "info@kehsora.com",
+    "contact_phone": "+91 63038 71560",
+    "whatsapp_number": "+916303871560",
+    "whatsapp_display": "63038 71560",
+    "cart_type": "drawer",
+    "free_shipping_threshold": 999
+  },
+  "presets": {
+    "Default": {
+      "color_background": "#280710",
+      "color_text": "#F7F0E4",
+      "color_accent": "#C9A36A",
+      "color_accent_light": "#E6CB9C"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{%- comment -%}
+  Radiating mandala used behind the hero, page headers and the note.
+  Usage: {% render 'mandala', class: 'hero-mandala', id: section.id, petals: 12 %}
+{%- endcomment -%}
+{%- liquid
+  assign petal_count = petals | default: 12
+  assign last_petal = petal_count | minus: 1
+  assign step = 360.0 | divided_by: petal_count
+  assign petal_id = 'petal-' | append: id
+-%}
+<svg class="{{ class }}" viewBox="0 0 800 800" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#E6CB9C" stroke-width="1">
+    <g id="{{ petal_id }}"><path d="M400,400 C445,320 470,220 400,60 C330,220 355,320 400,400 Z"/></g>
+    {%- for i in (1..last_petal) -%}
+      <use href="#{{ petal_id }}" transform="rotate({{ i | times: step | round: 2 }} 400 400)"/>
+    {%- endfor -%}
+    <circle cx="400" cy="400" r="340" stroke-width="0.6" stroke-dasharray="2 7"/>
+    <circle cx="400" cy="400" r="180" stroke-width="0.5"/>
+    <circle cx="400" cy="400" r="386" stroke-width="0.5"/>
+  </g>
+</svg>

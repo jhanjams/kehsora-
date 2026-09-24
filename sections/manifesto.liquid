@@ -1,0 +1,28 @@
+<section class="manifesto">
+  {%- if section.settings.show_mandala -%}
+    {% render 'mandala', class: 'manifesto-mandala', id: section.id, petals: 16 %}
+  {%- endif -%}
+  <div class="container reveal">
+    <div class="note-card">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="section-eyebrow center" style="margin:0;">{{ section.settings.eyebrow | escape }}</div>
+      {%- endif -%}
+      {% render 'flourish' %}
+      <blockquote>{{ section.settings.quote | remove: '<p>' | remove: '</p>' }}</blockquote>
+      {%- if section.settings.cite != blank -%}<cite>&mdash; {{ section.settings.cite | escape }}</cite>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "The note",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "A note from Kehsora" },
+    { "type": "richtext", "id": "quote", "label": "Quote", "info": "Use italic for the gold phrases.", "default": "<p>Most hair oils put just enough of a “hero” ingredient on the label to <em>tell a good story.</em> We put in enough to actually <em>change the ending.</em></p>" },
+    { "type": "text", "id": "cite", "label": "Signature", "default": "The Kehsora Standard" },
+    { "type": "checkbox", "id": "show_mandala", "label": "Show mandala", "default": true }
+  ],
+  "presets": [{ "name": "The note" }]
+}
+{% endschema %}

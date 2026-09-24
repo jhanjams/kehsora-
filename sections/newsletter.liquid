@@ -1,0 +1,35 @@
+<section class="section newsletter">
+  <div class="container reveal">
+    {% render 'flourish' %}
+    {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+    {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
+    {%- form 'customer', id: 'newsletter-form', class: 'newsletter-form-wrap' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      {%- if form.posted_successfully? -%}
+        <p class="form-success">{{ section.settings.success | escape }}</p>
+      {%- else -%}
+        {%- if form.errors -%}
+          <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+        <div class="newsletter-form">
+          <input type="email" name="contact[email]" placeholder="{{ 'sections.newsletter.email' | t }}" aria-label="{{ 'sections.newsletter.email' | t }}" autocomplete="email" required>
+          <button type="submit" class="btn btn-gold">{{ section.settings.button_label | escape }}</button>
+        </div>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the" },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "Kehsora circle" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Early access to new concentrates, restocks, and the occasional honest note from the founder." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Subscribe" },
+    { "type": "text", "id": "success", "label": "Success message", "default": "Welcome to the circle — watch your inbox." }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

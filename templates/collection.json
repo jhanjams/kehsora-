@@ -1,0 +1,102 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "f0": {
+          "type": "filter",
+          "settings": {
+            "label": "Hair Fall",
+            "tag": "Hair Fall"
+          }
+        },
+        "f1": {
+          "type": "filter",
+          "settings": {
+            "label": "Dandruff & Scalp",
+            "tag": "Dandruff & Scalp"
+          }
+        },
+        "f2": {
+          "type": "filter",
+          "settings": {
+            "label": "Growth & Density",
+            "tag": "Growth & Density"
+          }
+        },
+        "f3": {
+          "type": "filter",
+          "settings": {
+            "label": "Dryness & Shine",
+            "tag": "Dryness & Shine"
+          }
+        }
+      },
+      "block_order": [
+        "f0",
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "settings": {
+        "eyebrow": "The full range",
+        "all_heading": "Concentrates,",
+        "all_heading_emphasis": "made to work",
+        "all_text": "Five hero ingredients, each at real concentration. Mix into the oil you already love, or apply directly for a high-potency treatment.",
+        "products_per_page": 24
+      }
+    },
+    "divider": {
+      "type": "divider",
+      "settings": {
+        "spacing": 0
+      }
+    },
+    "values": {
+      "type": "values-grid",
+      "blocks": {
+        "v1": {
+          "type": "value",
+          "settings": {
+            "icon": "truck",
+            "title": "Free shipping above ₹999",
+            "text": "Dispatched within 2–3 business days across India."
+          }
+        },
+        "v2": {
+          "type": "value",
+          "settings": {
+            "icon": "leaf",
+            "title": "Mix ratio 1 : 5",
+            "text": "30ml concentrate into 150ml of your base oil — or use it straight."
+          }
+        },
+        "v3": {
+          "type": "value",
+          "settings": {
+            "icon": "shield",
+            "title": "Clean, always",
+            "text": "Plant powered, cruelty free, paraben free and silicone free."
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "heading_emphasis": "",
+        "columns": "3",
+        "compact": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "divider",
+    "values"
+  ]
+}
