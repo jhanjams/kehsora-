@@ -15,6 +15,7 @@
 
   var PRODUCTS = {
     'bhringraj': {
+      keywords: 'hair fall hairfall thinning roots regrowth greying grey ayurveda bhringraj eclipta',
       name: 'Bhringraj Hair Oil Concentrate',
       kicker: 'HAIR FALL & ROOTS',
       concern: 'hairfall',
@@ -27,6 +28,7 @@
       images: ['assets/bhringraj-1.jpg', 'assets/bhringraj-2.jpg']
     },
     'rosemary': {
+      keywords: 'growth circulation scalp irritation flaky roots rosemary',
       name: 'Rosemary Hair Oil Concentrate',
       kicker: 'GROWTH & CIRCULATION',
       concern: 'growth',
@@ -39,6 +41,7 @@
       images: ['assets/rosemary-1.jpg', 'assets/rosemary-2.jpg']
     },
     'pumpkin-seed': {
+      keywords: 'density thickness thinning growth zinc research pumpkin',
       name: 'Pumpkin Seed Hair Oil Concentrate',
       kicker: 'DENSITY & THICKNESS',
       concern: 'growth',
@@ -51,6 +54,7 @@
       images: ['assets/pumpkin-seed-1.jpg', 'assets/pumpkin-seed-2.jpg']
     },
     'jojoba': {
+      keywords: 'dandruff scalp oily greasy balance lightweight daily jojoba sebum',
       name: 'Jojoba Hair Oil Concentrate',
       kicker: 'SCALP & BALANCE',
       concern: 'scalp',
@@ -63,6 +67,7 @@
       images: ['assets/jojoba-1.jpg', 'assets/jojoba-2.jpg']
     },
     'sweet-almond': {
+      keywords: 'dryness dry shine softness frizz breakage vitamin e almond dull brittle',
       name: 'Sweet Almond Hair Oil Concentrate',
       kicker: 'SHINE & SOFTNESS',
       concern: 'dryness',
@@ -87,7 +92,11 @@
   /* ---------- Hide broken images until real assets are uploaded ---------- */
   function guardImages(root) {
     $$('img', root).forEach(function (img) {
-      var mark = function () { img.classList.add('img-missing'); };
+      var mark = function () {
+        img.classList.add('img-missing');
+        var thumb = img.closest('.pdp-thumb');
+        if (thumb) thumb.remove();
+      };
       if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) mark();
       img.addEventListener('error', mark);
       img.addEventListener('load', function () { img.classList.remove('img-missing'); });
@@ -172,6 +181,7 @@
       var shipRow = $('[data-cart-page-ship]'); if (shipRow) shipRow.textContent = t.sub >= FREE_SHIP ? 'Free' : 'Calculated at checkout';
       var shipBar = $('[data-cart-page-progress]'); if (shipBar) shipBar.innerHTML = items.length ? shipHTML(t.sub) : '';
       var checkout = $('[data-checkout]'); if (checkout) checkout.classList.toggle('btn-disabled', !items.length);
+      var cont = $('[data-cart-continue]'); if (cont) cont.hidden = !items.length;
     }
   }
 
@@ -205,6 +215,12 @@
       });
       if (add.hasAttribute('data-buy-now')) { window.location.href = 'cart.html'; return; }
       if (!$('[data-cart-page]')) openCart();
+      return;
+    }
+    var checkout = t.closest('[data-checkout]');
+    if (checkout && !window.Shopify) {
+      e.preventDefault();
+      toast('Checkout goes live once this is connected to Shopify.');
       return;
     }
     if (t.closest('[data-cart-open]')) { e.preventDefault(); openCart(); return; }
@@ -251,10 +267,15 @@
   }
 
   /* ---------- Hero video: fade in only when a real file is present ---------- */
-  var vid = $('[data-hero-video]');
-  if (vid) {
+  var arch = $('[data-hero-arch]');
+  if (arch && arch.dataset.video) {
+    var vid = document.createElement('video');
+    vid.muted = true; vid.loop = true; vid.autoplay = true; vid.playsInline = true;
+    vid.setAttribute('playsinline', '');
+    vid.src = arch.dataset.video;
     vid.addEventListener('loadeddata', function () { vid.classList.add('ready'); });
-    vid.addEventListener('error', function () { vid.remove(); }, true);
+    vid.addEventListener('error', function () { vid.remove(); });
+    arch.appendChild(vid);
   }
 
   /* ---------- Tabs (shop by concern / shop filters) ---------- */
@@ -294,6 +315,8 @@
   /* ---------- Search ---------- */
   var searchForm = $('[data-search] form');
   if (searchForm) {
+    var existingQ = new URLSearchParams(location.search).get('q');
+    if (existingQ) $('input', searchForm).value = existingQ;
     searchForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var q = $('input', searchForm).value.trim();
@@ -325,12 +348,13 @@
       var handles = Object.keys(PRODUCTS).filter(function (h) {
         var p = PRODUCTS[h];
         var matchC = current === 'all' || p.concern === current;
-        var matchQ = !query || (p.name + ' ' + p.kicker + ' ' + p.benefit + ' ' + p.chips.join(' ')).toLowerCase().indexOf(query) > -1;
+        var matchQ = !query || query.split(/\s+/).every(function (w) { return (p.name + ' ' + p.kicker + ' ' + p.benefit + ' ' + p.chips.join(' ') + ' ' + p.keywords).toLowerCase().indexOf(w) > -1; });
         return matchC && matchQ;
       });
       shopGrid.innerHTML = handles.length ? handles.map(cardHTML).join('') : '';
-      $('[data-shop-empty]').style.display = handles.length ? 'none' : '';
-      $('[data-shop-count]').textContent = handles.length + (handles.length === 1 ? ' product' : ' products') + (query ? ' for “' + query + '”' : '');
+      $('[data-shop-empty]').hidden = handles.length > 0;
+      $('[data-shop-count]').innerHTML = handles.length + (handles.length === 1 ? ' product' : ' products') +
+        (query ? ' for “' + esc(query) + '” <a href="shop.html">Clear</a>' : '');
       guardImages(shopGrid);
     };
 
@@ -388,8 +412,8 @@
     };
     $$('.size-opt').forEach(function (opt) {
       opt.addEventListener('click', function () {
-        $$('.size-opt').forEach(function (o) { o.classList.remove('active'); });
-        opt.classList.add('active');
+        $$('.size-opt').forEach(function (o) { o.classList.remove('active'); o.setAttribute('aria-pressed', 'false'); });
+        opt.classList.add('active'); opt.setAttribute('aria-pressed', 'true');
         setSize(opt.dataset.size);
       });
     });

@@ -14,14 +14,14 @@ Every page is a working, styled reference. Open `index.html` in a browser to see
 | `contact.html` | Contact page (`templates/page.contact.json`) using Shopify's `{% form 'contact' %}` |
 | `cart.html` | Cart page (`templates/cart.json`) + cart drawer; checkout stays Shopify-native at `/checkout` |
 | `assets/styles.css` | Theme stylesheet (upload as `assets/kehsora.css`) |
-| `assets/script.js` | Theme JS; swap the localStorage cart for the Shopify Ajax Cart API (`/cart/add.js`, `/cart/change.js`, `/cart.js`) |
+| `assets/script.js` | Theme JS. Swap the localStorage cart for the Shopify Ajax Cart API (`/cart/add.js`, `/cart/change.js`, `/cart.js`). The checkout button deliberately shows a notice until `window.Shopify` exists (on the live theme it goes to `/checkout`). |
 
 ## Non-negotiable design rules
 
 1. **One continuous deep-maroon background on every page.** No section gets its own background colour.
    The whole site sits on `#280710`, with a fixed candle-glow and grain layer (`body::before` / `body::after`).
    As you scroll from the hero down, the colour must never change.
-2. **Fonts**
+2. **Fonts** (loaded with a Google Fonts `<link>` in each page's `<head>`)
    - Brand/display font: **Cormorant Garamond**. It's used for the logo, all headings, the manifesto note/quote, and prices in the cart.
    - Body/UI font: **Jost**.
    - Both are set as CSS variables (`--font-brand`, `--font-body`) at the top of `styles.css`.
@@ -31,7 +31,9 @@ Every page is a working, styled reference. Open `index.html` in a browser to see
    - Cream `#F7F0E4` for text; muted cream at 68% opacity for paragraphs
    - Hairlines: cream at 12% opacity
 4. Sections are separated by **space and gold star flourishes, not colour blocks**.
-5. Buttons are pill-shaped: gold gradient (primary), cream outline, or gold outline.
+5. **Editorial styling.** Buttons are square-cornered with wide letter-spacing: solid gold (primary), cream outline, or gold outline.
+   - Product cards are image plus type, with no boxes or shadows.
+   - The arch shape is reserved for the hero window and ingredient images.
 
 ## Home page sections (in order)
 
@@ -41,13 +43,13 @@ Every page is a working, styled reference. Open `index.html` in a browser to see
    Optional video: upload `hero-video.mp4` and it fades in inside the arch.
 4. Trust strip: Plant Powered · Cruelty Free · Paraben Free · Silicone Free
 5. Bestsellers: 4 product cards
-6. The Kehsora note: an arch-framed quote card in the brand font
+6. The Kehsora note: a large centred quote in the brand font, between gold hairlines
 7. Shop by concern: tabs for Hair Fall, Dandruff & Scalp, Growth & Density, and Dryness & Shine
 8. The Kehsora Standard: 8 values
 9. Five ingredients: arch-framed niches
-10. Our Story
+10. Our Story: a pull quote on the left, story copy on the right
 11. Newsletter (Shopify customer form)
-12. Footer: contact pills, link columns and a large faded `kehsora` wordmark
+12. Footer: contact links, link columns and a large faded `kehsora` wordmark
 
 ## Products (5), each with variants 30ml ₹349 (was ₹499) / 50ml ₹499 (was ₹699)
 
@@ -63,9 +65,18 @@ The full copy for each product is in `PRODUCTS` at the top of `assets/script.js`
 Store the kicker, chips and ingredients as product metafields.
 **Before launch:** add the full label ingredient list for Rosemary, Pumpkin Seed, Jojoba and Sweet Almond. Only Bhringraj's list was provided; the other four are marked `[Add the full ingredient list…]`.
 
-## Images to upload
+## Images
 
-`logo.png`, plus `<handle>-1.jpg` and `<handle>-2.jpg` for each product (for example `bhringraj-1.jpg`), and optionally `hero-video.mp4`.
+- The `assets/<handle>-1.jpg` and `assets/<handle>-2.jpg` files (10 in total) are **placeholder product renders**. Replace each one with real photography using the same filename.
+  - Shape: portrait 4:5, at least 1200×1500.
+  - Background: dark or warm, so it sits in the maroon page.
+  - `-1` is the main shot. `-2` is a second angle or texture shot.
+- `assets/favicon.svg` is a simple "k" monogram. Swap it for the real logo mark if there is one.
+- The logo in the header and footer is set as text in the brand font. No logo image is needed.
+- **Hero video (optional):**
+  1. Upload the video.
+  2. Set its URL in `data-video="…"` on the `.hero-arch` element in `index.html`.
+  3. When left empty, the candle-lit arch shows and no request is made.
 
 ## Contact details
 

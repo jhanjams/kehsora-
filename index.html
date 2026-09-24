@@ -6,10 +6,12 @@
 <title>Kehsora — Ayurvedic Hair Care, Reformulated</title>
 <meta name="description" content="Ayurvedic hair oil concentrates formulated with real, potent ingredients — not trends. Rosemary, Bhringraj, Pumpkin Seed, Jojoba, Sweet Almond.">
 <meta name="theme-color" content="#280710">
-<link rel="icon" href="assets/logo.png">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
+<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
@@ -65,14 +67,20 @@
   <form role="search">
     <input type="search" placeholder="Search rosemary, hair fall, scalp&hellip;" aria-label="Search products">
     <div class="search-hint">Press enter to search</div>
+    <div class="search-suggest">
+      <a href="shop.html?q=hair%20fall">Hair fall</a>
+      <a href="shop.html?q=dandruff">Dandruff</a>
+      <a href="shop.html?q=growth">Growth</a>
+      <a href="shop.html?q=shine">Shine</a>
+      <a href="shop.html?q=rosemary">Rosemary</a>
+    </div>
   </form>
 </div>
 
 <!--
-  HERO VIDEO — upload a file as assets/hero-video.mp4 and it fades in inside the
-  arch window. Until then an animated candle-lit maroon gradient shows, so the
-  landing always looks complete. Best footage: slow close-up of oil pouring,
-  a dropper, or the bottle turning — warm, dark and slow-moving.
+  HERO VIDEO (optional): set data-video on .hero-arch below to the video URL.
+  Left empty, the candle-lit arch shows. Best footage: slow, warm, dark close-ups
+  of oil pouring, a dropper, or the bottle turning.
 -->
 
 <!-- ============ HERO ============ -->
@@ -100,13 +108,10 @@
   <svg class="hero-arch-outline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <path d="M1,100 L1,40 C1,18 22,1 50,1 C78,1 99,18 99,40 L99,100" fill="none" stroke="#C9A36A" stroke-width="1" opacity="0.45" vector-effect="non-scaling-stroke"/>
   </svg>
-  <div class="hero-arch" aria-hidden="true">
+  <!-- To add a hero video: upload it, then put its URL in data-video (e.g. data-video="assets/hero-video.mp4"). Left empty, the candle-lit arch shows. -->
+  <div class="hero-arch" data-hero-arch data-video="" aria-hidden="true">
     <div class="hero-fallback"></div>
-    <video data-hero-video autoplay muted loop playsinline preload="metadata">
-      <source src="assets/hero-video.mp4" type="video/mp4">
-    </video>
   </div>
-  <div class="diya-glow" aria-hidden="true"></div>
 
   <div class="hero-content">
     <div class="hero-eyebrow fade-up d0">Ayurvedic hair care, reformulated</div>
@@ -279,11 +284,10 @@
           </div>
         </article>
           <div class="concern-story">
-            <span class="big-num" aria-hidden="true">01</span>
             <div class="section-eyebrow">Why Bhringraj?</div>
             <h3>The <em>ruler of hair</em></h3>
             <p>Bhringraj literally translates to &ldquo;ruler of hair&rdquo; in Sanskrit &mdash; used in Ayurvedic texts for thousands of years. Most commercial versions use a trace amount, diluted into filler oil. Ours is properly heat-infused, so it&rsquo;s concentrated enough to actually reduce fall and support new growth.</p>
-            <a href="product.html?p=bhringraj" class="btn btn-outline btn-sm">View Product</a>
+            <a href="product.html?p=bhringraj" class="text-link">Discover the concentrate</a>
           </div>
         </div>
       </div>
@@ -305,11 +309,10 @@
           </div>
         </article>
           <div class="concern-story">
-            <span class="big-num" aria-hidden="true">02</span>
             <div class="section-eyebrow">Why Jojoba?</div>
             <h3>Balance, <em>not buildup</em></h3>
             <p>Jojoba closely mimics your scalp&rsquo;s own natural sebum, which means it absorbs instead of sitting heavy. Ideal for an oily scalp, dandruff-prone hair, or anyone who finds traditional oils too greasy to use daily.</p>
-            <a href="product.html?p=jojoba" class="btn btn-outline btn-sm">View Product</a>
+            <a href="product.html?p=jojoba" class="text-link">Discover the concentrate</a>
           </div>
         </div>
       </div>
@@ -331,11 +334,10 @@
           </div>
         </article>
           <div class="concern-story">
-            <span class="big-num" aria-hidden="true">03</span>
             <div class="section-eyebrow">Why Pumpkin Seed?</div>
             <h3>Density, <em>backed by research</em></h3>
             <p>Rich in zinc and essential fatty acids, pumpkin seed is one of the few natural ingredients with real modern research behind it &mdash; linked to reduced thinning and improved density, not just tradition.</p>
-            <a href="product.html?p=pumpkin-seed" class="btn btn-outline btn-sm">View Product</a>
+            <a href="product.html?p=pumpkin-seed" class="text-link">Discover the concentrate</a>
           </div>
         </div>
       </div>
@@ -357,11 +359,10 @@
           </div>
         </article>
           <div class="concern-story">
-            <span class="big-num" aria-hidden="true">04</span>
             <div class="section-eyebrow">Why Sweet Almond?</div>
             <h3>Softness &amp; <em>natural shine</em></h3>
             <p>Rich in Vitamin E, sweet almond softens hair, adds natural shine, and strengthens strands against breakage &mdash; a gentle, everyday formulation for dry or dull hair.</p>
-            <a href="product.html?p=sweet-almond" class="btn btn-outline btn-sm">View Product</a>
+            <a href="product.html?p=sweet-almond" class="text-link">Discover the concentrate</a>
           </div>
         </div>
       </div>
@@ -464,27 +465,16 @@
 <section class="section" id="our-story">
   <div class="container">
     <div class="split">
-      <div class="story-media reveal">
-        <div class="arch-frame"><img src="assets/logo.png" alt="Kehsora"></div>
-        <svg class="bangle-rings" viewBox="0 0 200 200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-          <g fill="none" stroke="#C9A36A" opacity="0.4">
-            <circle cx="100" cy="100" r="92" stroke-width="2"/>
-            <circle cx="100" cy="100" r="80" stroke-width="1" stroke-dasharray="3 5"/>
-            <circle cx="100" cy="100" r="66" stroke-width="4"/>
-          </g>
-        </svg>
+      <div class="story-quote reveal">
+        <p>&ldquo;Nothing on the shelf actually worked &mdash; so she made her own.&rdquo;</p>
+        <span>How Kehsora began</span>
       </div>
       <div class="reveal">
         <div class="section-eyebrow">Our story</div>
         <h2>It started with a mother, <em>not a marketing plan.</em></h2>
         <p>Kehsora began the way real Ayurvedic hair care always has &mdash; at home. A mother formulating her own oil from scratch, using real, purposeful ingredients, because nothing on the shelf actually worked.</p>
         <p>That&rsquo;s still the standard today. We talked to real people before building further &mdash; mall interviews that told us the problem was never the ingredients, it was the format. Some people love the ritual of oiling. Others simply don&rsquo;t have the time. So we built for both: potent concentrates that mix into what you already use, and serums for the days there&rsquo;s no time to spare.</p>
-        <div class="story-stat-row">
-          <div class="story-stat"><div class="num">5</div><div class="lbl">Hero ingredients</div></div>
-          <div class="story-stat"><div class="num">1:5</div><div class="lbl">Mix ratio</div></div>
-          <div class="story-stat"><div class="num">0</div><div class="lbl">Parabens &amp; silicones</div></div>
-        </div>
-        <a href="ingredients.html" class="btn btn-outline">Read About Our Ingredients</a>
+        <a href="ingredients.html" class="text-link">Read about our ingredients</a>
       </div>
     </div>
   </div>

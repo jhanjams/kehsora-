@@ -6,10 +6,12 @@
 <title>Shop All — Kehsora</title>
 <meta name="description" content="Shop Kehsora Ayurvedic hair oil concentrates — Bhringraj, Rosemary, Pumpkin Seed, Jojoba and Sweet Almond.">
 <meta name="theme-color" content="#280710">
-<link rel="icon" href="assets/logo.png">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
+<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
@@ -65,6 +67,13 @@
   <form role="search">
     <input type="search" placeholder="Search rosemary, hair fall, scalp&hellip;" aria-label="Search products">
     <div class="search-hint">Press enter to search</div>
+    <div class="search-suggest">
+      <a href="shop.html?q=hair%20fall">Hair fall</a>
+      <a href="shop.html?q=dandruff">Dandruff</a>
+      <a href="shop.html?q=growth">Growth</a>
+      <a href="shop.html?q=shine">Shine</a>
+      <a href="shop.html?q=rosemary">Rosemary</a>
+    </div>
   </form>
 </div>
 
@@ -114,7 +123,7 @@
       <div class="shop-count" data-shop-count></div>
     </div>
     <div class="product-grid" data-shop-grid></div>
-    <div class="shop-empty" data-shop-empty style="display:none;">Nothing matches that yet &mdash; try another concern.</div>
+    <div class="shop-empty" data-shop-empty hidden><p>Nothing matches that yet.</p><a href="shop.html" class="btn btn-outline btn-sm">View all products</a></div>
   </div>
 </section>
 
