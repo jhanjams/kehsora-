@@ -1,0 +1,41 @@
+{%- comment -%}
+  One selectable concentrate in the combo builder.
+  Usage: {% render 'combo-choice', choice: product, size_match: '30ml', strip_text: ' Hair Oil Concentrate', locked: false %}
+{%- endcomment -%}
+{%- liquid
+  assign value_variant = choice.selected_or_first_available_variant
+  if size_match != blank
+    for v in choice.variants
+      assign v_title = v.title | downcase
+      if v_title contains size_match
+        assign value_variant = v
+        break
+      endif
+    endfor
+  endif
+  assign short_name = choice.title
+  if strip_text != blank
+    assign short_name = choice.title | remove: strip_text
+  endif
+  assign kicker = choice.metafields.custom.kicker.value | default: choice.type
+-%}
+<button type="button"
+  class="combo-choice{% if locked %} is-selected{% endif %}"
+  data-combo-choice
+  data-title="{{ choice.title | escape }}"
+  data-value="{{ value_variant.price }}"
+  aria-pressed="{% if locked %}true{% else %}false{% endif %}"
+  {% if locked %}disabled{% endif %}>
+  <span class="combo-choice-img">
+    {%- if choice.featured_media -%}
+      {{ choice.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </span>
+  <span class="combo-choice-text">
+    <span class="combo-choice-name">{{ short_name | escape }}</span>
+    {%- if kicker != blank -%}<span class="combo-choice-meta">{{ kicker | upcase | escape }}</span>{%- endif -%}
+  </span>
+  <span class="combo-check" aria-hidden="true"></span>
+</button>

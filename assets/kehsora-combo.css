@@ -1,0 +1,54 @@
+/* ==========================================================================
+   KEHSORA — Combo builder (loaded only on combo product pages)
+   Uses the same tokens as kehsora.css: maroon, ivory, brass gold.
+   ========================================================================== */
+.combo-form { margin-top: 2rem; }
+.combo-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.9rem; }
+.combo-head .label-sm { margin: 0; color: var(--cream-muted); }
+.combo-counter { font-family: var(--font-brand); font-size: 1.25rem; color: var(--gold-light); }
+
+.combo-choices { border-top: 1px solid var(--line); }
+.combo-choice {
+  display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 1.1rem;
+  width: 100%; padding: 0.85rem 0.4rem 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left; color: var(--cream);
+  transition: background-color .35s var(--ease), padding .35s var(--ease), opacity .35s var(--ease);
+}
+.combo-choice:hover:not([disabled]) { background: rgba(247, 240, 228, 0.03); padding-left: 0.5rem; }
+.combo-choice-img { width: 56px; aspect-ratio: 4 / 5; overflow: hidden; background: var(--maroon-900); }
+.combo-choice-img img, .combo-choice-img svg { width: 100%; height: 100%; object-fit: cover; }
+.combo-choice-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.combo-choice-name { font-family: var(--font-brand); font-size: 1.3rem; line-height: 1.2; }
+.combo-choice-meta { font-size: 0.6rem; letter-spacing: 0.24em; color: var(--gold); }
+.combo-check {
+  position: relative; width: 22px; height: 22px;
+  border: 1px solid var(--line-strong); border-radius: 50%;
+  transition: background-color .3s, border-color .3s;
+}
+.combo-check::after {
+  content: ''; position: absolute; left: 7px; top: 3px; width: 5px; height: 10px;
+  border: solid var(--maroon-900); border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg) scale(0); transition: transform .3s var(--ease);
+}
+.combo-choice.is-selected .combo-check { background: var(--gold); border-color: var(--gold); }
+.combo-choice.is-selected .combo-check::after { transform: rotate(45deg) scale(1); }
+.combo-choice.is-selected .combo-choice-name { color: var(--gold-light); }
+.combo-choices.is-full .combo-choice:not(.is-selected) { opacity: 0.4; }
+.combo-choices.is-locked .combo-choice { cursor: default; }
+.combo-choice[disabled] { cursor: default; }
+.combo-choice:focus-visible { outline: 1px solid var(--gold); outline-offset: 2px; }
+
+.combo-savings { margin: 1.4rem 0 0; font-size: 0.85rem; color: var(--gold-light); }
+.combo-form .pdp-actions { margin-top: 1.8rem; }
+.combo-shake { animation: comboShake .4s var(--ease); }
+@keyframes comboShake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+/* Combo offers section */
+.combo-offers .product-grid { grid-template-columns: repeat(var(--combo-cols, 3), 1fr); }
+@media (max-width: 1080px) { .combo-offers .product-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) {
+  .combo-choice { grid-template-columns: 48px 1fr auto; gap: 0.9rem; }
+  .combo-choice-img { width: 48px; }
+  .combo-choice-name { font-size: 1.15rem; }
+}

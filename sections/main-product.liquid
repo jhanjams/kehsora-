@@ -1,4 +1,14 @@
 {%- liquid
+  assign is_combo_product = false
+  for tag in product.tags
+    assign tag_lower = tag | downcase | strip
+    if tag_lower == 'combo'
+      assign is_combo_product = true
+    endif
+  endfor
+-%}
+{%- unless is_combo_product -%}
+{%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign form_id = 'product-form-' | append: section.id
   assign kicker = product.metafields.custom.kicker.value | default: product.type
@@ -148,6 +158,7 @@
 </section>
 
 <script type="application/ld+json">{{ product | structured_data }}</script>
+{%- endunless -%}
 
 {% schema %}
 {

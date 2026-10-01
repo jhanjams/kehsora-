@@ -4,11 +4,17 @@
 {%- endcomment -%}
 {%- liquid
   assign heading_tag = tag | default: 'h2'
+  comment
+    Normalise spacing: editors sometimes add a trailing (non-breaking) space to
+    the first part. Strip it and always join the two parts with one space.
+  endcomment
+  assign text_clean = text | replace: ' ', ' ' | strip
+  assign emphasis_clean = emphasis | replace: ' ', ' ' | strip
 -%}
-{%- if text != blank or emphasis != blank -%}
+{%- if text_clean != blank or emphasis_clean != blank -%}
   <{{ heading_tag }}{% if class != blank %} class="{{ class }}"{% endif %}>
-    {{- text | escape -}}
-    {%- if text != blank and emphasis != blank %} {% endif -%}
-    {%- if emphasis != blank %}<em>{{ emphasis | escape }}</em>{% endif -%}
+    {{- text_clean | escape -}}
+    {%- if text_clean != blank and emphasis_clean != blank -%}{{ ' ' }}{%- endif -%}
+    {%- if emphasis_clean != blank %}<em>{{ emphasis_clean | escape }}</em>{% endif -%}
   </{{ heading_tag }}>
 {%- endif -%}

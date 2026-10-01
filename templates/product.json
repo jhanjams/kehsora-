@@ -73,9 +73,32 @@
         "collection": "",
         "limit": 4
       }
+    },
+    "combo": {
+      "type": "combo-builder",
+      "settings": {
+        "default_pick": 3,
+        "match_text": "Concentrate",
+        "name_strip": " Hair Oil Concentrate",
+        "size_match": "",
+        "base_oil_match": "Base Oil",
+        "kicker": "Combo offer",
+        "choose_label": "Choose any [count] concentrates",
+        "all_label": "All [count] concentrates included",
+        "included_label": "Also included",
+        "included_note": "Included in this combo",
+        "more_label": "Choose [count] more",
+        "savings_text": "Worth [worth] separately — you save [save]",
+        "note": "Each concentrate is packed and shipped together",
+        "empty_hint": "No concentrates found — pick them in the theme editor under “Concentrates to choose from”.",
+        "property_label": "Concentrate",
+        "includes_property_label": "Includes",
+        "require_combo_tag": true
+      }
     }
   },
   "order": [
+    "combo",
     "main",
     "related"
   ]
