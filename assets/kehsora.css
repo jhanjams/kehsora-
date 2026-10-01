@@ -1,3 +1,14 @@
+.section-template--28347382333474__bestsellers h2 {
+  word-spacing: 0.3em; /* increase to add more gap */
+}
+.hero__heading {
+  font-size: 2rem !important;
+}
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap');
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Lora', serif !important;
+}
 /* ==========================================================================
    KEHSORA — Shopify Theme Stylesheet
    One continuous deep-maroon world. Every section sits on the SAME base
@@ -758,3 +769,24 @@ img.img-missing { opacity: 0; }
   .article-grid { grid-template-columns: 1fr; }
   .search-form-inline { flex-direction: column; align-items: stretch; }
 }
+/* ── FONT SIZES ── */
+
+/* Headings */
+h1 { font-size: 2.5rem; }   /* ~40px */
+h2 { font-size: 2rem; }     /* ~32px */
+h3 { font-size: 1.75rem; }  /* ~28px */
+h4 { font-size: 1.5rem; }   /* ~24px */
+h5 { font-size: 1.25rem; }  /* ~20px */
+h6 { font-size: 1rem; }     /* ~16px */
+
+/* Body / Paragraph text */
+body, p { font-size: 1rem; } /* ~16px */
+
+/* Navigation links */
+nav a, .nav-link { font-size: 0.95rem; } /* ~15px */
+
+/* Buttons */
+button, .btn, a.button { font-size: 1rem; } /* ~16px */
+
+/* Product titles */
+.product-title, .product__title { font-size: 1.5rem; } /* ~24px */
