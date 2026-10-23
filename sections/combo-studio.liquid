@@ -1,0 +1,124 @@
+{%- comment -%}
+  COMBO STUDIO — homepage combo builder. One tab per combo offer; inside each
+  tab shoppers choose their concentrates (shared picker: snippets/combo-picker)
+  and add the combo straight from the homepage.
+{%- endcomment -%}
+{%- liquid
+  assign tab_count = 0
+  for block in section.blocks
+    if block.settings.combo != blank
+      assign tab_count = tab_count | plus: 1
+    endif
+  endfor
+-%}
+{%- if tab_count > 0 or request.design_mode -%}
+{{ 'kehsora-combo.css' | asset_url | stylesheet_tag }}
+<section class="section combo-studio" id="{{ section.settings.anchor | default: 'combos' | handle }}">
+  {%- if section.settings.show_mandala -%}
+    {% render 'mandala', class: 'combo-studio-mandala', id: section.id, petals: 16 %}
+  {%- endif -%}
+  <div class="container">
+    <div class="section-head center reveal">
+      {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow center">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+      {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+      {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
+    </div>
+
+    {%- if tab_count == 0 -%}
+      <p class="editor-hint">Pick your combo products in this section’s blocks.</p>
+    {%- else -%}
+      <div class="combo-studio-tabs" data-tabs>
+        <div class="concern-tabs combo-offer-tabs" role="tablist">
+          {%- assign first_done = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.settings.combo != blank -%}
+              {%- assign c = block.settings.combo -%}
+              <button type="button" class="concern-tab combo-offer-tab{% unless first_done %} active{% endunless %}" role="tab" aria-selected="{% if first_done %}false{% else %}true{% endif %}" data-target="studio-{{ block.id }}" {{ block.shopify_attributes }}>
+                <span class="combo-offer-tab-name">{{ block.settings.label | default: c.title | escape }}</span>
+                <span class="combo-offer-tab-price">{{ c.price | money }}</span>
+              </button>
+              {%- assign first_done = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- assign first_done = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.combo != blank -%}
+            {%- assign c = block.settings.combo -%}
+            {%- assign c_variant = c.selected_or_first_available_variant -%}
+            {%- assign panel_uid = section.id | append: '-' | append: block.id -%}
+            <div class="concern-panel combo-studio-panel{% unless first_done %} active{% endunless %}" id="studio-{{ block.id }}" role="tabpanel">
+              <div class="combo-studio-grid">
+                <div class="combo-studio-intro">
+                  <div class="pdp-kicker">{{ section.settings.kicker | upcase | escape }}</div>
+                  <h3 class="combo-studio-title">{{ c.title | escape }}</h3>
+                  {% render 'price', product: c, variant: c_variant, class: 'pdp-price-row' %}
+                  {%- if block.settings.text != blank -%}
+                    <div class="rte">{{ block.settings.text }}</div>
+                  {%- elsif c.description != blank -%}
+                    <div class="rte">{{ c.description }}</div>
+                  {%- endif -%}
+                  <a href="{{ c.url }}" class="text-link">{{ section.settings.details_label | escape }}</a>
+                </div>
+                <div class="combo-studio-picker">
+                  {% render 'combo-picker', combo: c, cfg: section.settings, uid: panel_uid %}
+                </div>
+              </div>
+            </div>
+            {%- assign first_done = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<script src="{{ 'kehsora-combo.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Combo studio",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Build your ritual" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Combo" },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "offers" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Choose an offer, pick your concentrates, and add it to your cart — right here." },
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "combos", "info": "Menus can link here with /#combos" },
+    { "type": "checkbox", "id": "show_mandala", "label": "Show mandala", "default": true },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Combo offer" },
+    { "type": "text", "id": "details_label", "label": "Link to combo page", "default": "View offer details" },
+    { "type": "header", "content": "Choosing concentrates" },
+    { "type": "range", "id": "default_pick", "label": "Concentrates to choose (when a combo has no pick- tag)", "min": 1, "max": 10, "step": 1, "default": 3 },
+    { "type": "product_list", "id": "choices", "label": "Concentrates to choose from", "limit": 12, "info": "Leave empty to use every product whose title contains the text below." },
+    { "type": "text", "id": "match_text", "label": "Match products whose title contains", "default": "Concentrate" },
+    { "type": "text", "id": "name_strip", "label": "Shorten names by removing", "default": " Hair Oil Concentrate" },
+    { "type": "text", "id": "size_match", "label": "Concentrate size used for “worth” price", "default": "", "info": "e.g. 30ml. Leave empty to use each product's first variant." },
+    { "type": "product", "id": "base_oil", "label": "Base oil product", "info": "Leave empty to find the product whose title contains the text below." },
+    { "type": "text", "id": "base_oil_match", "label": "Base oil title contains", "default": "Base Oil" },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "choose_label", "label": "Choose label", "default": "Choose any [count] concentrates" },
+    { "type": "text", "id": "all_label", "label": "All-included label", "default": "All [count] concentrates included" },
+    { "type": "text", "id": "included_label", "label": "Included label", "default": "Also included" },
+    { "type": "text", "id": "included_note", "label": "Included item note", "default": "Included in this combo" },
+    { "type": "text", "id": "more_label", "label": "Button while choosing", "default": "Choose [count] more" },
+    { "type": "text", "id": "savings_text", "label": "Savings line", "default": "Worth [worth] separately — you save [save]" },
+    { "type": "text", "id": "empty_hint", "label": "Message when no concentrates are found", "default": "No concentrates found — pick them under “Concentrates to choose from”." },
+    { "type": "text", "id": "property_label", "label": "Cart / order label for each pick", "default": "Concentrate" },
+    { "type": "text", "id": "includes_property_label", "label": "Cart / order label for included items", "default": "Includes" }
+  ],
+  "blocks": [
+    {
+      "type": "offer",
+      "name": "Combo offer",
+      "settings": [
+        { "type": "product", "id": "combo", "label": "Combo product", "info": "A product tagged combo + pick-2 / pick-3 / pick-5 (+ with-base-oil)." },
+        { "type": "text", "id": "label", "label": "Tab label", "info": "Defaults to the product title." },
+        { "type": "richtext", "id": "text", "label": "Short description", "info": "Defaults to the product description." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "Combo studio", "blocks": [{ "type": "offer" }, { "type": "offer" }, { "type": "offer" }] }]
+}
+{% endschema %}

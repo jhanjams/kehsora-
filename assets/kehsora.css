@@ -790,3 +790,13 @@ button, .btn, a.button { font-size: 1rem; } /* ~16px */
 
 /* Product titles */
 .product-title, .product__title { font-size: 1.5rem; } /* ~24px */
+
+/* Ingredient fact sheet (ingredients page) */
+.ing-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; margin: 2rem 0 0; border-top: 1px solid var(--line); }
+.ing-fact { padding: .9rem 0; border-bottom: 1px solid var(--line); }
+.ing-fact dt { font-size: .6rem; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+.ing-fact dd { margin: 0; font-size: .9rem; color: var(--cream-muted); line-height: 1.5; }
+.ing-fact dd em { font-family: var(--font-brand); font-size: 1.1rem; color: var(--cream); }
+.ing-more { margin-top: 1.6rem; }
+.ing-more .accordion-trigger { font-size: 1.2rem; padding: 1rem 0; }
+@media (max-width: 560px) { .ing-facts { grid-template-columns: 1fr; } }

@@ -1,0 +1,200 @@
+{%- comment -%}
+  Combo picker: shoppers choose which concentrates go into a combo product.
+  Used by the combo product page (sections/combo-builder) and the homepage
+  combo studio (sections/combo-studio).
+  Usage: {% render 'combo-picker', combo: product, cfg: section.settings, uid: section.id %}
+  cfg must provide the combo setting ids (match_text, choices, labels…).
+{%- endcomment -%}
+<div class="combo-picker" data-combo>
+{%- liquid
+  assign pick_count = cfg.default_pick
+  assign with_base = false
+  for tag in combo.tags
+    assign t = tag | downcase | strip
+    if t contains 'pick-'
+      assign n = t | remove: 'pick-' | plus: 0
+      if n > 0
+        assign pick_count = n
+      endif
+    endif
+    if t == 'with-base-oil'
+      assign with_base = true
+    endif
+  endfor
+
+  assign match_text = cfg.match_text | downcase
+  assign choice_list = cfg.choices
+  assign use_list = false
+  if choice_list != blank and choice_list.size > 0
+    assign use_list = true
+  endif
+
+  comment
+    Count the available choices (from the picked list, or all products whose
+    title contains the match text and that are not combos themselves).
+  endcomment
+  assign choice_count = 0
+  if use_list
+    assign choice_count = choice_list.size
+  else
+    for p in collections.all.products
+      assign p_title = p.title | downcase
+      if p.id != combo.id and p_title contains match_text
+        assign is_c = false
+        for pt in p.tags
+          assign ptl = pt | downcase
+          if ptl == 'combo'
+            assign is_c = true
+          endif
+        endfor
+        unless is_c
+          assign choice_count = choice_count | plus: 1
+        endunless
+      endif
+    endfor
+  endif
+
+  assign all_included = false
+  if pick_count >= choice_count and choice_count > 0
+    assign all_included = true
+    assign pick_count = choice_count
+  endif
+
+  assign base_oil = cfg.base_oil
+  if with_base and base_oil == blank
+    assign base_match = cfg.base_oil_match | downcase
+    for p in collections.all.products
+      assign p_title = p.title | downcase
+      if p.id != combo.id and p_title contains base_match
+        assign base_is_combo = false
+        for pt in p.tags
+          assign ptl = pt | downcase
+          if ptl == 'combo'
+            assign base_is_combo = true
+          endif
+        endfor
+        unless base_is_combo
+          assign base_oil = p
+          break
+        endunless
+      endif
+    endfor
+  endif
+
+  assign current_variant = combo.selected_or_first_available_variant
+  assign size_match = cfg.size_match | downcase
+  assign combo_form_id = 'combo-form-' | append: uid
+-%}
+        {%- form 'product', combo, id: combo_form_id, class: 'combo-form', data-combo-form: '', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}" data-combo-price="{{ current_variant.price }}">
+
+          <div class="combo-head">
+            <span class="label-sm">
+              {%- if all_included -%}
+                {{ cfg.all_label | replace: '[count]', choice_count | escape }}
+              {%- else -%}
+                {{ cfg.choose_label | replace: '[count]', pick_count | escape }}
+              {%- endif -%}
+            </span>
+            {%- unless all_included -%}
+              <span class="combo-counter" data-combo-counter aria-live="polite"><span data-combo-selected>0</span> / {{ pick_count }}</span>
+            {%- endunless -%}
+          </div>
+
+
+          <div class="combo-tray" data-combo-tray aria-hidden="true">
+            {%- for i in (1..pick_count) -%}<span class="combo-slot" data-combo-slot><span class="combo-slot-num">{{ i }}</span></span>{%- endfor -%}
+            {%- if with_base -%}<span class="combo-slot combo-slot-plus">+</span><span class="combo-slot is-filled is-included" data-combo-slot-included>{%- if base_oil.featured_media -%}{{ base_oil.featured_media | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>{%- endif -%}
+          </div>
+          <div class="combo-choices{% if all_included %} is-locked{% endif %}" data-combo-choices data-pick="{{ pick_count }}" data-all="{{ all_included }}">
+            {%- if use_list -%}
+              {%- for p in choice_list -%}
+                {% render 'combo-choice', choice: p, size_match: size_match, strip_text: cfg.name_strip, locked: all_included %}
+              {%- endfor -%}
+            {%- else -%}
+              {%- for p in collections.all.products -%}
+                {%- liquid
+                  assign p_title = p.title | downcase
+                  assign skip = false
+                  if p.id == combo.id
+                    assign skip = true
+                  endif
+                  unless p_title contains match_text
+                    assign skip = true
+                  endunless
+                  for pt in p.tags
+                    assign ptl = pt | downcase
+                    if ptl == 'combo'
+                      assign skip = true
+                    endif
+                  endfor
+                -%}
+                {%- unless skip -%}
+                  {% render 'combo-choice', choice: p, size_match: size_match, strip_text: cfg.name_strip, locked: all_included %}
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+
+          {%- if choice_count == 0 -%}
+            <p class="editor-hint">{{ cfg.empty_hint | escape }}</p>
+          {%- endif -%}
+
+          {%- if with_base and base_oil != blank -%}
+            {%- liquid
+              assign base_variant = base_oil.selected_or_first_available_variant
+            -%}
+            <div class="combo-head" style="margin-top: 1.6rem;"><span class="label-sm">{{ cfg.included_label | escape }}</span></div>
+            <div class="combo-choices is-locked">
+              <div class="combo-choice is-selected is-included" data-combo-included data-title="{{ base_oil.title | escape }}" data-value="{{ base_variant.price }}">
+                <span class="combo-choice-img">
+                  {%- if base_oil.featured_media -%}
+                    {{ base_oil.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </span>
+                <span class="combo-choice-text">
+                  <span class="combo-choice-name">{{ base_oil.title | escape }}</span>
+                  <span class="combo-choice-meta">{{ cfg.included_note | escape }}</span>
+                </span>
+                <span class="combo-check" aria-hidden="true"></span>
+              </div>
+            </div>
+          {%- elsif with_base -%}
+            <div class="combo-head" style="margin-top: 1.6rem;"><span class="label-sm">{{ cfg.included_label | escape }}</span></div>
+            <div class="combo-choices is-locked">
+              <div class="combo-choice is-selected is-included" data-combo-included data-title="{{ cfg.base_oil_match | escape }}" data-value="0">
+                <span class="combo-choice-text"><span class="combo-choice-name">{{ cfg.base_oil_match | escape }}</span></span>
+                <span class="combo-check" aria-hidden="true"></span>
+              </div>
+            </div>
+          {%- endif -%}
+
+          <p class="combo-savings" data-combo-savings hidden></p>
+
+          <div class="pdp-actions">
+            <div class="qty qty-lg">
+              <button type="button" data-qty-step="-1" aria-label="{{ 'cart.decrease_generic' | t }}">&minus;</button>
+              <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="{{ 'cart.quantity' | t }}">
+              <button type="button" data-qty-step="1" aria-label="{{ 'cart.increase_generic' | t }}">+</button>
+            </div>
+            <button type="submit" class="btn btn-ghost-gold" data-combo-add disabled
+              data-label-add="{{ 'products.product.add_to_cart' | t | escape }}"
+              data-label-more="{{ cfg.more_label | escape }}"
+              data-label-soldout="{{ 'products.product.sold_out' | t | escape }}"
+              data-available="{{ current_variant.available }}">
+              {%- if current_variant.available -%}{{ cfg.more_label | replace: '[count]', pick_count | escape }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+            </button>
+            <button type="button" class="btn btn-gold" data-combo-buy disabled>{{ 'products.product.buy_now' | t }}</button>
+          </div>
+        {%- endform -%}
+<script type="application/json" data-combo-config>
+  {
+    "moneyFormat": {{ shop.money_format | json }},
+    "propertyLabel": {{ cfg.property_label | json }},
+    "includesLabel": {{ cfg.includes_property_label | json }},
+    "savingsText": {{ cfg.savings_text | json }}
+  }
+</script>
+</div>

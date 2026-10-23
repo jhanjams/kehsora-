@@ -1,0 +1,98 @@
+{%- comment -%}
+  LIFESTYLE STRIP — a horizontal ribbon of photos that drifts slowly and can
+  be dragged / swiped. Hidden on the live site until at least one photo is added.
+{%- endcomment -%}
+{%- liquid
+  assign photo_count = 0
+  for block in section.blocks
+    if block.settings.image != blank
+      assign photo_count = photo_count | plus: 1
+    endif
+  endfor
+-%}
+{%- if photo_count > 0 or request.design_mode -%}
+<section class="section lifestyle" style="padding-bottom: 0;">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<div class="section-eyebrow">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+        {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
+      </div>
+    </div>
+  </div>
+  <div class="lifestyle-track" data-lifestyle tabindex="0" aria-label="{{ section.settings.heading | escape }}">
+    <div class="lifestyle-row">
+      {%- for block in section.blocks -%}
+        <figure class="lifestyle-item lifestyle-{{ block.settings.shape }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {%- assign alt = block.settings.caption | default: block.settings.image.alt -%}
+            {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '480, 800, 1200', sizes: '(min-width: 860px) 36vw, 78vw', alt: alt }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+          {%- if block.settings.caption != blank -%}<figcaption>{{ block.settings.caption | escape }}</figcaption>{%- endif -%}
+        </figure>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<style>
+  .lifestyle-track { overflow-x: auto; scrollbar-width: none; cursor: grab; padding: 0 var(--gutter) clamp(4rem, 8vw, 7rem); scroll-snap-type: x proximity; }
+  .lifestyle-track::-webkit-scrollbar { display: none; }
+  .lifestyle-track.is-grabbing { cursor: grabbing; scroll-snap-type: none; }
+  .lifestyle-row { display: flex; gap: clamp(.8rem, 2vw, 1.6rem); align-items: flex-end; width: max-content; }
+  .lifestyle-item { margin: 0; flex: 0 0 auto; scroll-snap-align: start; }
+  .lifestyle-item img, .lifestyle-item svg { display: block; width: 100%; height: 100%; object-fit: cover; background: var(--maroon-900); pointer-events: none; }
+  .lifestyle-landscape { width: clamp(280px, 44vw, 680px); aspect-ratio: 4 / 3; }
+  .lifestyle-portrait { width: clamp(200px, 24vw, 380px); aspect-ratio: 4 / 5; }
+  .lifestyle-arch { width: clamp(200px, 22vw, 340px); aspect-ratio: 3 / 4.4; border-radius: 999px 999px 0 0; overflow: hidden; }
+  .lifestyle-item figcaption { margin-top: .8rem; font-size: .64rem; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
+  .lifestyle-arch figcaption { display: none; }
+</style>
+<script>
+  (function () {
+    var tracks = document.querySelectorAll('[data-lifestyle]:not([data-ready])');
+    tracks.forEach(function (track) {
+      track.setAttribute('data-ready', '');
+      var down = false, startX = 0, startScroll = 0, moved = 0;
+      track.addEventListener('pointerdown', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        down = true; moved = 0; startX = e.clientX; startScroll = track.scrollLeft;
+        track.classList.add('is-grabbing');
+      });
+      window.addEventListener('pointermove', function (e) {
+        if (!down) return;
+        moved = Math.abs(e.clientX - startX);
+        track.scrollLeft = startScroll - (e.clientX - startX);
+      });
+      window.addEventListener('pointerup', function () { down = false; track.classList.remove('is-grabbing'); });
+    });
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Lifestyle photo strip",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "In the ritual" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Oiling, the way" },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "it was meant to be" }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "select", "id": "shape", "label": "Shape", "default": "landscape", "options": [
+          { "value": "landscape", "label": "Landscape" }, { "value": "portrait", "label": "Portrait" }, { "value": "arch", "label": "Arch" }
+        ] },
+        { "type": "text", "id": "caption", "label": "Caption" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "Lifestyle photo strip", "blocks": [{ "type": "photo" }, { "type": "photo", "settings": { "shape": "portrait" } }, { "type": "photo", "settings": { "shape": "arch" } }, { "type": "photo" }] }]
+}
+{% endschema %}

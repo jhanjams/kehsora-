@@ -1,0 +1,175 @@
+{%- comment -%}
+  PRODUCT ORBIT — reel-style landing hero.
+  The concentrates ride a slowly turning maroon ring with curved gold text.
+  Tapping a bottle sends the others flying, drops the chosen one into the
+  centre over its giant name, and shows details + sizes + Add to cart.
+  Everything shown comes from the Shopify product (price, sizes, description);
+  each block can add a transparent "cutout" bottle image for the floating look.
+{%- endcomment -%}
+{{ 'kehsora-orbit.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign item_count = 0
+  for block in section.blocks
+    if block.settings.product != blank
+      assign item_count = item_count | plus: 1
+    endif
+  endfor
+-%}
+<section class="orbit" data-orbit data-speed="{{ section.settings.speed }}" aria-label="{{ section.settings.heading | escape }}">
+  <div class="orbit-stage" data-orbit-stage>
+    <svg class="orbit-ring" data-orbit-ring aria-hidden="true" focusable="false">
+      <defs><path id="orbit-path-{{ section.id }}" data-orbit-path d=""/></defs>
+      <path class="orbit-band" data-orbit-band d=""/>
+      <path class="orbit-band-edge" data-orbit-edge-a d=""/>
+      <path class="orbit-band-edge" data-orbit-edge-b d=""/>
+      <text class="orbit-ring-text" dy="0.35em"><textPath href="#orbit-path-{{ section.id }}" data-orbit-textpath data-text="{{ section.settings.ring_text | escape }}">{{ section.settings.ring_text | escape }}</textPath></text>
+    </svg>
+
+    <div class="orbit-intro" data-orbit-intro>
+      {%- if section.settings.eyebrow != blank -%}<div class="hero-eyebrow">{{ section.settings.eyebrow | escape }}</div>{%- endif -%}
+      {% render 'heading', tag: 'h1', text: section.settings.heading, emphasis: section.settings.heading_emphasis, class: 'orbit-title' %}
+      {%- if section.settings.hint != blank -%}<p class="orbit-hint">{{ section.settings.hint | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="orbit-items" data-orbit-items>
+      {%- assign idx = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- assign p = block.settings.product -%}
+        {%- if p != blank -%}
+          {%- liquid
+            assign short = block.settings.name | default: p.title | remove: ' Hair Oil Concentrate' | remove: ' Concentrate'
+            assign cut = block.settings.cutout
+          -%}
+          <button type="button" class="orbit-item{% if cut != blank %} is-cutout{% endif %}" data-orbit-item data-index="{{ idx }}" aria-label="{{ short | escape }}" {{ block.shopify_attributes }}>
+            <span class="orbit-item-img">
+              {%- if cut != blank -%}
+                {{ cut | image_url: width: 600 | image_tag: loading: 'eager', alt: '', widths: '300, 450, 600', sizes: '(min-width: 860px) 220px, 120px' }}
+              {%- elsif p.featured_media -%}
+                {{ p.featured_media | image_url: width: 600 | image_tag: loading: 'eager', alt: '', widths: '300, 450, 600', sizes: '(min-width: 860px) 220px, 120px' }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </span>
+            <span class="orbit-item-label">{{ short | escape }}</span>
+          </button>
+          {%- assign idx = idx | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if item_count == 0 and request.design_mode -%}
+      <p class="editor-hint orbit-empty">Add a “Bottle” block for each concentrate and pick its product.</p>
+    {%- endif -%}
+
+    {%- comment -%} Spotlight: one panel per product, shown after a bottle is tapped {%- endcomment -%}
+    <div class="orbit-spot" data-orbit-spot aria-live="polite">
+      <button type="button" class="orbit-back" data-orbit-back>&larr; {{ section.settings.back_label | escape }}</button>
+      {%- assign idx = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- assign p = block.settings.product -%}
+        {%- if p != blank -%}
+          {%- liquid
+            assign short = block.settings.name | default: p.title | remove: ' Hair Oil Concentrate' | remove: ' Concentrate'
+            assign words = short | split: ' '
+            assign cut = block.settings.cutout
+            assign kicker = block.settings.kicker | default: p.metafields.custom.kicker.value | default: p.type
+            assign v = p.selected_or_first_available_variant
+            assign spot_form = 'orbit-form-' | append: block.id
+          -%}
+          <article class="spot{% if cut != blank %} is-cutout{% endif %}" data-spot data-index="{{ idx }}" aria-hidden="true">
+            <h2 class="spot-name" aria-label="{{ short | escape }}">
+              {%- for w in words -%}<span class="spot-word"><span style="--i: {{ forloop.index0 }}">{{ w | upcase | escape }}</span></span>{%- endfor -%}
+            </h2>
+            <div class="spot-bottle" data-spot-bottle>
+              {%- if cut != blank -%}
+                {{ cut | image_url: width: 900 | image_tag: loading: 'lazy', alt: short, widths: '450, 700, 900', sizes: '(min-width: 860px) 380px, 60vw' }}
+              {%- elsif p.featured_media -%}
+                {{ p.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', alt: short, widths: '450, 700, 900', sizes: '(min-width: 860px) 380px, 60vw' }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="spot-side spot-left">
+              {%- if kicker != blank -%}<span>{{ kicker | escape }}</span>{%- endif -%}
+              {%- if block.settings.origin != blank -%}<span class="spot-muted">{{ block.settings.origin | escape }}</span>{%- endif -%}
+            </div>
+            <div class="spot-side spot-right">
+              <span data-spot-price>{{ v.price | money }}</span>
+              <span class="spot-muted" data-spot-size>{% unless p.has_only_default_variant %}{{ v.title | escape }}{% endunless %}</span>
+            </div>
+            <div class="spot-body">
+              <p class="spot-desc">{{ block.settings.text | default: p.description | strip_html | truncatewords: 34 | escape }}</p>
+              {%- form 'product', p, id: spot_form, class: 'spot-form', data-product-form: '', novalidate: 'novalidate' -%}
+                {%- unless p.has_only_default_variant -%}
+                  <div class="size-options spot-sizes">
+                    {%- for variant in p.variants -%}
+                      <input type="radio" class="visually-hidden" name="id" id="{{ spot_form }}-{{ variant.id }}" value="{{ variant.id }}" data-price="{{ variant.price | money | escape }}" data-title="{{ variant.title | escape }}"{% if variant.id == v.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
+                      <label class="size-opt{% unless variant.available %} is-unavailable{% endunless %}" for="{{ spot_form }}-{{ variant.id }}">{{ variant.title | escape }}</label>
+                    {%- endfor -%}
+                  </div>
+                {%- else -%}
+                  <input type="hidden" name="id" value="{{ v.id }}">
+                {%- endunless -%}
+                <input type="hidden" name="quantity" value="1">
+                <div class="spot-actions">
+                  <button type="submit" class="btn btn-gold"{% unless p.available %} disabled{% endunless %}>
+                    {%- if p.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+                  </button>
+                  <a href="{{ p.url }}" class="btn btn-outline">{{ section.settings.details_label | escape }}</a>
+                </div>
+              {%- endform -%}
+            </div>
+          </article>
+          {%- assign idx = idx | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <div class="orbit-nav">
+        <button type="button" class="orbit-arrow" data-orbit-prev aria-label="{{ section.settings.prev_label | escape }}">&larr;</button>
+        <div class="orbit-dots" data-orbit-dots>
+          {%- for i in (1..item_count) -%}<button type="button" class="orbit-dot" data-orbit-dot="{{ forloop.index0 }}" aria-label="{{ forloop.index }}"></button>{%- endfor -%}
+        </div>
+        <button type="button" class="orbit-arrow" data-orbit-next aria-label="{{ section.settings.next_label | escape }}">&rarr;</button>
+      </div>
+    </div>
+  </div>
+  {%- if section.settings.show_scroll_cue -%}
+    <div class="hero-scroll-cue" aria-hidden="true"><span>{{ 'sections.hero.scroll' | t }}</span><div class="stem"></div></div>
+  {%- endif -%}
+</section>
+<script src="{{ 'kehsora-orbit.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Product orbit (hero)",
+  "settings": [
+    { "type": "paragraph", "content": "For the floating look, give each bottle a cutout image: a PNG of the bottle with a transparent background. Without one, the product photo is used in an arch frame." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Ayurvedic hair care, reformulated" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Five concentrates." },
+    { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "One ritual." },
+    { "type": "text", "id": "hint", "label": "Hint", "default": "Tap a bottle to explore — or drag to turn the ring" },
+    { "type": "text", "id": "ring_text", "label": "Ring text", "default": "ROOTED IN AYURVEDA ✦ REAL CONCENTRATION ✦ SMALL-BATCH MADE ✦ " },
+    { "type": "range", "id": "speed", "label": "Ring speed", "min": 0, "max": 10, "step": 1, "default": 3, "info": "0 = still" },
+    { "type": "text", "id": "back_label", "label": "Back button", "default": "All concentrates" },
+    { "type": "text", "id": "details_label", "label": "Details button", "default": "View details" },
+    { "type": "text", "id": "prev_label", "label": "Previous label", "default": "Previous concentrate" },
+    { "type": "text", "id": "next_label", "label": "Next label", "default": "Next concentrate" },
+    { "type": "checkbox", "id": "show_scroll_cue", "label": "Show scroll cue", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "bottle",
+      "name": "Bottle",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "image_picker", "id": "cutout", "label": "Cutout image (transparent PNG)", "info": "Bottle only, no background. Portrait, about 800 × 1200." },
+        { "type": "text", "id": "name", "label": "Display name", "info": "Big name in the spotlight. Defaults to the product title without “Hair Oil Concentrate”." },
+        { "type": "text", "id": "kicker", "label": "Left label", "info": "Defaults to the product kicker / type." },
+        { "type": "text", "id": "origin", "label": "Left small text", "info": "e.g. Heat-infused · Kerala" },
+        { "type": "textarea", "id": "text", "label": "Short description", "info": "Defaults to the product description." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "Product orbit (hero)", "blocks": [{ "type": "bottle" }, { "type": "bottle" }, { "type": "bottle" }, { "type": "bottle" }, { "type": "bottle" }] }]
+}
+{% endschema %}

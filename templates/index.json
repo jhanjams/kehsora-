@@ -14,7 +14,8 @@
         "video_url": "",
         "show_mandala": true,
         "show_scroll_cue": true
-      }
+      },
+      "disabled": true
     },
     "trust": {
       "type": "trust-strip",
@@ -328,24 +329,194 @@
         "success": "Welcome to the circle — watch your inbox."
       }
     },
-    "combos": {
-      "type": "combo-offers",
+    "orbit": {
+      "type": "product-orbit",
+      "blocks": {
+        "b0": {
+          "type": "bottle",
+          "settings": {
+            "product": "bhringraj-hair-oil-concentrate",
+            "kicker": "Hair fall & roots",
+            "origin": "Heat-infused"
+          }
+        },
+        "b1": {
+          "type": "bottle",
+          "settings": {
+            "product": "rosemary-hair-oil-concentrate",
+            "kicker": "Growth & circulation",
+            "origin": "Scalp stimulating"
+          }
+        },
+        "b2": {
+          "type": "bottle",
+          "settings": {
+            "product": "pumpkin-seed-hair-oil-concentrate",
+            "kicker": "Density & thickness",
+            "origin": "Cold-pressed"
+          }
+        },
+        "b3": {
+          "type": "bottle",
+          "settings": {
+            "product": "jojoba-hair-oil-concentrate",
+            "kicker": "Scalp & balance",
+            "origin": "Light, daily"
+          }
+        },
+        "b4": {
+          "type": "bottle",
+          "settings": {
+            "product": "sweet-almond-hair-oil-concentrate",
+            "kicker": "Shine & softness",
+            "origin": "Vitamin E rich"
+          }
+        }
+      },
+      "block_order": [
+        "b0",
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "eyebrow": "Ayurvedic hair care, reformulated",
+        "heading": "Five concentrates.",
+        "heading_emphasis": "One ritual.",
+        "hint": "Tap a bottle to explore — or drag to turn the ring",
+        "ring_text": "ROOTED IN AYURVEDA ✦ REAL CONCENTRATION ✦ SMALL-BATCH MADE ✦ ",
+        "speed": 3,
+        "back_label": "All concentrates",
+        "details_label": "View details",
+        "prev_label": "Previous concentrate",
+        "next_label": "Next concentrate",
+        "show_scroll_cue": true
+      }
+    },
+    "lifestyle": {
+      "type": "lifestyle-strip",
+      "blocks": {
+        "p1": {
+          "type": "photo",
+          "settings": {
+            "shape": "landscape",
+            "caption": ""
+          }
+        },
+        "p2": {
+          "type": "photo",
+          "settings": {
+            "shape": "portrait",
+            "caption": ""
+          }
+        },
+        "p3": {
+          "type": "photo",
+          "settings": {
+            "shape": "arch",
+            "caption": ""
+          }
+        },
+        "p4": {
+          "type": "photo",
+          "settings": {
+            "shape": "landscape",
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "eyebrow": "In the ritual",
+        "heading": "Oiling, the way",
+        "heading_emphasis": "it was meant to be"
+      }
+    },
+    "combo_studio": {
+      "type": "combo-studio",
+      "blocks": {
+        "o0": {
+          "type": "offer",
+          "settings": {
+            "combo": "any-2-concentrates",
+            "label": "Any 2"
+          }
+        },
+        "o1": {
+          "type": "offer",
+          "settings": {
+            "combo": "any-3-concentrates",
+            "label": "Any 3"
+          }
+        },
+        "o2": {
+          "type": "offer",
+          "settings": {
+            "combo": "2-concentrates-base-oil",
+            "label": "2 + Base Oil"
+          }
+        },
+        "o3": {
+          "type": "offer",
+          "settings": {
+            "combo": "all-5-concentrates",
+            "label": "All 5"
+          }
+        },
+        "o4": {
+          "type": "offer",
+          "settings": {
+            "combo": "all-5-concentrates-base-oil",
+            "label": "All 5 + Base Oil"
+          }
+        }
+      },
+      "block_order": [
+        "o0",
+        "o1",
+        "o2",
+        "o3",
+        "o4"
+      ],
       "settings": {
         "eyebrow": "Build your ritual",
         "heading": "Combo",
         "heading_emphasis": "offers",
-        "text": "Pick the concentrates your hair needs — the more you combine, the more you save.",
-        "products": [],
-        "columns": "3",
-        "anchor": "combos"
+        "text": "Choose an offer, pick your concentrates, and add it to your cart — right here.",
+        "anchor": "combos",
+        "show_mandala": true,
+        "kicker": "Combo offer",
+        "details_label": "View offer details",
+        "default_pick": 3,
+        "match_text": "Concentrate",
+        "name_strip": " Hair Oil Concentrate",
+        "size_match": "",
+        "base_oil_match": "Base Oil",
+        "choose_label": "Choose any [count] concentrates",
+        "all_label": "All [count] concentrates included",
+        "included_label": "Also included",
+        "included_note": "Included in this combo",
+        "more_label": "Choose [count] more",
+        "savings_text": "Worth [worth] separately — you save [save]",
+        "empty_hint": "No concentrates found — pick them under “Concentrates to choose from”.",
+        "property_label": "Concentrate",
+        "includes_property_label": "Includes"
       }
     }
   },
   "order": [
+    "orbit",
     "hero",
     "trust",
+    "lifestyle",
     "bestsellers",
-    "combos",
+    "combo_studio",
     "note",
     "concern",
     "divider_1",

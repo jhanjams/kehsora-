@@ -24,6 +24,7 @@
   data-combo-choice
   data-title="{{ choice.title | escape }}"
   data-value="{{ value_variant.price }}"
+  data-img="{%- if choice.featured_media -%}{{ choice.featured_media | image_url: width: 240 }}{%- endif -%}"
   aria-pressed="{% if locked %}true{% else %}false{% endif %}"
   {% if locked %}disabled{% endif %}>
   <span class="combo-choice-img">

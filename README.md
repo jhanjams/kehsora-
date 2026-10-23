@@ -43,3 +43,24 @@ A complete Shopify theme for Kehsora: a continuous deep-maroon background, warm 
    - `main-menu`: Shop All → /collections/all, Ingredients, Our Story → /#our-story, Contact
    - Footer menus, which the footer's link columns use: `footer`, `brand`, `support`
 6. **Theme settings.** Colours, email, phone and WhatsApp, cart drawer or cart page, and the free-shipping threshold.
+
+## Landing page, combos and ingredients (October 2026)
+
+- **Product orbit** (`sections/product-orbit`, `assets/kehsora-orbit.*`): the reel-style hero.
+  - The concentrates ride a turning maroon ring; customers can drag to spin it.
+  - Tapping a bottle opens a spotlight with a giant name, sizes and Add to Cart.
+  - Give each Bottle block a transparent PNG cutout for the floating look.
+- **Combo studio** (`sections/combo-studio`): homepage tabs for each combo offer.
+  - Customers pick concentrates into a tray and add the combo to the cart from the homepage.
+  - Uses the same picker as the combo product page (`snippets/combo-picker`).
+- **Lifestyle photo strip** (`sections/lifestyle-strip`): hidden until photos are added.
+- **Ingredient details**: each ingredient now has a fact sheet and "The science" / "How to use it" panels:
+
+  | Fact sheet field | |
+  |---|---|
+  | Botanical name | |
+  | Origin | |
+  | Key compounds | |
+  | How we prepare it | |
+  | Best for | |
+  | Pairs well with | |

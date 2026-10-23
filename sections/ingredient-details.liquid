@@ -31,6 +31,31 @@
               {%- for chip in chips -%}<span class="ingredient-benefit-chip">{{ chip | strip | escape }}</span>{%- endfor -%}
             </div>
           {%- endif -%}
+          {%- capture facts -%}
+            {%- if block.settings.botanical != blank -%}<div class="ing-fact"><dt>Botanical name</dt><dd><em>{{ block.settings.botanical | escape }}</em></dd></div>{%- endif -%}
+            {%- if block.settings.origin != blank -%}<div class="ing-fact"><dt>Origin</dt><dd>{{ block.settings.origin | escape }}</dd></div>{%- endif -%}
+            {%- if block.settings.compounds != blank -%}<div class="ing-fact"><dt>Key compounds</dt><dd>{{ block.settings.compounds | escape }}</dd></div>{%- endif -%}
+            {%- if block.settings.preparation != blank -%}<div class="ing-fact"><dt>How we prepare it</dt><dd>{{ block.settings.preparation | escape }}</dd></div>{%- endif -%}
+            {%- if block.settings.best_for != blank -%}<div class="ing-fact"><dt>Best for</dt><dd>{{ block.settings.best_for | escape }}</dd></div>{%- endif -%}
+            {%- if block.settings.pairs != blank -%}<div class="ing-fact"><dt>Pairs well with</dt><dd>{{ block.settings.pairs | escape }}</dd></div>{%- endif -%}
+          {%- endcapture -%}
+          {%- if facts != blank -%}<dl class="ing-facts">{{ facts }}</dl>{%- endif -%}
+          {%- if block.settings.science != blank or block.settings.how_to_use != blank -%}
+            <div class="ing-more">
+              {%- if block.settings.science != blank -%}
+                <div class="accordion-item">
+                  <button type="button" class="accordion-trigger" aria-expanded="false">{{ block.settings.science_title | default: 'The science' | escape }} <span class="plus" aria-hidden="true">+</span></button>
+                  <div class="accordion-panel"><div class="accordion-panel-inner"><div class="rte">{{ block.settings.science }}</div></div></div>
+                </div>
+              {%- endif -%}
+              {%- if block.settings.how_to_use != blank -%}
+                <div class="accordion-item">
+                  <button type="button" class="accordion-trigger" aria-expanded="false">{{ block.settings.how_title | default: 'How to use it' | escape }} <span class="plus" aria-hidden="true">+</span></button>
+                  <div class="accordion-panel"><div class="accordion-panel-inner"><div class="rte">{{ block.settings.how_to_use }}</div></div></div>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
           {%- if ing_product != blank and block.settings.link_label != blank -%}
             <a href="{{ ing_product.url }}" class="text-link">{{ block.settings.link_label | escape }}</a>
           {%- endif -%}
@@ -56,7 +81,19 @@
         { "type": "text", "id": "anchor", "label": "Anchor ID", "info": "Defaults to the name, e.g. /pages/ingredients#rosemary" },
         { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Describe what this ingredient does and why it earned its place.</p>" },
         { "type": "text", "id": "benefits", "label": "Benefits", "info": "Comma-separated", "default": "Scalp circulation, Follicle strength, Calms irritation" },
-        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop the concentrate" }
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop the concentrate" },
+        { "type": "header", "content": "Fact sheet" },
+        { "type": "text", "id": "botanical", "label": "Botanical name" },
+        { "type": "text", "id": "origin", "label": "Origin" },
+        { "type": "text", "id": "compounds", "label": "Key compounds" },
+        { "type": "text", "id": "preparation", "label": "How we prepare it" },
+        { "type": "text", "id": "best_for", "label": "Best for" },
+        { "type": "text", "id": "pairs", "label": "Pairs well with" },
+        { "type": "header", "content": "Read more" },
+        { "type": "text", "id": "science_title", "label": "Science panel title", "default": "The science" },
+        { "type": "richtext", "id": "science", "label": "The science" },
+        { "type": "text", "id": "how_title", "label": "How-to panel title", "default": "How to use it" },
+        { "type": "richtext", "id": "how_to_use", "label": "How to use it" }
       ]
     }
   ],

@@ -18,7 +18,7 @@
     if (!root || root.dataset.comboReady) return;
     root.dataset.comboReady = 'true';
 
-    var configEl = root.parentElement.querySelector('[data-combo-config]') || document.querySelector('[data-combo-config]');
+    var configEl = root.querySelector('[data-combo-config]');
     var config = {};
     try { config = JSON.parse(configEl.textContent); } catch (e) { config = {}; }
 
@@ -39,6 +39,29 @@
     var comboPrice = priceEl ? parseInt(priceEl.getAttribute('data-combo-price'), 10) || 0 : 0;
 
     var selected = choices.filter(function (c) { return c.classList.contains('is-selected'); });
+    var slots = Array.prototype.slice.call(root.querySelectorAll('[data-combo-slot]'));
+
+    // The tray: one slot per pick, filled with the chosen bottle's image
+    function renderTray() {
+      slots.forEach(function (slot, i) {
+        var choice = selected[i];
+        var img = slot.querySelector('img');
+        var src = choice ? choice.getAttribute('data-img') : '';
+        if (choice) {
+          if (!img) { img = document.createElement('img'); img.alt = ''; slot.appendChild(img); }
+          if (img.getAttribute('src') !== src) {
+            img.src = src;
+            slot.classList.remove('pop'); void slot.offsetWidth; slot.classList.add('pop');
+          }
+          slot.title = choice.getAttribute('data-title');
+          slot.classList.add('is-filled');
+        } else {
+          if (img) img.remove();
+          slot.removeAttribute('title');
+          slot.classList.remove('is-filled', 'pop');
+        }
+      });
+    }
 
     function render() {
       choices.forEach(function (c) {
@@ -48,6 +71,7 @@
       });
       list.classList.toggle('is-full', !allIncluded && selected.length >= pick);
       if (counter) counter.textContent = selected.length;
+      renderTray();
 
       var remaining = pick - selected.length;
       var ready = remaining === 0 && pick > 0;
