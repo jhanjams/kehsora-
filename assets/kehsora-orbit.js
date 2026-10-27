@@ -59,6 +59,14 @@
       g.ry = g.rx * (mobile ? 0.5 : 0.28);
       g.band = Math.max(24, Math.min(g.ry * (mobile ? 0.26 : 0.36), 70));
       g.bw = Math.max(70, Math.min(g.rx * (mobile ? 0.6 : 0.32), 200));
+      // slim cutout bottles: narrower frame, height capped so the front bottle stays on screen
+      g.cut = !!root.querySelector('.orbit-item.is-cutout');
+      g.ratio = g.cut ? 20 / 9 : 1.5;
+      if (g.cut) {
+        // the front bottle (scale 1.12) stands on the ring; keep its top below the headline area
+        var room = (g.cy + g.ry) - H * (mobile ? 0.36 : 0.42);
+        g.bw = Math.max(48, Math.min(g.bw * 0.62, room / (g.ratio * 1.12)));
+      }
       stage.style.setProperty('--bottle-w', g.bw + 'px');
 
       // Fade out the back of the ring (its text would read upside down)
@@ -101,7 +109,7 @@
     }
 
     function transformFor(p, extraX, extraY) {
-      var h = g.bw * 1.5;
+      var h = g.bw * g.ratio;
       return 'translate(' + (p.x - g.bw / 2 + (extraX || 0)) + 'px,' + (p.y - h * 0.94 + (extraY || 0)) + 'px) rotate(' + p.tilt.toFixed(2) + 'deg) scale(' + p.scale.toFixed(3) + ')';
     }
 
@@ -275,6 +283,8 @@
 
     root.addEventListener('keydown', function (e) {
       if (current < 0) return;
+      // Let Escape close only the top layer: if the cart drawer or search is open, leave the spotlight alone
+      if (document.body.classList.contains('cart-open') || document.querySelector('[data-search].open')) return;
       if (e.key === 'Escape') { close(); }
       else if (e.key === 'ArrowRight') { swap(current + 1); }
       else if (e.key === 'ArrowLeft') { swap(current - 1); }

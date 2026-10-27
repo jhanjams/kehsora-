@@ -48,7 +48,8 @@
   cursor: pointer; padding: 0;
 }
 .orbit-item-img { position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; }
-.orbit-item-img img, .orbit-item-img svg { width: 100%; height: 100%; object-fit: contain; }
+.orbit-item-img img, .orbit-item-img svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; }
+.orbit-item.is-cutout .orbit-item-img { aspect-ratio: 9 / 20; }
 .orbit-item.is-cutout .orbit-item-img img { filter: drop-shadow(0 24px 22px rgba(10, 1, 4, .55)); }
 /* Products without a cutout: shown in a small arch so a photo background still looks intentional */
 .orbit-item:not(.is-cutout) .orbit-item-img { border-radius: 999px 999px 6px 6px; overflow: hidden; outline: 1px solid var(--gold-line); outline-offset: 4px; background: var(--maroon-900); }
@@ -114,7 +115,9 @@
   transform: rotate(-9deg);
   opacity: 0;
 }
-.spot-bottle img, .spot-bottle svg { width: 100%; height: 100%; object-fit: contain; }
+.spot-bottle { position: relative; }
+.spot-bottle img, .spot-bottle svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.spot.is-cutout .spot-bottle { aspect-ratio: 9 / 20; width: clamp(110px, 13vw, 200px); }
 .spot.is-cutout .spot-bottle img { filter: drop-shadow(0 40px 40px rgba(10, 1, 4, .6)); }
 .spot:not(.is-cutout) .spot-bottle { border-radius: 999px 999px 8px 8px; overflow: hidden; outline: 1px solid var(--gold-line); outline-offset: 6px; }
 .spot:not(.is-cutout) .spot-bottle img { object-fit: cover; }

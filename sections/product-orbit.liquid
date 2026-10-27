@@ -39,11 +39,14 @@
           {%- liquid
             assign short = block.settings.name | default: p.title | remove: ' Hair Oil Concentrate' | remove: ' Concentrate'
             assign cut = block.settings.cutout
+            assign cut_file = block.settings.cutout_file | strip
           -%}
-          <button type="button" class="orbit-item{% if cut != blank %} is-cutout{% endif %}" data-orbit-item data-index="{{ idx }}" aria-label="{{ short | escape }}" {{ block.shopify_attributes }}>
+          <button type="button" class="orbit-item{% if cut != blank or cut_file != blank %} is-cutout{% endif %}" data-orbit-item data-index="{{ idx }}" aria-label="{{ short | escape }}" {{ block.shopify_attributes }}>
             <span class="orbit-item-img">
               {%- if cut != blank -%}
                 {{ cut | image_url: width: 600 | image_tag: loading: 'eager', alt: '', widths: '300, 450, 600', sizes: '(min-width: 860px) 220px, 120px' }}
+              {%- elsif cut_file != blank -%}
+                <img src="{{ cut_file | asset_url }}" alt="" width="320" height="880" loading="eager" decoding="async">
               {%- elsif p.featured_media -%}
                 {{ p.featured_media | image_url: width: 600 | image_tag: loading: 'eager', alt: '', widths: '300, 450, 600', sizes: '(min-width: 860px) 220px, 120px' }}
               {%- else -%}
@@ -72,17 +75,20 @@
             assign short = block.settings.name | default: p.title | remove: ' Hair Oil Concentrate' | remove: ' Concentrate'
             assign words = short | split: ' '
             assign cut = block.settings.cutout
+            assign cut_file = block.settings.cutout_file | strip
             assign kicker = block.settings.kicker | default: p.metafields.custom.kicker.value | default: p.type
             assign v = p.selected_or_first_available_variant
             assign spot_form = 'orbit-form-' | append: block.id
           -%}
-          <article class="spot{% if cut != blank %} is-cutout{% endif %}" data-spot data-index="{{ idx }}" aria-hidden="true">
+          <article class="spot{% if cut != blank or cut_file != blank %} is-cutout{% endif %}" data-spot data-index="{{ idx }}" aria-hidden="true">
             <h2 class="spot-name" aria-label="{{ short | escape }}">
               {%- for w in words -%}<span class="spot-word"><span style="--i: {{ forloop.index0 }}">{{ w | upcase | escape }}</span></span>{%- endfor -%}
             </h2>
             <div class="spot-bottle" data-spot-bottle>
               {%- if cut != blank -%}
                 {{ cut | image_url: width: 900 | image_tag: loading: 'lazy', alt: short, widths: '450, 700, 900', sizes: '(min-width: 860px) 380px, 60vw' }}
+              {%- elsif cut_file != blank -%}
+                <img src="{{ cut_file | asset_url }}" alt="{{ short | escape }}" width="320" height="880" loading="lazy" decoding="async">
               {%- elsif p.featured_media -%}
                 {{ p.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', alt: short, widths: '450, 700, 900', sizes: '(min-width: 860px) 380px, 60vw' }}
               {%- else -%}
@@ -161,7 +167,8 @@
       "name": "Bottle",
       "settings": [
         { "type": "product", "id": "product", "label": "Product" },
-        { "type": "image_picker", "id": "cutout", "label": "Cutout image (transparent PNG)", "info": "Bottle only, no background. Portrait, about 800 × 1200." },
+        { "type": "image_picker", "id": "cutout", "label": "Cutout image (transparent PNG)", "info": "Bottle only, no background. Overrides the built-in bottle below." },
+        { "type": "text", "id": "cutout_file", "label": "Built-in bottle image", "info": "A transparent bottle shipped with the theme, e.g. bottle-bhringraj.png. Used when no cutout image is uploaded." },
         { "type": "text", "id": "name", "label": "Display name", "info": "Big name in the spotlight. Defaults to the product title without “Hair Oil Concentrate”." },
         { "type": "text", "id": "kicker", "label": "Left label", "info": "Defaults to the product kicker / type." },
         { "type": "text", "id": "origin", "label": "Left small text", "info": "e.g. Heat-infused · Kerala" },

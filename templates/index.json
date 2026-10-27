@@ -337,7 +337,8 @@
           "settings": {
             "product": "bhringraj-hair-oil-concentrate",
             "kicker": "Hair fall & roots",
-            "origin": "Heat-infused"
+            "origin": "Heat-infused",
+            "cutout_file": "bottle-bhringraj.png"
           }
         },
         "b1": {
@@ -345,7 +346,8 @@
           "settings": {
             "product": "rosemary-hair-oil-concentrate",
             "kicker": "Growth & circulation",
-            "origin": "Scalp stimulating"
+            "origin": "Scalp stimulating",
+            "cutout_file": "bottle-rosemary.png"
           }
         },
         "b2": {
@@ -353,7 +355,8 @@
           "settings": {
             "product": "pumpkin-seed-hair-oil-concentrate",
             "kicker": "Density & thickness",
-            "origin": "Cold-pressed"
+            "origin": "Cold-pressed",
+            "cutout_file": "bottle-pumpkin-seed.png"
           }
         },
         "b3": {
@@ -361,7 +364,8 @@
           "settings": {
             "product": "jojoba-hair-oil-concentrate",
             "kicker": "Scalp & balance",
-            "origin": "Light, daily"
+            "origin": "Light, daily",
+            "cutout_file": "bottle-jojoba.png"
           }
         },
         "b4": {
@@ -369,7 +373,8 @@
           "settings": {
             "product": "sweet-almond-hair-oil-concentrate",
             "kicker": "Shine & softness",
-            "origin": "Vitamin E rich"
+            "origin": "Vitamin E rich",
+            "cutout_file": "bottle-sweet-almond.png"
           }
         }
       },
