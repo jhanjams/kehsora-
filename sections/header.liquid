@@ -1,17 +1,29 @@
 {%- liquid
   assign menu_links = section.settings.menu.links
   assign logo_text = section.settings.logo_text | default: shop.name
+  assign use_builtin = true
+  if section.settings.nav_source == 'menu' and menu_links.size > 0
+    assign use_builtin = false
+  endif
 -%}
+{%- capture builtin_left -%}
+  <a href="{{ routes.all_products_collection_url }}" class="nav-link">{{ section.settings.label_shop | escape }}</a>
+  <a href="{{ routes.root_url }}#combos" class="nav-link">{{ section.settings.label_combos | escape }}</a>
+  <a href="{% render 'safe-url', url: '/pages/ingredients' %}" class="nav-link">{{ section.settings.label_ingredients | escape }}</a>
+{%- endcapture -%}
+{%- capture builtin_right -%}
+  <a href="{{ routes.root_url }}#our-story" class="nav-link">{{ section.settings.label_story | escape }}</a>
+  <a href="{% render 'safe-url', url: '/pages/contact' %}" class="nav-link">{{ section.settings.label_contact | escape }}</a>
+{%- endcapture -%}
 <header class="site-header" data-header>
   <div class="container nav-row">
     <nav class="nav-left" aria-label="{{ 'sections.header.menu' | t }}">
-      {%- if menu_links.size > 0 -%}
-        {%- for link in menu_links -%}
-          <a href="{{ link.url }}" class="nav-link"{% if link.current or link.child_current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
-        {%- endfor -%}
+      {%- if use_builtin -%}
+        {{ builtin_left }}
       {%- else -%}
-        <a href="{{ routes.all_products_collection_url }}" class="nav-link">{{ 'sections.header.shop_all' | t }}</a>
-        <a href="{{ routes.search_url }}" class="nav-link">{{ 'sections.header.search' | t }}</a>
+        {%- for link in menu_links -%}
+          <a href="{% render 'safe-url', url: link.url %}" class="nav-link"{% if link.current or link.child_current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+        {%- endfor -%}
       {%- endif -%}
     </nav>
 
@@ -26,6 +38,7 @@
     </a>
 
     <div class="nav-right">
+      {%- if use_builtin -%}<nav class="nav-right-links" aria-label="{{ 'sections.header.menu' | t }}">{{ builtin_right }}</nav>{%- endif -%}
       <div class="nav-icons">
         <button type="button" class="nav-icon-btn" data-search-open aria-label="{{ 'sections.header.search' | t }}">
           {% render 'icon', name: 'search', size: 19 %}
@@ -47,12 +60,12 @@
     {% render 'icon', name: 'close', size: 22 %}
   </button>
   <a href="{{ routes.root_url }}">{{ 'sections.header.home' | t }}</a>
-  {%- if menu_links.size > 0 -%}
-    {%- for link in menu_links -%}
-      <a href="{{ link.url }}">{{ link.title | escape }}</a>
-    {%- endfor -%}
+  {%- if use_builtin -%}
+    {{ builtin_left | append: builtin_right | replace: ' class="nav-link"', '' }}
   {%- else -%}
-    <a href="{{ routes.all_products_collection_url }}">{{ 'sections.header.shop_all' | t }}</a>
+    {%- for link in menu_links -%}
+      <a href="{% render 'safe-url', url: link.url %}">{{ link.title | escape }}</a>
+    {%- endfor -%}
   {%- endif -%}
   {%- if shop.customer_accounts_enabled -%}
     <a href="{{ routes.account_url }}">{{ 'sections.header.account' | t }}</a>
@@ -86,7 +99,16 @@
   "class": "section-header",
   "enabled_on": { "groups": ["header"] },
   "settings": [
-    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu", "info": "Shown on the left on desktop and in the mobile menu." },
+    { "type": "select", "id": "nav_source", "label": "Navigation", "default": "kehsora", "options": [
+      { "value": "kehsora", "label": "Kehsora links (built in)" },
+      { "value": "menu", "label": "A Shopify menu" }
+    ], "info": "Kehsora links: Shop All, Combos, Ingredients, Our Story, Contact." },
+    { "type": "text", "id": "label_shop", "label": "Label: Shop All", "default": "Shop All" },
+    { "type": "text", "id": "label_combos", "label": "Label: Combos", "default": "Combos" },
+    { "type": "text", "id": "label_ingredients", "label": "Label: Ingredients", "default": "Ingredients" },
+    { "type": "text", "id": "label_story", "label": "Label: Our Story", "default": "Our Story" },
+    { "type": "text", "id": "label_contact", "label": "Label: Contact", "default": "Contact" },
+    { "type": "link_list", "id": "menu", "label": "Shopify menu", "default": "main-menu", "info": "Used when Navigation is set to “A Shopify menu”." },
     { "type": "text", "id": "logo_text", "label": "Logo text", "default": "kehsora", "info": "Set in the Kehsora brand font. Used when no logo image is uploaded." },
     { "type": "image_picker", "id": "logo", "label": "Logo image (optional)" },
     { "type": "range", "id": "logo_height", "label": "Logo image height", "min": 24, "max": 80, "step": 2, "unit": "px", "default": 40 },

@@ -19,14 +19,36 @@
         <a href="{{ routes.root_url }}" class="footer-logo">{{ section.settings.logo_text | default: shop.name | escape }}</a>
         {%- if section.settings.tagline != blank -%}<p>{{ section.settings.tagline | escape }}</p>{%- endif -%}
       </div>
-      {%- for block in section.blocks -%}
-        <div class="footer-col" {{ block.shopify_attributes }}>
-          {%- if block.settings.heading != blank -%}<h5>{{ block.settings.heading | upcase | escape }}</h5>{%- endif -%}
-          {%- for link in block.settings.menu.links -%}
-            <a href="{{ link.url }}">{{ link.title | escape }}</a>
-          {%- endfor -%}
+      {%- if section.settings.links_source == 'menus' -%}
+        {%- for block in section.blocks -%}
+          <div class="footer-col" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}<h5>{{ block.settings.heading | upcase | escape }}</h5>{%- endif -%}
+            {%- for link in block.settings.menu.links -%}
+              <a href="{% render 'safe-url', url: link.url %}">{{ link.title | escape }}</a>
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="footer-col">
+          <h5>{{ section.settings.col_shop | upcase | escape }}</h5>
+          <a href="{{ routes.all_products_collection_url }}">All Products</a>
+          <a href="{{ routes.root_url }}#combos">Combo Offers</a>
+          <a href="{{ routes.root_url }}#bestsellers">Bestsellers</a>
+          <a href="{% render 'safe-url', url: '/pages/ingredients' %}">Ingredients</a>
         </div>
-      {%- endfor -%}
+        <div class="footer-col">
+          <h5>{{ section.settings.col_brand | upcase | escape }}</h5>
+          <a href="{{ routes.root_url }}#our-story">Our Story</a>
+          <a href="{% render 'safe-url', url: '/pages/contact' %}">Contact Us</a>
+          {%- if section.settings.instagram_url != blank -%}<a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
+        </div>
+        <div class="footer-col">
+          <h5>{{ section.settings.col_support | upcase | escape }}</h5>
+          <a href="{% render 'safe-url', url: '/pages/contact#faq' %}">FAQs</a>
+          <a href="{% render 'safe-url', url: '/pages/contact#shipping' %}">Shipping &amp; Returns</a>
+          {%- if shop.customer_accounts_enabled -%}<a href="{{ routes.account_url }}">Track Your Order</a>{%- endif -%}
+        </div>
+      {%- endif -%}
     </div>
 
     {%- if section.settings.show_wordmark -%}
@@ -48,6 +70,14 @@
     { "type": "text", "id": "logo_text", "label": "Logo text", "default": "kehsora" },
     { "type": "text", "id": "tagline", "label": "Tagline", "default": "Ayurvedic hair care, reformulated. Real ingredients, real results — not trends." },
     { "type": "checkbox", "id": "show_contact", "label": "Show email, phone and WhatsApp", "default": true, "info": "Edit the details in Theme settings › Contact." },
+    { "type": "select", "id": "links_source", "label": "Link columns", "default": "kehsora", "options": [
+      { "value": "kehsora", "label": "Kehsora links (built in)" },
+      { "value": "menus", "label": "Shopify menus (blocks below)" }
+    ] },
+    { "type": "text", "id": "col_shop", "label": "Column 1 heading", "default": "Shop" },
+    { "type": "text", "id": "col_brand", "label": "Column 2 heading", "default": "Brand" },
+    { "type": "text", "id": "col_support", "label": "Column 3 heading", "default": "Support" },
+    { "type": "text", "id": "instagram_url", "label": "Instagram link", "default": "https://www.instagram.com/_kehsora" },
     { "type": "checkbox", "id": "show_wordmark", "label": "Show large wordmark", "default": true },
     { "type": "text", "id": "signoff", "label": "Sign-off", "default": "Made with care, rooted in Ayurveda." }
   ],

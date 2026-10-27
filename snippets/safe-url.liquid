@@ -1,0 +1,26 @@
+{%- comment -%}
+  Outputs a link that never lands on the 404 page.
+  Links to /pages/<handle> are kept when that page exists in the store;
+  otherwise they fall back to the matching homepage section
+  (/pages/ingredients → /#ingredients) or the homepage.
+  Usage: <a href="{% render 'safe-url', url: '/pages/ingredients' %}">
+{%- endcomment -%}
+{%- liquid
+  assign out = url
+  if url contains '/pages/'
+    assign after = url | split: '/pages/' | last
+    assign page_handle = after | split: '#' | first | split: '?' | first
+    if pages[page_handle].id == blank
+      case page_handle
+        when 'ingredients'
+          assign out = routes.root_url | append: '#ingredients'
+        when 'about', 'our-story', 'story'
+          assign out = routes.root_url | append: '#our-story'
+        else
+          assign out = routes.root_url
+      endcase
+      assign out = out | replace: '//#', '/#'
+    endif
+  endif
+-%}
+{{- out -}}

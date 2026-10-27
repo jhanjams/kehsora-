@@ -36,7 +36,7 @@
           <a href="{{ section.settings.button_1_link | default: routes.all_products_collection_url }}" class="btn btn-gold">{{ section.settings.button_1_label | escape }}</a>
         {%- endif -%}
         {%- if section.settings.button_2_label != blank -%}
-          <a href="{{ section.settings.button_2_link | default: '/pages/ingredients' }}" class="btn btn-outline">{{ section.settings.button_2_label | escape }}</a>
+          {%- assign hero_btn2 = section.settings.button_2_link | default: '/pages/ingredients' -%}<a href="{% render 'safe-url', url: hero_btn2 %}" class="btn btn-outline">{{ section.settings.button_2_label | escape }}</a>
         {%- endif -%}
       </div>
     {%- endif -%}

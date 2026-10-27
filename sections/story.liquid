@@ -10,7 +10,7 @@
         {% render 'heading', tag: 'h2', text: section.settings.heading, emphasis: section.settings.heading_emphasis %}
         <div class="rte">{{ section.settings.text }}</div>
         {%- if section.settings.link_label != blank -%}
-          <a href="{{ section.settings.link | default: '/pages/ingredients' }}" class="text-link">{{ section.settings.link_label | escape }}</a>
+          {%- assign story_link = section.settings.link | default: '/pages/ingredients' -%}<a href="{% render 'safe-url', url: story_link %}" class="text-link">{{ section.settings.link_label | escape }}</a>
         {%- endif -%}
       </div>
     </div>

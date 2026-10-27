@@ -800,3 +800,12 @@ button, .btn, a.button { font-size: 1rem; } /* ~16px */
 .ing-more { margin-top: 1.6rem; }
 .ing-more .accordion-trigger { font-size: 1.2rem; padding: 1rem 0; }
 @media (max-width: 560px) { .ing-facts { grid-template-columns: 1fr; } }
+
+/* Header: built-in Kehsora navigation split around the centred logo */
+.nav-row { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); column-gap: 1.5rem; }
+.nav-right { align-items: center; gap: clamp(1rem, 2vw, 2rem); }
+.nav-right-links { display: flex; gap: clamp(1.2rem, 2.2vw, 2.4rem); }
+@media (max-width: 1180px) {
+  .nav-left, .nav-right-links { display: none; }
+  .mobile-menu-btn { display: grid; }
+}
