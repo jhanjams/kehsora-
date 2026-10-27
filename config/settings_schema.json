@@ -48,6 +48,17 @@
         "id": "favicon",
         "label": "Favicon",
         "info": "32 × 32px PNG. When empty, a gold “k” monogram is used."
+      },
+      {
+        "type": "range",
+        "id": "desktop_scale",
+        "label": "Page scale on laptops & desktops",
+        "info": "Shows the whole site smaller on screens 1024px and wider, like the browser zoomed out. 100% = normal size. Phones are not affected.",
+        "min": 60,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 75
       }
     ]
   },

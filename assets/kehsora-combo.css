@@ -85,3 +85,16 @@
   .combo-studio-grid { grid-template-columns: 1fr; }
   .combo-offer-tabs { justify-content: flex-start; }
 }
+
+/* Phone: offers as a tidy grid of chips, picker kept inside the screen */
+@media (max-width: 560px) {
+  .combo-studio-grid { grid-template-columns: minmax(0, 1fr); gap: 1.8rem; }
+  .combo-studio-grid > * { min-width: 0; }
+  .combo-offer-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; overflow: visible; border-bottom: 0; }
+  .combo-offer-tab { padding: .7rem .3rem; border: 1px solid var(--line); text-align: center; white-space: normal; line-height: 1.25; }
+  .combo-offer-tab.active { border-color: var(--gold); }
+  .combo-offer-tab::after { display: none; }
+  .combo-offer-tab-name { font-size: .58rem; letter-spacing: .12em; }
+  .combo-studio-title { font-size: 1.75rem; }
+  .combo-picker, .combo-form { min-width: 0; }
+}

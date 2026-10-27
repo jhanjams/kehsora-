@@ -235,7 +235,7 @@ strong { font-weight: 500; color: var(--cream); }
 .search-overlay {
   position: fixed; inset: 0; z-index: 95;
   background: rgba(22, 3, 10, 0.97);
-  display: flex; align-items: flex-start; justify-content: center; padding-top: 22vh;
+  display: flex; align-items: flex-start; justify-content: center; padding-top: calc(22vh / var(--zoom, 1));
   opacity: 0; visibility: hidden; transition: opacity .4s var(--ease), visibility .4s;
 }
 .search-overlay.open { opacity: 1; visibility: visible; }
@@ -258,7 +258,7 @@ strong { font-weight: 500; color: var(--cream); }
    ========================================================================== */
 .hero {
   position: relative;
-  min-height: calc(100svh - 38px);
+  min-height: calc(100svh / var(--zoom, 1) - 38px);
   margin-top: calc(-1 * var(--header-h));
   padding-top: var(--header-h);
   display: flex; align-items: center; justify-content: center;
@@ -861,7 +861,7 @@ button, .btn, a.button { font-size: 1rem; } /* ~16px */
 .cert:hover .cert-sheet { transform: translateY(-4px); border-color: var(--gold); }
 .cert-title { font-family: var(--font-brand); font-size: 1.15rem; color: var(--cream); }
 .cert-sub { font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
-.cert-viewer { max-width: min(900px, 94vw); max-height: 92vh; width: 100%; padding: 3.2rem 1.2rem 1.2rem; border: 1px solid var(--gold-line); background: var(--maroon-900); color: var(--cream); overflow: auto; }
+.cert-viewer { max-width: min(900px, 94vw); max-height: calc(92vh / var(--zoom, 1)); width: 100%; padding: 3.2rem 1.2rem 1.2rem; border: 1px solid var(--gold-line); background: var(--maroon-900); color: var(--cream); overflow: auto; }
 .cert-viewer::backdrop { background: rgba(10, 1, 4, .82); }
 .cert-viewer img { width: 100%; height: auto; display: block; background: #fff; }
 .cert-viewer-title { position: absolute; top: 1.1rem; left: 1.2rem; font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-light); }
@@ -895,3 +895,76 @@ button, .btn, a.button { font-size: 1rem; } /* ~16px */
 .review-stars input:focus-visible + label { outline: 1px solid var(--gold); outline-offset: 2px; }
 .reviews-app { min-height: 4rem; }
 @media (max-width: 860px) { .reviews-fallback, .review-fields { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   Phone polish — keeps every section inside the screen and scales type,
+   buttons and spacing down for small screens.
+   ========================================================================== */
+@media (max-width: 1080px) {
+  .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .pdp, .split, .cart-page, .concern-layout, .concern-layout.has-pair, .ingredient-detail,
+  .ritual-grid, .reviews-fallback, .niche-panel-inner { grid-template-columns: minmax(0, 1fr); }
+  .review-fields { grid-template-columns: minmax(0, 1fr); }
+  .pdp > *, .reviews-fallback > *, .ritual-grid > * { min-width: 0; }
+}
+@media (max-width: 560px) {
+  .section { padding: 3.6rem 0; }
+  .section-head { margin-bottom: 2rem; }
+  h2 { font-size: clamp(1.75rem, 7.4vw, 2.1rem); }
+
+  /* buttons wrap instead of pushing past the screen edge */
+  .btn { white-space: normal; text-align: center; line-height: 1.3; padding: .75rem 1.4rem; letter-spacing: .18em; }
+  .product-card .btn { min-height: 40px; padding: .55rem .4rem; font-size: .58rem; letter-spacing: .12em; }
+  .product-card h3 { font-size: 1.02rem; line-height: 1.2; }
+  .product-card-kicker, .product-card .kicker { font-size: .54rem; letter-spacing: .16em; }
+
+  /* product page */
+  .pdp h1 { font-size: 2rem; line-height: 1.08; }
+  .breadcrumb { font-size: .6rem; letter-spacing: .14em; }
+
+  /* values: two compact columns instead of one long list */
+  .value-grid, .value-grid.cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .value-item { padding: 1.3rem 1rem; }
+  .value-item h4 { font-size: 1.02rem; line-height: 1.2; }
+  .value-item p { font-size: .78rem; line-height: 1.55; }
+  .value-icon { margin-bottom: .7rem; }
+
+  /* how to use & certificates */
+  .ritual-steps { margin-top: 1.8rem; gap: 1.2rem; }
+  .ritual-step-num { font-size: 1.5rem; }
+  .ritual-step h3 { font-size: 1.1rem; }
+  .ritual-certs { margin-top: 3rem; padding-top: 2.6rem; }
+  .cert-title { font-size: 1rem; }
+
+  /* ingredient arches */
+  .niche-name { font-size: 1.2rem; }
+  .niche-sub { font-size: .56rem; letter-spacing: .16em; }
+  .niche-panel-head h3 { font-size: 1.8rem; }
+
+  /* reviews */
+  .review-form { padding: 1.4rem 1.1rem; }
+  .reviews-share .btn { width: 100%; }
+
+  /* shop page */
+  .shop-combos { margin-top: 3.2rem; padding-top: 2.6rem; }
+  .page-hero { padding-bottom: 2rem; }
+}
+
+/* Phone header: logo on the left, icons on the right, never overlapping */
+@media (max-width: 1240px) {
+  .nav-row { grid-template-columns: auto minmax(0, 1fr); }
+  .nav-logo { grid-column: 1; justify-self: start; }
+  .nav-right { grid-column: 2; justify-self: end; }
+}
+@media (max-width: 400px) {
+  .nav-logo { font-size: 1.65rem; }
+  .nav-icons { gap: .2rem; }
+}
+@media (max-width: 560px) {
+  /* concern tabs wrap onto two lines instead of hiding off-screen */
+  .concern-tabs:not(.combo-offer-tabs) { flex-wrap: wrap; overflow: visible; gap: .2rem 1.3rem; }
+  .concern-tabs:not(.combo-offer-tabs) .concern-tab { padding-top: .7rem; padding-bottom: .7rem; }
+  .product-card .btn { font-size: .62rem; letter-spacing: .14em; }
+}

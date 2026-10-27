@@ -4,13 +4,13 @@
    ========================================================================== */
 .orbit {
   position: relative;
-  min-height: calc(100svh - 38px);
+  min-height: calc(100svh / var(--zoom, 1) - 38px);
   margin-top: calc(-1 * var(--header-h));
   padding-top: var(--header-h);
   overflow: hidden;
   isolation: isolate;
 }
-.orbit-stage { position: relative; height: calc(100svh - 38px - var(--header-h)); min-height: 560px; }
+.orbit-stage { position: relative; height: calc(100svh / var(--zoom, 1) - 38px - var(--header-h)); min-height: 560px; }
 
 /* ---- The ring ---- */
 .orbit-ring {
@@ -158,7 +158,9 @@
 
 /* ---- Mobile ---- */
 @media (max-width: 860px) {
-  .orbit-stage { min-height: 600px; }
+  .orbit-stage { min-height: 540px; max-height: 660px; }
+  .orbit { min-height: 0; }
+  .orbit-hint { font-size: .6rem; letter-spacing: .2em; }
   .orbit-intro { top: 5%; }
   .orbit-title { font-size: clamp(2rem, 9vw, 2.6rem); }
   .spot { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto auto; align-content: center; row-gap: 1rem; padding-top: 4.5rem; }

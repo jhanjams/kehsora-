@@ -35,6 +35,17 @@
         --gold-light: {{ settings.color_accent_light }};
         --cream: {{ settings.color_text }};
       }
+      {%- assign page_scale = settings.desktop_scale | default: 100 -%}
+      {%- if page_scale < 100 %}
+      /* Desktop page scale: the site renders as if the browser were zoomed out.
+         Viewport-height sizes are divided by --zoom so full-screen areas still fill the screen. */
+      @supports (zoom: 0.5) {
+        @media (min-width: 1024px) {
+          :root { --zoom: {{ page_scale | times: 0.01 }}; }
+          html { zoom: var(--zoom); }
+        }
+      }
+      {%- endif %}
     </style>
 
     <script>

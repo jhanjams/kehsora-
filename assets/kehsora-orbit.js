@@ -54,11 +54,11 @@
       var mobile = W < 860;
       g.W = W; g.H = H;
       g.cx = W / 2;
-      g.cy = H * (mobile ? 0.62 : 0.63);
+      g.cy = H * (mobile ? 0.66 : 0.63);
       g.rx = Math.min(W * (mobile ? 0.47 : 0.41), 660);
       g.ry = g.rx * (mobile ? 0.5 : 0.28);
       g.band = Math.max(20, Math.min(g.ry * (mobile ? 0.22 : 0.3), 56));
-      g.bw = Math.max(70, Math.min(g.rx * (mobile ? 0.74 : 0.32), 200));
+      g.bw = Math.max(mobile ? 56 : 70, Math.min(g.rx * (mobile ? 0.5 : 0.32), 200));
       // slim cutout bottles: narrower frame, height capped so the front bottle stays on screen
       g.cut = !!root.querySelector('.orbit-item.is-cutout');
       g.ratio = g.cut ? 20 / 9 : 1.5;
