@@ -52,20 +52,22 @@
     function layout() {
       var W = stage.clientWidth, H = stage.clientHeight;
       var mobile = W < 860;
-      g.W = W; g.H = H;
+      g.W = W; g.H = H; g.mobile = mobile;
       g.cx = W / 2;
-      g.cy = H * (mobile ? 0.66 : 0.63);
-      g.rx = Math.min(W * (mobile ? 0.47 : 0.41), 660);
-      g.ry = g.rx * (mobile ? 0.5 : 0.28);
-      g.band = Math.max(20, Math.min(g.ry * (mobile ? 0.22 : 0.3), 56));
-      g.bw = Math.max(mobile ? 56 : 70, Math.min(g.rx * (mobile ? 0.5 : 0.32), 200));
+      g.cy = H * (mobile ? 0.64 : 0.63);
+      // phones: a narrower, more tilted ring that sits fully inside the screen,
+      // so the back bottles rise clear of the front ones
+      g.rx = Math.min(W * (mobile ? 0.39 : 0.41), 660);
+      g.ry = g.rx * (mobile ? 0.62 : 0.28);
+      g.band = mobile ? Math.max(16, Math.min(g.ry * 0.2, 24)) : Math.max(20, Math.min(g.ry * 0.3, 56));
+      g.bw = Math.max(mobile ? 52 : 70, Math.min(g.rx * (mobile ? 0.62 : 0.32), 200));
       // slim cutout bottles: narrower frame, height capped so the front bottle stays on screen
       g.cut = !!root.querySelector('.orbit-item.is-cutout');
       g.ratio = g.cut ? 20 / 9 : 1.5;
       if (g.cut) {
         // the front bottle (scale 1.12) stands on the ring; keep its top below the headline area
         var room = (g.cy + g.ry) - H * (mobile ? 0.3 : 0.33);
-        g.bw = Math.max(56, Math.min(g.bw * 0.92, room / (g.ratio * 1.12)));
+        g.bw = Math.max(mobile ? 48 : 56, Math.min(g.bw * 0.92, room / (g.ratio * 1.12)));
       }
       stage.style.setProperty('--bottle-w', g.bw + 'px');
 
@@ -87,7 +89,7 @@
       // Fill the ring with enough repeats of the text to cover twice its length
       pathLength = path.getTotalLength ? path.getTotalLength() : TAU * g.rx;
       if (textEl && textPath) {
-        textEl.style.fontSize = Math.max(11, Math.round(g.band * 0.36)) + 'px';
+        textEl.style.fontSize = (mobile ? Math.max(9, Math.round(g.band * 0.44)) : Math.max(11, Math.round(g.band * 0.36))) + 'px';
         var base = textPath.getAttribute('data-text') || '';
         textPath.textContent = base;
         var unit = textPath.getComputedTextLength ? textPath.getComputedTextLength() : base.length * 10;
@@ -103,8 +105,9 @@
       var depth = (Math.sin(t) + 1) / 2;           // 1 = front (bottom of ring)
       var x = g.cx + g.rx * Math.cos(t);
       var y = g.cy + g.ry * Math.sin(t);
-      var scale = 0.5 + 0.62 * depth;
-      var tilt = Math.cos(t) * -16 + Math.sin(t * 2 + i) * 4;
+      // phones: back bottles shrink further so the front one reads as the hero
+      var scale = g.mobile ? 0.4 + 0.72 * depth : 0.5 + 0.62 * depth;
+      var tilt = Math.cos(t) * (g.mobile ? -9 : -16) + Math.sin(t * 2 + i) * (g.mobile ? 2 : 4);
       return { x: x, y: y, depth: depth, scale: scale, tilt: tilt };
     }
 
@@ -121,8 +124,8 @@
         var el = items[i];
         el.style.transform = transformFor(p);
         el.style.zIndex = String(Math.round(p.depth * 100));
-        el.style.opacity = (0.5 + 0.5 * p.depth).toFixed(3);
-        el.style.filter = 'brightness(' + (0.55 + 0.45 * p.depth).toFixed(3) + ')';
+        el.style.opacity = (g.mobile ? 0.25 + 0.75 * Math.pow(p.depth, 1.4) : 0.5 + 0.5 * p.depth).toFixed(3);
+        el.style.filter = 'brightness(' + ((g.mobile ? 0.45 : 0.55) + (g.mobile ? 0.55 : 0.45) * p.depth).toFixed(3) + ')';
       }
       if (textPath) {
         var phase = ((angle / TAU) * pathLength) % pathLength;
