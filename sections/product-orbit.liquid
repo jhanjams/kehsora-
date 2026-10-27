@@ -10,7 +10,17 @@
 {%- liquid
   assign item_count = 0
   for block in section.blocks
-    if block.settings.product != blank
+    assign p = block.settings.product
+    if p == blank or p.id == blank
+      capture ph
+        render 'product-handle', name: block.settings.name
+      endcapture
+      assign ph = ph | strip
+      if ph != blank
+        assign p = all_products[ph]
+      endif
+    endif
+    if p != blank and p.id != blank
       assign item_count = item_count | plus: 1
     endif
   endfor
@@ -34,8 +44,19 @@
     <div class="orbit-items" data-orbit-items>
       {%- assign idx = 0 -%}
       {%- for block in section.blocks -%}
-        {%- assign p = block.settings.product -%}
-        {%- if p != blank -%}
+        {%- liquid
+          assign p = block.settings.product
+          if p == blank or p.id == blank
+            capture ph
+              render 'product-handle', name: block.settings.name
+            endcapture
+            assign ph = ph | strip
+            if ph != blank
+              assign p = all_products[ph]
+            endif
+          endif
+        -%}
+        {%- if p != blank and p.id != blank -%}
           {%- liquid
             assign short = block.settings.name | default: p.title | remove: ' Hair Oil Concentrate' | remove: ' Concentrate'
             assign cut = block.settings.cutout
@@ -69,8 +90,19 @@
       <button type="button" class="orbit-back" data-orbit-back>&larr; {{ section.settings.back_label | escape }}</button>
       {%- assign idx = 0 -%}
       {%- for block in section.blocks -%}
-        {%- assign p = block.settings.product -%}
-        {%- if p != blank -%}
+        {%- liquid
+          assign p = block.settings.product
+          if p == blank or p.id == blank
+            capture ph
+              render 'product-handle', name: block.settings.name
+            endcapture
+            assign ph = ph | strip
+            if ph != blank
+              assign p = all_products[ph]
+            endif
+          endif
+        -%}
+        {%- if p != blank and p.id != blank -%}
           {%- liquid
             assign short = block.settings.name | default: p.title | remove: ' Hair Oil Concentrate' | remove: ' Concentrate'
             assign words = short | split: ' '

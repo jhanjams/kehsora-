@@ -3,6 +3,15 @@
     {%- for block in section.blocks -%}
       {%- liquid
         assign ing_product = block.settings.product
+        if ing_product == blank or ing_product.id == blank
+          capture ph
+            render 'product-handle', name: block.settings.name
+          endcapture
+          assign ph = ph | strip
+          if ph != blank
+            assign ing_product = all_products[ph]
+          endif
+        endif
         assign ing_image = block.settings.image | default: ing_product.featured_image
         assign ing_name = block.settings.name | default: ing_product.title
         assign ing_anchor = block.settings.anchor | default: ing_name | handle

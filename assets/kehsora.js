@@ -234,6 +234,46 @@
       return;
     }
 
+    var niche = t.closest('[data-niche]');
+    var nicheClose = t.closest('[data-niche-close]');
+    if (niche || nicheClose) {
+      var wrap = (niche || nicheClose).closest('.container');
+      var openId = niche && niche.getAttribute('aria-expanded') !== 'true' ? niche.getAttribute('data-niche') : null;
+      $$('[data-niche]', wrap).forEach(function (b) { b.setAttribute('aria-expanded', b.getAttribute('data-niche') === openId ? 'true' : 'false'); });
+      $$('.niche-panel', wrap).forEach(function (p) { p.hidden = p.id !== openId; });
+      if (openId) {
+        var panel = document.getElementById(openId);
+        var rect = panel.getBoundingClientRect();
+        if (rect.bottom > window.innerHeight) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else if (nicheClose) {
+        var row = $('[data-niches]', wrap);
+        if (row && row.getBoundingClientRect().top < 0) row.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      return;
+    }
+
+    var shopFilter = t.closest('[data-shop] [data-shop-filter]');
+    if (shopFilter) {
+      var shop = shopFilter.closest('[data-shop]');
+      var key = shopFilter.getAttribute('data-shop-filter');
+      var shown = 0;
+      $$('.concern-tab[data-shop-filter]', shop).forEach(function (b) {
+        var on = b.getAttribute('data-shop-filter') === key;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      $$('.shop-item', shop).forEach(function (item) {
+        var match = (' ' + item.getAttribute('data-filters') + ' ').indexOf(' ' + key + ' ') > -1;
+        item.hidden = !match;
+        if (match) shown++;
+      });
+      var empty = $('[data-shop-empty]', shop);
+      if (empty) empty.hidden = shown > 0;
+      var count = $('[data-shop-count]', shop);
+      if (count) count.textContent = count.getAttribute(shown === 1 ? 'data-one' : 'data-other').replace('[n]', shown);
+      return;
+    }
+
     var acc = t.closest('.accordion-trigger');
     if (acc) {
       var item = acc.closest('.accordion-item');

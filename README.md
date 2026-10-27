@@ -64,3 +64,26 @@ A complete Shopify theme for Kehsora: a continuous deep-maroon background, warm 
   | How we prepare it | |
   | Best for | |
   | Pairs well with | |
+
+## Combos, reviews and certificates (late October 2026)
+
+- **Combos are recognised from the product title** (`snippets/combo-meta.liquid`).
+  "Any 2 Concentrates – Combo Offer" lets shoppers pick 2, "Any 3…" picks 3,
+  "Bundle of All 5…" includes everything, and "Base Oil" in the title adds the
+  base oil. Tags (`combo`, `pick-2`, `with-base-oil`) still work and win over the title.
+- **Homepage combo studio** lists every combo automatically, in the order
+  2 + base oil, any 3, any 2, all 5, all 5 + base oil. Add blocks only to choose
+  the offers yourself.
+- **Shop page** shows the oils and the combos in separate sections. The concern
+  filters match product titles (e.g. Hair Fall → Bhringraj, Rosemary), so no tags
+  are needed. Bestsellers hide combos.
+- **How to use & certificates** (`sections/ritual-guide.liquid`) sits under
+  "Every bottle, held to the same rule". The COAs are theme assets
+  (`assets/coa-*.jpg`); swap any of them for a new upload in the section's
+  certificate blocks.
+- **Product reviews** (`sections/product-reviews.liquid`) sits under every product.
+  Install Judge.me (free, photo + video reviews) and add its "Review widget" block
+  to this section; until then a review form and a WhatsApp button for photos and
+  videos are shown.
+- **Ingredient arches** open a paragraph on tap. Upload ingredient pictures in
+  the block's "Ingredient picture" setting.

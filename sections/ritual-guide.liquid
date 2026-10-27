@@ -1,0 +1,166 @@
+{%- comment -%}
+  RITUAL GUIDE — how to use, warnings and certificates, shown under the
+  "Every bottle, held to the same rule" values. Certificates open full size
+  in a viewer; each uses an uploaded image, or a theme asset file name.
+{%- endcomment -%}
+{%- liquid
+  assign step_count = 0
+  assign cert_count = 0
+  assign step_num = 0
+  for block in section.blocks
+    if block.type == 'step'
+      assign step_count = step_count | plus: 1
+    elsif block.type == 'certificate'
+      assign cert_count = cert_count | plus: 1
+    endif
+  endfor
+-%}
+<section class="section ritual-guide" id="{{ section.settings.anchor | default: 'how-to-use' | handle }}">
+  <div class="container">
+    <div class="ritual-grid">
+      <div class="ritual-use reveal">
+        {%- if section.settings.use_eyebrow != blank -%}<div class="section-eyebrow">{{ section.settings.use_eyebrow | escape }}</div>{%- endif -%}
+        {% render 'heading', tag: 'h2', text: section.settings.use_heading, emphasis: section.settings.use_heading_emphasis %}
+        {%- if section.settings.use_text != blank -%}<p class="ritual-lead">{{ section.settings.use_text | escape }}</p>{%- endif -%}
+        {%- if step_count > 0 -%}
+          <ol class="ritual-steps">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'step' -%}
+                {%- assign step_num = step_num | plus: 1 -%}
+                <li class="ritual-step" {{ block.shopify_attributes }}>
+                  <span class="ritual-step-num" aria-hidden="true">{% if step_num < 10 %}0{% endif %}{{ step_num }}</span>
+                  <div>
+                    <h3>{{ block.settings.title | escape }}</h3>
+                    <p>{{ block.settings.text | escape }}</p>
+                  </div>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ol>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.warnings != blank -%}
+        <aside class="ritual-warnings reveal" aria-labelledby="warn-{{ section.id }}">
+          <div class="ritual-warnings-head">
+            {% render 'icon', name: 'shield', size: 20 %}
+            <h3 id="warn-{{ section.id }}">{{ section.settings.warnings_heading | escape }}</h3>
+          </div>
+          <div class="rte">{{ section.settings.warnings }}</div>
+        </aside>
+      {%- endif -%}
+    </div>
+
+    {%- if cert_count > 0 -%}
+      <div class="ritual-certs">
+        <div class="section-head reveal">
+          <div>
+            {%- if section.settings.cert_eyebrow != blank -%}<div class="section-eyebrow">{{ section.settings.cert_eyebrow | escape }}</div>{%- endif -%}
+            {% render 'heading', tag: 'h2', text: section.settings.cert_heading, emphasis: section.settings.cert_heading_emphasis %}
+            {%- if section.settings.cert_text != blank -%}<p>{{ section.settings.cert_text | escape }}</p>{%- endif -%}
+          </div>
+        </div>
+        <div class="cert-row reveal-stagger">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'certificate' -%}
+              {%- liquid
+                assign cert_full = ''
+                assign cert_thumb = ''
+                if block.settings.image != blank
+                  assign cert_full = block.settings.image | image_url: width: 1600
+                  assign cert_thumb = block.settings.image | image_url: width: 500
+                elsif block.settings.image_file != blank
+                  assign cert_full = block.settings.image_file | asset_url
+                  assign cert_thumb = cert_full
+                endif
+                assign cert_href = cert_full
+                if block.settings.file != blank
+                  assign cert_href = block.settings.file
+                endif
+              -%}
+              {%- if cert_href != blank -%}
+                <a class="cert" href="{{ cert_href }}" target="_blank" rel="noopener"{% if block.settings.file == blank %} data-cert-open data-src="{{ cert_full }}"{% endif %} data-title="{{ block.settings.title | escape }}" {{ block.shopify_attributes }}>
+                  <span class="cert-sheet">
+                    <img src="{{ cert_thumb }}" alt="{{ block.settings.title | escape }}" loading="lazy" width="500" height="650">
+                  </span>
+                  <span class="cert-title">{{ block.settings.title | escape }}</span>
+                  {%- if block.settings.subtitle != blank -%}<span class="cert-sub">{{ block.settings.subtitle | escape }}</span>{%- endif -%}
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <dialog class="cert-viewer" data-cert-viewer aria-label="{{ section.settings.cert_heading | escape }}">
+        <button type="button" class="nav-icon-btn cert-viewer-close" data-cert-close aria-label="{{ 'sections.header.close_menu' | t }}">{% render 'icon', name: 'close', size: 22 %}</button>
+        <p class="cert-viewer-title" data-cert-title></p>
+        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="900" height="1170" data-cert-img>
+      </dialog>
+      <script>
+        (function () {
+          var root = document.getElementById({{ section.settings.anchor | default: 'how-to-use' | handle | json }});
+          if (!root) return;
+          var dlg = root.querySelector('[data-cert-viewer]');
+          if (!dlg || typeof dlg.showModal !== 'function') return;
+          root.addEventListener('click', function (e) {
+            var a = e.target.closest('[data-cert-open]');
+            if (a) {
+              e.preventDefault();
+              dlg.querySelector('[data-cert-img]').src = a.getAttribute('data-src');
+              dlg.querySelector('[data-cert-img]').alt = a.getAttribute('data-title');
+              dlg.querySelector('[data-cert-title]').textContent = a.getAttribute('data-title');
+              dlg.showModal();
+              return;
+            }
+            if (e.target.closest('[data-cert-close]') || e.target === dlg) dlg.close();
+          });
+        })();
+      </script>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "How to use & certificates",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "how-to-use", "info": "Menus can link here with /#how-to-use" },
+    { "type": "header", "content": "How to use" },
+    { "type": "text", "id": "use_eyebrow", "label": "Eyebrow", "default": "The ritual" },
+    { "type": "text", "id": "use_heading", "label": "Heading", "default": "How to" },
+    { "type": "text", "id": "use_heading_emphasis", "label": "Heading (italic gold part)", "default": "use it" },
+    { "type": "textarea", "id": "use_text", "label": "Intro", "default": "Our concentrates are made to be blended — never used on their own." },
+    { "type": "header", "content": "Warnings" },
+    { "type": "text", "id": "warnings_heading", "label": "Heading", "default": "Before you begin" },
+    { "type": "richtext", "id": "warnings", "label": "Warnings", "default": "<ul><li>For external use only.</li><li>Always blend with a base oil — do not apply undiluted.</li><li>Patch test 24 hours before first use.</li></ul>" },
+    { "type": "header", "content": "Certificates" },
+    { "type": "text", "id": "cert_eyebrow", "label": "Eyebrow", "default": "Tested & certified" },
+    { "type": "text", "id": "cert_heading", "label": "Heading", "default": "Our" },
+    { "type": "text", "id": "cert_heading_emphasis", "label": "Heading (italic gold part)", "default": "certificates" },
+    { "type": "textarea", "id": "cert_text", "label": "Text", "default": "Every ingredient arrives with its Certificate of Analysis. Tap one to read it in full." }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "How-to step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Blend" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Mix 30ml of concentrate into 150ml of your base oil." }
+      ]
+    },
+    {
+      "type": "certificate",
+      "name": "Certificate",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Certificate of Analysis" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Batch tested" },
+        { "type": "image_picker", "id": "image", "label": "Certificate image" },
+        { "type": "text", "id": "image_file", "label": "…or theme asset file name", "info": "e.g. coa-rosemary.jpg. Used when no image is uploaded." },
+        { "type": "url", "id": "file", "label": "Link to PDF (optional)", "info": "Upload the PDF in Content → Files and paste its link. Opens instead of the image." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "How to use & certificates", "blocks": [{ "type": "step" }, { "type": "certificate" }] }]
+}
+{% endschema %}

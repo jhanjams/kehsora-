@@ -21,44 +21,109 @@
   </div>
 </section>
 
-<section class="section" style="padding-top: 1rem;">
+{%- liquid
+  assign separate = section.settings.separate_combos
+-%}
+<section class="section" style="padding-top: 1rem;" data-shop>
   <div class="container">
     {%- paginate collection.products by section.settings.products_per_page -%}
+      {%- liquid
+        comment
+          Sort this page's products into oils and combos (snippets/combo-meta),
+          and work out which concern filters each oil belongs to: a filter
+          matches by product tag or by a word in the product title.
+        endcomment
+        assign oil_count = 0
+        assign combo_count = 0
+        for product in collection.products
+          capture p_meta
+            render 'combo-meta', product: product
+          endcapture
+          if separate and p_meta contains "true|"
+            assign combo_count = combo_count | plus: 1
+          else
+            assign oil_count = oil_count | plus: 1
+          endif
+        endfor
+      -%}
       <div class="shop-toolbar">
         {%- if section.blocks.size > 0 -%}
-          <nav class="concern-tabs" aria-label="{{ 'collections.filter_by_concern' | t }}">
-            <a href="{{ collection.url }}" class="concern-tab{% if current_tags == blank %} active{% endif %}">{{ 'collections.all' | t }}</a>
+          <div class="concern-tabs" role="group" aria-label="{{ 'collections.filter_by_concern' | t }}">
+            <button type="button" class="concern-tab active" data-shop-filter="all" aria-pressed="true">{{ 'collections.all' | t }}</button>
             {%- for block in section.blocks -%}
-              {%- liquid
-                assign tag_handle = block.settings.tag | handle
-                assign is_active = false
-                for t in current_tags
-                  assign t_handle = t | handle
-                  if t_handle == tag_handle
-                    assign is_active = true
-                  endif
-                endfor
-              -%}
-              <a href="{{ collection.url }}/{{ tag_handle }}" class="concern-tab{% if is_active %} active{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+              <button type="button" class="concern-tab" data-shop-filter="{{ block.id }}" aria-pressed="false" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
             {%- endfor -%}
-          </nav>
+          </div>
         {%- endif -%}
-        <div class="shop-count">
-          {{ 'collections.product_count' | t: count: collection.products_count }}
-          {%- if current_tags != blank %}<a href="{{ collection.url }}">{{ 'collections.clear' | t }}</a>{% endif -%}
+        <div class="shop-count" data-shop-count data-one="{{ 'collections.product_count.one' | t: count: '[n]' | escape }}" data-other="{{ 'collections.product_count.other' | t: count: '[n]' | escape }}">
+          {{ 'collections.product_count' | t: count: oil_count }}
         </div>
       </div>
 
-      {%- if collection.products.size > 0 -%}
+      {%- if oil_count > 0 -%}
         <div class="product-grid">
           {%- for product in collection.products -%}
-            {% render 'product-card', card_product: product %}
+            {%- capture p_meta -%}{% render 'combo-meta', product: product %}{%- endcapture -%}
+            {%- unless separate and p_meta contains "true|" -%}
+              {%- liquid
+                assign p_title = product.title | downcase
+                assign p_tags = product.tags | join: '|' | downcase | prepend: '|' | append: '|'
+                assign p_filters = ''
+                for block in section.blocks
+                  assign hit = false
+                  assign b_tag = block.settings.tag | downcase | strip
+                  if b_tag != blank
+                    assign b_tag_wrapped = '|' | append: b_tag | append: '|'
+                    if p_tags contains b_tag_wrapped
+                      assign hit = true
+                    endif
+                  endif
+                  assign words = block.settings.keywords | downcase | split: ','
+                  for w in words
+                    assign kw = w | strip
+                    if kw != blank and p_title contains kw
+                      assign hit = true
+                    endif
+                  endfor
+                  if hit
+                    assign p_filters = p_filters | append: ' ' | append: block.id
+                  endif
+                endfor
+              -%}
+              <div class="shop-item" data-filters="all{{ p_filters }}">
+                {% render 'product-card', card_product: product %}
+              </div>
+            {%- endunless -%}
           {%- endfor -%}
         </div>
-      {%- else -%}
+        <div class="shop-empty" data-shop-empty hidden>
+          <p>{{ 'collections.empty' | t }}</p>
+          <button type="button" class="btn btn-outline btn-sm" data-shop-filter="all">{{ 'collections.view_all' | t }}</button>
+        </div>
+      {%- elsif combo_count == 0 -%}
         <div class="shop-empty">
           <p>{{ 'collections.empty' | t }}</p>
-          <a href="{{ collection.url }}" class="btn btn-outline btn-sm">{{ 'collections.view_all' | t }}</a>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn-outline btn-sm">{{ 'collections.view_all' | t }}</a>
+        </div>
+      {%- endif -%}
+
+      {%- if combo_count > 0 -%}
+        <div class="shop-combos" id="combos">
+          <div class="section-head">
+            <div>
+              {%- if section.settings.combos_eyebrow != blank -%}<div class="section-eyebrow">{{ section.settings.combos_eyebrow | escape }}</div>{%- endif -%}
+              {% render 'heading', tag: 'h2', text: section.settings.combos_heading, emphasis: section.settings.combos_heading_emphasis %}
+              {%- if section.settings.combos_text != blank -%}<p>{{ section.settings.combos_text | escape }}</p>{%- endif -%}
+            </div>
+          </div>
+          <div class="product-grid">
+            {%- for product in collection.products -%}
+              {%- capture p_meta -%}{% render 'combo-meta', product: product %}{%- endcapture -%}
+              {%- if p_meta contains "true|" -%}
+                {% render 'product-card', card_product: product %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
         </div>
       {%- endif -%}
 
@@ -81,8 +146,14 @@
     { "type": "paragraph", "content": "Collections show their own title and description. The fields below are used on the all-products page (/collections/all)." },
     { "type": "text", "id": "all_heading", "label": "All products heading", "default": "Concentrates," },
     { "type": "text", "id": "all_heading_emphasis", "label": "All products heading (italic gold part)", "default": "made to work" },
-    { "type": "textarea", "id": "all_text", "label": "All products text", "default": "Five hero ingredients, each at real concentration. Mix into the oil you already love, or apply directly for a high-potency treatment." },
-    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 }
+    { "type": "textarea", "id": "all_text", "label": "All products text", "default": "Five hero ingredients, each at real concentration. Blend into the oil you already love — 30ml of concentrate into 150ml of base oil." },
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "header", "content": "Combo offers" },
+    { "type": "checkbox", "id": "separate_combos", "label": "Show combos in their own section", "default": true },
+    { "type": "text", "id": "combos_eyebrow", "label": "Combos eyebrow", "default": "Better together" },
+    { "type": "text", "id": "combos_heading", "label": "Combos heading", "default": "Combo" },
+    { "type": "text", "id": "combos_heading_emphasis", "label": "Combos heading (italic gold part)", "default": "offers" },
+    { "type": "textarea", "id": "combos_text", "label": "Combos text", "default": "Pick your concentrates and save — every combo ships together." }
   ],
   "blocks": [
     {
@@ -90,7 +161,8 @@
       "name": "Concern filter",
       "settings": [
         { "type": "text", "id": "label", "label": "Label", "default": "Hair Fall" },
-        { "type": "text", "id": "tag", "label": "Product tag", "default": "Hair Fall", "info": "Products with this tag appear under this filter." }
+        { "type": "text", "id": "keywords", "label": "Products whose title contains", "default": "Bhringraj, Rosemary", "info": "Comma separated, e.g. Bhringraj, Rosemary" },
+        { "type": "text", "id": "tag", "label": "…or products with this tag", "info": "Optional." }
       ]
     }
   ]

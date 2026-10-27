@@ -7,11 +7,12 @@
   endif
 -%}
 {%- capture builtin_left -%}
+  <a href="{{ routes.root_url }}" class="nav-link"{% if template.name == 'index' %} aria-current="page"{% endif %}>{{ section.settings.label_home | default: 'Home' | escape }}</a>
   <a href="{{ routes.all_products_collection_url }}" class="nav-link">{{ section.settings.label_shop | escape }}</a>
   <a href="{{ routes.root_url }}#combos" class="nav-link">{{ section.settings.label_combos | escape }}</a>
-  <a href="{% render 'safe-url', url: '/pages/ingredients' %}" class="nav-link">{{ section.settings.label_ingredients | escape }}</a>
 {%- endcapture -%}
 {%- capture builtin_right -%}
+  <a href="{% render 'safe-url', url: '/pages/ingredients' %}" class="nav-link">{{ section.settings.label_ingredients | escape }}</a>
   <a href="{{ routes.root_url }}#our-story" class="nav-link">{{ section.settings.label_story | escape }}</a>
   <a href="{% render 'safe-url', url: '/pages/contact' %}" class="nav-link">{{ section.settings.label_contact | escape }}</a>
 {%- endcapture -%}
@@ -59,10 +60,10 @@
   <button type="button" class="nav-icon-btn mobile-nav-close" data-mobile-nav-close aria-label="{{ 'sections.header.close_menu' | t }}">
     {% render 'icon', name: 'close', size: 22 %}
   </button>
-  <a href="{{ routes.root_url }}">{{ 'sections.header.home' | t }}</a>
   {%- if use_builtin -%}
     {{ builtin_left | append: builtin_right | replace: ' class="nav-link"', '' }}
   {%- else -%}
+    <a href="{{ routes.root_url }}">{{ 'sections.header.home' | t }}</a>
     {%- for link in menu_links -%}
       <a href="{% render 'safe-url', url: link.url %}">{{ link.title | escape }}</a>
     {%- endfor -%}
@@ -102,7 +103,8 @@
     { "type": "select", "id": "nav_source", "label": "Navigation", "default": "kehsora", "options": [
       { "value": "kehsora", "label": "Kehsora links (built in)" },
       { "value": "menu", "label": "A Shopify menu" }
-    ], "info": "Kehsora links: Shop All, Combos, Ingredients, Our Story, Contact." },
+    ], "info": "Kehsora links: Home, Shop All, Combos, Ingredients, Our Story, Contact." },
+    { "type": "text", "id": "label_home", "label": "Label: Home", "default": "Home" },
     { "type": "text", "id": "label_shop", "label": "Label: Shop All", "default": "Shop All" },
     { "type": "text", "id": "label_combos", "label": "Label: Combos", "default": "Combos" },
     { "type": "text", "id": "label_ingredients", "label": "Label: Ingredients", "default": "Ingredients" },

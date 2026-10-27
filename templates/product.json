@@ -30,7 +30,7 @@
             "title": "How to Use",
             "metafield": "custom.how_to_use",
             "open": true,
-            "content": "<p><strong>Mix with a base oil:</strong> Blend the 30ml concentrate into 150ml of your regular base oil (coconut, sesame, or almond oil) for a lighter, everyday formulation. Shake well before each use. For 50ml, mix into 250ml of base oil — same 1:5 ratio.</p><p><strong>Apply directly:</strong> For targeted, high-potency use, apply a few drops of the concentrate directly onto the scalp and massage in circular motions. Leave in for at least 30 minutes or overnight before washing.</p><p>Use 2–3 times a week for visible results within 4–6 weeks.</p>"
+            "content": "<p><strong>Mix with a base oil:</strong> Blend the 30ml concentrate into 150ml of your regular base oil (coconut, sesame, or almond oil) for a lighter, everyday formulation. Shake well before each use. For 50ml, mix into 250ml of base oil — same 1:5 ratio.</p><p><strong>Massage &amp; leave:</strong> Warm a little of the blend in your palms, massage into the scalp for 3–5 minutes and smooth through the lengths. Leave on for at least an hour, or overnight, then wash with a mild shampoo.</p><p><strong>Please don’t apply it undiluted.</strong> The concentrate is highly concentrated — always blend it into a base oil first, and patch test 24 hours before first use.</p><p>Use 2–3 times a week for visible results within 4–6 weeks.</p>"
           }
         },
         "ingredients": {
@@ -95,11 +95,16 @@
         "includes_property_label": "Includes",
         "require_combo_tag": true
       }
+    },
+    "reviews": {
+      "type": "product-reviews",
+      "settings": {}
     }
   },
   "order": [
     "combo",
     "main",
+    "reviews",
     "related"
   ]
 }

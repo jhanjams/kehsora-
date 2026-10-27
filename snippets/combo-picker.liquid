@@ -6,21 +6,17 @@
   cfg must provide the combo setting ids (match_text, choices, labels…).
 {%- endcomment -%}
 <div class="combo-picker" data-combo>
+{%- capture combo_meta -%}{% render 'combo-meta', product: combo %}{%- endcapture -%}
 {%- liquid
-  assign pick_count = cfg.default_pick
+  assign combo_meta = combo_meta | strip | split: '|'
+  assign pick_count = combo_meta[1] | plus: 0
+  if pick_count == 0
+    assign pick_count = cfg.default_pick
+  endif
   assign with_base = false
-  for tag in combo.tags
-    assign t = tag | downcase | strip
-    if t contains 'pick-'
-      assign n = t | remove: 'pick-' | plus: 0
-      if n > 0
-        assign pick_count = n
-      endif
-    endif
-    if t == 'with-base-oil'
-      assign with_base = true
-    endif
-  endfor
+  if combo_meta[2] == 'true'
+    assign with_base = true
+  endif
 
   assign match_text = cfg.match_text | downcase
   assign choice_list = cfg.choices
@@ -40,14 +36,10 @@
     for p in collections.all.products
       assign p_title = p.title | downcase
       if p.id != combo.id and p_title contains match_text
-        assign is_c = false
-        for pt in p.tags
-          assign ptl = pt | downcase
-          if ptl == 'combo'
-            assign is_c = true
-          endif
-        endfor
-        unless is_c
+        capture p_meta
+          render 'combo-meta', product: p
+        endcapture
+        unless p_meta contains "true|"
           assign choice_count = choice_count | plus: 1
         endunless
       endif
@@ -59,6 +51,9 @@
     assign all_included = true
     assign pick_count = choice_count
   endif
+  if pick_count > 10
+    assign pick_count = 5
+  endif
 
   assign base_oil = cfg.base_oil
   if with_base and base_oil == blank
@@ -66,14 +61,10 @@
     for p in collections.all.products
       assign p_title = p.title | downcase
       if p.id != combo.id and p_title contains base_match
-        assign base_is_combo = false
-        for pt in p.tags
-          assign ptl = pt | downcase
-          if ptl == 'combo'
-            assign base_is_combo = true
-          endif
-        endfor
-        unless base_is_combo
+        capture p_meta
+          render 'combo-meta', product: p
+        endcapture
+        unless p_meta contains "true|"
           assign base_oil = p
           break
         endunless
@@ -122,12 +113,14 @@
                   unless p_title contains match_text
                     assign skip = true
                   endunless
-                  for pt in p.tags
-                    assign ptl = pt | downcase
-                    if ptl == 'combo'
+                  unless skip
+                    capture p_meta
+                      render 'combo-meta', product: p
+                    endcapture
+                    if p_meta contains "true|"
                       assign skip = true
                     endif
-                  endfor
+                  endunless
                 -%}
                 {%- unless skip -%}
                   {% render 'combo-choice', choice: p, size_match: size_match, strip_text: cfg.name_strip, locked: all_included %}

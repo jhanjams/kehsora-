@@ -4,12 +4,65 @@
   and add the combo straight from the homepage.
 {%- endcomment -%}
 {%- liquid
+  comment
+    Offers come from this section's blocks when they point at real products.
+    Otherwise every combo product in the store is listed automatically, in
+    the order: 2 + base oil, any 3, any 2, all 5, all 5 + base oil, others.
+  endcomment
+  assign entry_handles = ''
+  assign entry_blocks = ''
   assign tab_count = 0
   for block in section.blocks
-    if block.settings.combo != blank
+    if block.settings.combo != blank and block.settings.combo.id != blank
+      assign entry_handles = entry_handles | append: block.settings.combo.handle | append: ','
+      assign entry_blocks = entry_blocks | append: forloop.index0 | append: ','
       assign tab_count = tab_count | plus: 1
     endif
   endfor
+
+  if tab_count == 0
+    assign r1 = '' 
+    assign r2 = ''
+    assign r3 = ''
+    assign r4 = ''
+    assign r5 = ''
+    assign r6 = ''
+    for p in collections.all.products
+      capture p_meta
+        render 'combo-meta', product: p
+      endcapture
+      assign p_meta = p_meta | strip | split: '|'
+      if p_meta[0] == 'true'
+        assign p_pick = p_meta[1] | plus: 0
+        assign p_entry = p.handle | append: ','
+        if p_meta[2] == 'true'
+          if p_pick == 2
+            assign r1 = r1 | append: p_entry
+          elsif p_pick >= 5
+            assign r5 = r5 | append: p_entry
+          else
+            assign r6 = r6 | append: p_entry
+          endif
+        else
+          if p_pick == 3
+            assign r2 = r2 | append: p_entry
+          elsif p_pick == 2
+            assign r3 = r3 | append: p_entry
+          elsif p_pick >= 5
+            assign r4 = r4 | append: p_entry
+          else
+            assign r6 = r6 | append: p_entry
+          endif
+        endif
+        assign entry_blocks = entry_blocks | append: '-,'
+        assign tab_count = tab_count | plus: 1
+      endif
+    endfor
+    assign entry_handles = r1 | append: r2 | append: r3 | append: r4 | append: r5 | append: r6
+  endif
+
+  assign entry_handles = entry_handles | split: ','
+  assign entry_blocks = entry_blocks | split: ','
 -%}
 {%- if tab_count > 0 or request.design_mode -%}
 {{ 'kehsora-combo.css' | asset_url | stylesheet_tag }}
@@ -25,49 +78,74 @@
     </div>
 
     {%- if tab_count == 0 -%}
-      <p class="editor-hint">Pick your combo products in this section’s blocks.</p>
+      <p class="editor-hint">No combo products found yet. Create products with “Combo” in the title (e.g. “Any 2 Concentrates – Combo Offer”) and they appear here automatically.</p>
     {%- else -%}
       <div class="combo-studio-tabs" data-tabs>
         <div class="concern-tabs combo-offer-tabs" role="tablist">
-          {%- assign first_done = false -%}
-          {%- for block in section.blocks -%}
-            {%- if block.settings.combo != blank -%}
-              {%- assign c = block.settings.combo -%}
-              <button type="button" class="concern-tab combo-offer-tab{% unless first_done %} active{% endunless %}" role="tab" aria-selected="{% if first_done %}false{% else %}true{% endif %}" data-target="studio-{{ block.id }}" {{ block.shopify_attributes }}>
-                <span class="combo-offer-tab-name">{{ block.settings.label | default: c.title | escape }}</span>
-                <span class="combo-offer-tab-price">{{ c.price | money }}</span>
-              </button>
-              {%- assign first_done = true -%}
-            {%- endif -%}
+          {%- for h in entry_handles -%}
+            {%- liquid
+              assign c = all_products[h]
+              assign bi = entry_blocks[forloop.index0]
+              assign blk = nil
+              if bi != '-' and bi != blank
+                assign bi = bi | plus: 0
+                assign blk = section.blocks[bi]
+              endif
+              capture c_meta
+                render 'combo-meta', product: c
+              endcapture
+              assign c_meta = c_meta | strip | split: '|'
+              assign c_pick = c_meta[1] | plus: 0
+              if c_pick >= 5
+                assign auto_label = section.settings.all_tab | default: 'All 5'
+              else
+                assign auto_label = section.settings.any_tab | default: 'Any [count]' | replace: '[count]', c_pick
+              endif
+              if c_meta[2] == 'true'
+                assign auto_label = auto_label | append: ' + ' | append: section.settings.base_tab
+              endif
+              if c_pick == 0
+                assign auto_label = c.title
+              endif
+              assign tab_label = blk.settings.label | default: auto_label
+            -%}
+            <button type="button" class="concern-tab combo-offer-tab{% if forloop.first %} active{% endif %}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-target="studio-{{ section.id }}-{{ forloop.index }}" {% if blk %}{{ blk.shopify_attributes }}{% endif %}>
+              <span class="combo-offer-tab-name">{{ tab_label | escape }}</span>
+              <span class="combo-offer-tab-price">{{ c.price | money }}</span>
+            </button>
           {%- endfor -%}
         </div>
 
-        {%- assign first_done = false -%}
-        {%- for block in section.blocks -%}
-          {%- if block.settings.combo != blank -%}
-            {%- assign c = block.settings.combo -%}
-            {%- assign c_variant = c.selected_or_first_available_variant -%}
-            {%- assign panel_uid = section.id | append: '-' | append: block.id -%}
-            <div class="concern-panel combo-studio-panel{% unless first_done %} active{% endunless %}" id="studio-{{ block.id }}" role="tabpanel">
-              <div class="combo-studio-grid">
-                <div class="combo-studio-intro">
-                  <div class="pdp-kicker">{{ section.settings.kicker | upcase | escape }}</div>
-                  <h3 class="combo-studio-title">{{ c.title | escape }}</h3>
-                  {% render 'price', product: c, variant: c_variant, class: 'pdp-price-row' %}
-                  {%- if block.settings.text != blank -%}
-                    <div class="rte">{{ block.settings.text }}</div>
-                  {%- elsif c.description != blank -%}
-                    <div class="rte">{{ c.description }}</div>
-                  {%- endif -%}
-                  <a href="{{ c.url }}" class="text-link">{{ section.settings.details_label | escape }}</a>
-                </div>
-                <div class="combo-studio-picker">
-                  {% render 'combo-picker', combo: c, cfg: section.settings, uid: panel_uid %}
-                </div>
+        {%- for h in entry_handles -%}
+          {%- liquid
+            assign c = all_products[h]
+            assign c_variant = c.selected_or_first_available_variant
+            assign bi = entry_blocks[forloop.index0]
+            assign blk = nil
+            if bi != '-' and bi != blank
+              assign bi = bi | plus: 0
+              assign blk = section.blocks[bi]
+            endif
+            assign panel_uid = section.id | append: '-' | append: forloop.index
+          -%}
+          <div class="concern-panel combo-studio-panel{% if forloop.first %} active{% endif %}" id="studio-{{ section.id }}-{{ forloop.index }}" role="tabpanel">
+            <div class="combo-studio-grid">
+              <div class="combo-studio-intro">
+                <div class="pdp-kicker">{{ section.settings.kicker | upcase | escape }}</div>
+                <h3 class="combo-studio-title">{{ c.title | escape }}</h3>
+                {% render 'price', product: c, variant: c_variant, class: 'pdp-price-row' %}
+                {%- if blk and blk.settings.text != blank -%}
+                  <div class="rte">{{ blk.settings.text }}</div>
+                {%- elsif c.description != blank -%}
+                  <div class="rte">{{ c.description | strip_html | truncatewords: 40 }}</div>
+                {%- endif -%}
+                <a href="{{ c.url }}" class="text-link">{{ section.settings.details_label | escape }}</a>
+              </div>
+              <div class="combo-studio-picker">
+                {% render 'combo-picker', combo: c, cfg: section.settings, uid: panel_uid %}
               </div>
             </div>
-            {%- assign first_done = true -%}
-          {%- endif -%}
+          </div>
         {%- endfor -%}
       </div>
     {%- endif -%}
@@ -88,6 +166,10 @@
     { "type": "checkbox", "id": "show_mandala", "label": "Show mandala", "default": true },
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Combo offer" },
     { "type": "text", "id": "details_label", "label": "Link to combo page", "default": "View offer details" },
+    { "type": "paragraph", "content": "Leave the blocks empty to list every combo product automatically (2 + base oil, any 3, any 2, all 5, all 5 + base oil). Add blocks only to choose the offers and their order yourself." },
+    { "type": "text", "id": "any_tab", "label": "Tab label for pick-N combos", "default": "Any [count]" },
+    { "type": "text", "id": "all_tab", "label": "Tab label for all-included combos", "default": "All 5" },
+    { "type": "text", "id": "base_tab", "label": "Base oil tab suffix", "default": "Base Oil" },
     { "type": "header", "content": "Choosing concentrates" },
     { "type": "range", "id": "default_pick", "label": "Concentrates to choose (when a combo has no pick- tag)", "min": 1, "max": 10, "step": 1, "default": 3 },
     { "type": "product_list", "id": "choices", "label": "Concentrates to choose from", "limit": 12, "info": "Leave empty to use every product whose title contains the text below." },
@@ -112,13 +194,13 @@
       "type": "offer",
       "name": "Combo offer",
       "settings": [
-        { "type": "product", "id": "combo", "label": "Combo product", "info": "A product tagged combo + pick-2 / pick-3 / pick-5 (+ with-base-oil)." },
+        { "type": "product", "id": "combo", "label": "Combo product", "info": "Any combo product. Leave all blocks empty to list combos automatically." },
         { "type": "text", "id": "label", "label": "Tab label", "info": "Defaults to the product title." },
         { "type": "richtext", "id": "text", "label": "Short description", "info": "Defaults to the product description." }
       ]
     }
   ],
   "max_blocks": 8,
-  "presets": [{ "name": "Combo studio", "blocks": [{ "type": "offer" }, { "type": "offer" }, { "type": "offer" }] }]
+  "presets": [{ "name": "Combo studio" }]
 }
 {% endschema %}

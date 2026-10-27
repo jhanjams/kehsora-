@@ -1,0 +1,23 @@
+{%- comment -%}
+  Finds a product by name when a section's product setting is empty or points
+  at a handle the store doesn't have. Outputs the handle of the first product
+  (combos skipped) whose title contains the name, or nothing.
+  Usage: {%- capture h -%}{% render 'product-handle', name: block.settings.name %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign ph_key = name | downcase | strip
+  if ph_key != blank
+    for ph_p in collections.all.products
+      assign ph_title = ph_p.title | downcase
+      if ph_title contains ph_key
+        capture ph_meta
+          render 'combo-meta', product: ph_p
+        endcapture
+        unless ph_meta contains "true|"
+          echo ph_p.handle
+          break
+        endunless
+      endif
+    endfor
+  endif
+-%}

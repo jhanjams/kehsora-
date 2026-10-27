@@ -74,7 +74,8 @@
 .orbit.is-spot .orbit-spot { pointer-events: auto; }
 .orbit.is-spot .orbit-intro { opacity: 0; transform: translate(-50%, -30px); }
 .orbit.is-spot .orbit-ring { opacity: 0; transform: translateY(18%) scale(1.15); }
-.orbit .hero-scroll-cue { transition: opacity .4s var(--ease); z-index: 4; }
+.orbit .hero-scroll-cue { transition: opacity .4s var(--ease); z-index: 4; bottom: .4rem; }
+.orbit .hero-scroll-cue .stem { height: 28px; }
 .orbit.is-spot .hero-scroll-cue { opacity: 0; }
 .orbit-back, .orbit-nav { opacity: 0; transition: opacity .5s var(--ease) .3s; }
 .orbit.is-spot .orbit-back, .orbit.is-spot .orbit-nav { opacity: 1; }

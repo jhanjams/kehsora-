@@ -54,18 +54,18 @@
       var mobile = W < 860;
       g.W = W; g.H = H;
       g.cx = W / 2;
-      g.cy = H * (mobile ? 0.58 : 0.66);
+      g.cy = H * (mobile ? 0.62 : 0.63);
       g.rx = Math.min(W * (mobile ? 0.47 : 0.41), 660);
       g.ry = g.rx * (mobile ? 0.5 : 0.28);
-      g.band = Math.max(24, Math.min(g.ry * (mobile ? 0.26 : 0.36), 70));
-      g.bw = Math.max(70, Math.min(g.rx * (mobile ? 0.6 : 0.32), 200));
+      g.band = Math.max(20, Math.min(g.ry * (mobile ? 0.22 : 0.3), 56));
+      g.bw = Math.max(70, Math.min(g.rx * (mobile ? 0.74 : 0.32), 200));
       // slim cutout bottles: narrower frame, height capped so the front bottle stays on screen
       g.cut = !!root.querySelector('.orbit-item.is-cutout');
       g.ratio = g.cut ? 20 / 9 : 1.5;
       if (g.cut) {
         // the front bottle (scale 1.12) stands on the ring; keep its top below the headline area
-        var room = (g.cy + g.ry) - H * (mobile ? 0.36 : 0.42);
-        g.bw = Math.max(48, Math.min(g.bw * 0.62, room / (g.ratio * 1.12)));
+        var room = (g.cy + g.ry) - H * (mobile ? 0.3 : 0.33);
+        g.bw = Math.max(56, Math.min(g.bw * 0.92, room / (g.ratio * 1.12)));
       }
       stage.style.setProperty('--bottle-w', g.bw + 'px');
 
@@ -87,7 +87,7 @@
       // Fill the ring with enough repeats of the text to cover twice its length
       pathLength = path.getTotalLength ? path.getTotalLength() : TAU * g.rx;
       if (textEl && textPath) {
-        textEl.style.fontSize = Math.round(g.band * 0.46) + 'px';
+        textEl.style.fontSize = Math.max(11, Math.round(g.band * 0.36)) + 'px';
         var base = textPath.getAttribute('data-text') || '';
         textPath.textContent = base;
         var unit = textPath.getComputedTextLength ? textPath.getComputedTextLength() : base.length * 10;

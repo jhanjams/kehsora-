@@ -67,7 +67,9 @@
         "products_to_show": 4,
         "button_label": "Explore All",
         "button_link": "/collections/all",
-        "anchor": "bestsellers"
+        "anchor": "bestsellers",
+        "hide_combos": true,
+        "only_match": "Concentrate"
       }
     },
     "note": {
@@ -86,48 +88,52 @@
           "type": "concern",
           "settings": {
             "label": "Hair Fall",
-            "product": "bhringraj-hair-oil-concentrate",
-            "eyebrow": "Why Bhringraj?",
-            "heading": "The ",
-            "heading_emphasis": "ruler of hair",
-            "text": "<p>Bhringraj literally translates to “ruler of hair” in Sanskrit — used in Ayurvedic texts for thousands of years. Most commercial versions use a trace amount, diluted into filler oil. Ours is properly heat-infused, so it’s concentrated enough to actually reduce fall and support new growth.</p>",
-            "link_label": "Discover the concentrate"
+            "keywords": "Bhringraj, Rosemary",
+            "eyebrow": "Why Bhringraj & Rosemary?",
+            "heading": "Two answers to ",
+            "heading_emphasis": "hair fall",
+            "text": "<p>Bhringraj — “ruler of hair” in Sanskrit — has been used in Ayurveda for centuries to strengthen roots and reduce fall. Rosemary improves circulation to the scalp, waking up follicles so new growth comes through stronger. Use one, or blend both into your base oil for a complete hair-fall ritual.</p>",
+            "link_label": "Discover the concentrate",
+            "link_label_pair": "Shop both concentrates"
           }
         },
         "c1": {
           "type": "concern",
           "settings": {
-            "label": "Dandruff & Scalp",
-            "product": "jojoba-hair-oil-concentrate",
-            "eyebrow": "Why Jojoba?",
-            "heading": "Balance, ",
-            "heading_emphasis": "not buildup",
-            "text": "<p>Jojoba closely mimics your scalp’s own natural sebum, which means it absorbs instead of sitting heavy. Ideal for an oily scalp, dandruff-prone hair, or anyone who finds traditional oils too greasy to use daily.</p>",
-            "link_label": "Discover the concentrate"
+            "label": "Dandruff & Scalp Build-up",
+            "keywords": "Pumpkin",
+            "eyebrow": "Why Pumpkin Seed?",
+            "heading": "A clear, ",
+            "heading_emphasis": "calm scalp",
+            "text": "<p>Rich in zinc, omega fatty acids and antioxidants, pumpkin seed helps calm a flaky, itchy scalp and clear away the build-up that blocks healthy growth — so every follicle can breathe again.</p>",
+            "link_label": "Discover the concentrate",
+            "link_label_pair": "Shop the concentrates"
           }
         },
         "c2": {
           "type": "concern",
           "settings": {
-            "label": "Growth & Density",
-            "product": "pumpkin-seed-hair-oil-concentrate",
-            "eyebrow": "Why Pumpkin Seed?",
-            "heading": "Density,",
-            "heading_emphasis": "backed by research",
-            "text": "<p>Rich in zinc and essential fatty acids, pumpkin seed is one of the few natural ingredients with real modern research behind it — linked to reduced thinning and improved density, not just tradition.</p>",
-            "link_label": "Discover the concentrate"
+            "label": "Roots & Strength",
+            "keywords": "Jojoba",
+            "eyebrow": "Why Jojoba?",
+            "heading": "Stronger roots, ",
+            "heading_emphasis": "stronger hair",
+            "text": "<p>Jojoba closely mimics your scalp’s own sebum, so it absorbs instead of sitting heavy — dissolving build-up around the follicle while it strengthens the roots and the hair shaft. Light enough for every scalp, and a beautiful oil for the skin too.</p>",
+            "link_label": "Discover the concentrate",
+            "link_label_pair": "Shop the concentrates"
           }
         },
         "c3": {
           "type": "concern",
           "settings": {
-            "label": "Dryness & Shine",
-            "product": "sweet-almond-hair-oil-concentrate",
+            "label": "Dryness & Frizz",
+            "keywords": "Almond",
             "eyebrow": "Why Sweet Almond?",
-            "heading": "Softness &",
+            "heading": "Softness & ",
             "heading_emphasis": "natural shine",
-            "text": "<p>Rich in Vitamin E, sweet almond softens hair, adds natural shine, and strengthens strands against breakage — a gentle, everyday formulation for dry or dull hair.</p>",
-            "link_label": "Discover the concentrate"
+            "text": "<p>Rich in Vitamin E and fatty acids, sweet almond seals in moisture, tames frizz and smooths dry, rough ends — leaving hair soft, glossy and less prone to breakage.</p>",
+            "link_label": "Discover the concentrate",
+            "link_label_pair": "Shop the concentrates"
           }
         }
       },
@@ -241,46 +247,46 @@
         "n0": {
           "type": "ingredient",
           "settings": {
-            "product": "rosemary-hair-oil-concentrate",
             "name": "Rosemary",
             "subtitle": "Scalp circulation",
-            "link": "/pages/ingredients#rosemary"
+            "link": "/pages/ingredients#rosemary",
+            "story": "<p><strong>Benefits:</strong> Rosemary is rich in carnosic and rosmarinic acid, natural antioxidants that help boost blood flow to the scalp. Better circulation means follicles get more of what they need — supporting thicker, stronger growth and helping to reduce thinning over time.</p><p><strong>In your oil:</strong> Blended into your base oil, rosemary gives a fresh, herbal lift. Massage it into the scalp 2–3 times a week to wake up sleepy follicles; it pairs beautifully with Bhringraj for hair fall.</p>"
           }
         },
         "n1": {
           "type": "ingredient",
           "settings": {
-            "product": "bhringraj-hair-oil-concentrate",
             "name": "Bhringraj",
             "subtitle": "Reduces hair fall",
-            "link": "/pages/ingredients#bhringraj"
+            "link": "/pages/ingredients#bhringraj",
+            "story": "<p><strong>Benefits:</strong> Called “ruler of hair” in Sanskrit, Bhringraj (Eclipta alba) has been used in Ayurveda for centuries to strengthen roots, reduce hair fall and support new growth. It is naturally cooling and calming for a stressed scalp, and traditionally used to help keep hair dark.</p><p><strong>In your oil:</strong> Ours is properly heat-infused, so a blend with your base oil carries real concentration. Leave it on overnight once or twice a week as a deep root treatment.</p>"
           }
         },
         "n2": {
           "type": "ingredient",
           "settings": {
-            "product": "pumpkin-seed-hair-oil-concentrate",
             "name": "Pumpkin Seed",
             "subtitle": "Density & thickness",
-            "link": "/pages/ingredients#pumpkin-seed"
+            "link": "/pages/ingredients#pumpkin-seed",
+            "story": "<p><strong>Benefits:</strong> Pumpkin seed is full of zinc, magnesium, omega fatty acids and phytosterols — nutrients linked in modern research to reduced thinning and better density. It also helps calm a flaky, itchy scalp and clear the build-up that holds growth back.</p><p><strong>In your oil:</strong> Blend it into your base oil and massage into the scalp to soothe dandruff and build-up, then smooth the rest through the lengths for fuller-looking hair.</p>"
           }
         },
         "n3": {
           "type": "ingredient",
           "settings": {
-            "product": "jojoba-hair-oil-concentrate",
             "name": "Jojoba",
             "subtitle": "Lightweight balance",
-            "link": "/pages/ingredients#jojoba"
+            "link": "/pages/ingredients#jojoba",
+            "story": "<p><strong>Benefits:</strong> Jojoba is technically a liquid wax that closely mirrors your scalp’s own sebum. It absorbs instead of sitting heavy, helps lift product and oil build-up around the follicle, and strengthens the roots and the hair shaft to reduce breakage.</p><p><strong>Great for your skin too:</strong> Jojoba is one of the most skin-friendly oils there is — it moisturises without clogging pores, softens dry patches and keeps skin balanced. A little of your blend works wonderfully on dry ends, cuticles, elbows and beard.</p><p><strong>In your oil:</strong> It makes any base oil lighter and less greasy, so it suits oily scalps and daily use.</p>"
           }
         },
         "n4": {
           "type": "ingredient",
           "settings": {
-            "product": "sweet-almond-hair-oil-concentrate",
             "name": "Sweet Almond",
             "subtitle": "Shine & softness",
-            "link": "/pages/ingredients#sweet-almond"
+            "link": "/pages/ingredients#sweet-almond",
+            "story": "<p><strong>Benefits:</strong> Sweet almond is rich in Vitamin E, oleic acid and magnesium. It seals in moisture, tames frizz, smooths rough, dry ends and adds a soft natural shine, while helping strands resist breakage.</p><p><strong>In your oil:</strong> Blend into your base oil and work through mid-lengths and ends for silky, manageable hair; massage into the scalp to ease dryness. Contains tree nut — avoid if you have a nut allergy.</p>"
           }
         }
       },
@@ -296,7 +302,10 @@
         "heading": "Five ingredients, ",
         "heading_emphasis": "chosen with purpose",
         "button_label": "Full Ingredient Guide",
-        "button_link": ""
+        "button_link": "",
+        "open_label": "Tap to read",
+        "shop_label": "Shop [name]",
+        "guide_label": "Read the full ingredient guide"
       }
     },
     "divider_2": {
@@ -338,7 +347,8 @@
             "product": "bhringraj-hair-oil-concentrate",
             "kicker": "Hair fall & roots",
             "origin": "Heat-infused",
-            "cutout_file": "bottle-bhringraj.png"
+            "cutout_file": "bottle-bhringraj.png",
+            "name": "Bhringraj"
           }
         },
         "b1": {
@@ -347,7 +357,8 @@
             "product": "rosemary-hair-oil-concentrate",
             "kicker": "Growth & circulation",
             "origin": "Scalp stimulating",
-            "cutout_file": "bottle-rosemary.png"
+            "cutout_file": "bottle-rosemary.png",
+            "name": "Rosemary"
           }
         },
         "b2": {
@@ -356,7 +367,8 @@
             "product": "pumpkin-seed-hair-oil-concentrate",
             "kicker": "Density & thickness",
             "origin": "Cold-pressed",
-            "cutout_file": "bottle-pumpkin-seed.png"
+            "cutout_file": "bottle-pumpkin-seed.png",
+            "name": "Pumpkin Seed"
           }
         },
         "b3": {
@@ -365,7 +377,8 @@
             "product": "jojoba-hair-oil-concentrate",
             "kicker": "Scalp & balance",
             "origin": "Light, daily",
-            "cutout_file": "bottle-jojoba.png"
+            "cutout_file": "bottle-jojoba.png",
+            "name": "Jojoba"
           }
         },
         "b4": {
@@ -374,7 +387,8 @@
             "product": "sweet-almond-hair-oil-concentrate",
             "kicker": "Shine & softness",
             "origin": "Vitamin E rich",
-            "cutout_file": "bottle-sweet-almond.png"
+            "cutout_file": "bottle-sweet-almond.png",
+            "name": "Sweet Almond"
           }
         }
       },
@@ -445,50 +459,8 @@
     },
     "combo_studio": {
       "type": "combo-studio",
-      "blocks": {
-        "o0": {
-          "type": "offer",
-          "settings": {
-            "combo": "any-2-concentrates",
-            "label": "Any 2"
-          }
-        },
-        "o1": {
-          "type": "offer",
-          "settings": {
-            "combo": "any-3-concentrates",
-            "label": "Any 3"
-          }
-        },
-        "o2": {
-          "type": "offer",
-          "settings": {
-            "combo": "2-concentrates-base-oil",
-            "label": "2 + Base Oil"
-          }
-        },
-        "o3": {
-          "type": "offer",
-          "settings": {
-            "combo": "all-5-concentrates",
-            "label": "All 5"
-          }
-        },
-        "o4": {
-          "type": "offer",
-          "settings": {
-            "combo": "all-5-concentrates-base-oil",
-            "label": "All 5 + Base Oil"
-          }
-        }
-      },
-      "block_order": [
-        "o0",
-        "o1",
-        "o2",
-        "o3",
-        "o4"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "eyebrow": "Build your ritual",
         "heading": "Combo",
@@ -513,6 +485,120 @@
         "property_label": "Concentrate",
         "includes_property_label": "Includes"
       }
+    },
+    "ritual": {
+      "type": "ritual-guide",
+      "blocks": {
+        "s0": {
+          "type": "step",
+          "settings": {
+            "title": "Blend",
+            "text": "Pour 30ml of concentrate into 150ml of your base oil — coconut, sesame or our Kehsora base oil (50ml into 250ml works too). Same 1 : 5 ratio. Shake well."
+          }
+        },
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Warm & part",
+            "text": "Shake before every use and warm a little of the blend in your palms. Part dry hair into sections."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "Massage",
+            "text": "Work the blend into your scalp with your fingertips for 3–5 minutes, then smooth what’s left along the lengths."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "Leave & wash",
+            "text": "Leave it on for at least an hour, or overnight. Wash out with a mild shampoo."
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "title": "Repeat",
+            "text": "Use 2–3 times a week. Most people see a visible difference within 4–6 weeks of regular use."
+          }
+        },
+        "k0": {
+          "type": "certificate",
+          "settings": {
+            "title": "Rosemary",
+            "subtitle": "Certificate of Analysis",
+            "image_file": "coa-rosemary.jpg"
+          }
+        },
+        "k1": {
+          "type": "certificate",
+          "settings": {
+            "title": "Bhringraj",
+            "subtitle": "Certificate of Analysis",
+            "image_file": "coa-bhringraj.jpg"
+          }
+        },
+        "k2": {
+          "type": "certificate",
+          "settings": {
+            "title": "Pumpkin Seed",
+            "subtitle": "Certificate of Analysis",
+            "image_file": "coa-pumpkin-seed.jpg"
+          }
+        },
+        "k3": {
+          "type": "certificate",
+          "settings": {
+            "title": "Jojoba",
+            "subtitle": "Certificate of Analysis",
+            "image_file": "coa-jojoba.jpg"
+          }
+        },
+        "k4": {
+          "type": "certificate",
+          "settings": {
+            "title": "Sweet Almond",
+            "subtitle": "Certificate of Analysis",
+            "image_file": "coa-sweet-almond.jpg"
+          }
+        },
+        "k5": {
+          "type": "certificate",
+          "settings": {
+            "title": "Coconut Base Oil",
+            "subtitle": "NABL lab test report",
+            "image_file": "coa-coconut-base-oil.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "k0",
+        "k1",
+        "k2",
+        "k3",
+        "k4",
+        "k5"
+      ],
+      "settings": {
+        "anchor": "how-to-use",
+        "use_eyebrow": "The ritual",
+        "use_heading": "How to ",
+        "use_heading_emphasis": "use it",
+        "use_text": "Our concentrates are made to be blended into a base oil — that’s what makes them work safely and evenly. Here’s the ritual.",
+        "warnings_heading": "Before you begin",
+        "warnings": "<ul><li><strong>Always blend first.</strong> Our concentrates are highly concentrated — never apply them undiluted to the scalp or skin.</li><li><strong>Patch test</strong> a little of your blend behind the ear or on the inner arm 24 hours before first use.</li><li>For external use only. Avoid contact with eyes — if it happens, rinse well with cool water.</li><li>Stop using and consult a doctor if redness, itching or irritation appears.</li><li>Sweet Almond is a tree nut — avoid it if you have a nut allergy.</li><li>Pregnant or breastfeeding, or under medical care? Check with your doctor first.</li><li>Not for children under 12 without adult advice. Keep out of reach of children.</li><li>Store tightly closed in a cool, dark place, away from direct sunlight.</li></ul>",
+        "cert_eyebrow": "Tested & certified",
+        "cert_heading": "Our ",
+        "cert_heading_emphasis": "certificates",
+        "cert_text": "Every ingredient arrives with its Certificate of Analysis, and our base oil is tested by an NABL-accredited lab. Tap any certificate to read it in full."
+      }
     }
   },
   "order": [
@@ -526,6 +612,7 @@
     "concern",
     "divider_1",
     "values",
+    "ritual",
     "ingredients",
     "divider_2",
     "story",

@@ -10,27 +10,97 @@
         <a href="{% render 'safe-url', url: niche_btn %}" class="btn btn-outline btn-sm">{{ section.settings.button_label | escape }}</a>
       {%- endif -%}
     </div>
-    <div class="niche-row reveal-stagger">
+    <div class="niche-row reveal-stagger" data-niches>
       {%- for block in section.blocks -%}
         {%- liquid
-          assign niche_product = block.settings.product
+          assign niche_product = nil
+          if block.settings.product != blank and block.settings.product.id != blank
+            assign niche_product = block.settings.product
+          else
+            assign niche_key = block.settings.name | downcase | strip
+            if niche_key != blank
+              for p in collections.all.products
+                assign p_title = p.title | downcase
+                if p_title contains niche_key
+                  capture p_meta
+                    render 'combo-meta', product: p
+                  endcapture
+                  unless p_meta contains "true|"
+                    assign niche_product = p
+                    break
+                  endunless
+                endif
+              endfor
+            endif
+          endif
           assign niche_image = block.settings.image | default: niche_product.featured_image
           assign niche_name = block.settings.name | default: niche_product.title
-          assign niche_link = block.settings.link | default: niche_product.url
+          assign has_story = false
+          if block.settings.story != blank
+            assign has_story = true
+          endif
         -%}
-        <a href="{% render 'safe-url', url: niche_link %}" class="niche" {{ block.shopify_attributes }}>
-          <div class="arch-frame">
+        <button type="button" class="niche" aria-expanded="false" aria-controls="niche-{{ block.id }}" data-niche="niche-{{ block.id }}"{% unless has_story %} disabled{% endunless %} {{ block.shopify_attributes }}>
+          <span class="arch-frame">
             {%- if niche_image != blank -%}
               {{ niche_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 1080px) 20vw, (min-width: 560px) 33vw, 50vw', alt: niche_name }}
             {%- else -%}
               {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}
-          </div>
-          <h4>{{ niche_name | escape }}</h4>
-          {%- if block.settings.subtitle != blank -%}<p>{{ block.settings.subtitle | escape }}</p>{%- endif -%}
-        </a>
+          </span>
+          <span class="niche-name">{{ niche_name | escape }}</span>
+          {%- if block.settings.subtitle != blank -%}<span class="niche-sub">{{ block.settings.subtitle | escape }}</span>{%- endif -%}
+          {%- if has_story -%}<span class="niche-more" aria-hidden="true">{{ section.settings.open_label | escape }}</span>{%- endif -%}
+        </button>
       {%- endfor -%}
     </div>
+
+    {%- for block in section.blocks -%}
+      {%- if block.settings.story != blank -%}
+        {%- liquid
+          assign niche_product = nil
+          if block.settings.product != blank and block.settings.product.id != blank
+            assign niche_product = block.settings.product
+          else
+            assign niche_key = block.settings.name | downcase | strip
+            if niche_key != blank
+              for p in collections.all.products
+                assign p_title = p.title | downcase
+                if p_title contains niche_key
+                  capture p_meta
+                    render 'combo-meta', product: p
+                  endcapture
+                  unless p_meta contains "true|"
+                    assign niche_product = p
+                    break
+                  endunless
+                endif
+              endfor
+            endif
+          endif
+          assign niche_name = block.settings.name | default: niche_product.title
+          assign niche_link = block.settings.link | default: '/pages/ingredients'
+        -%}
+        <div class="niche-panel" id="niche-{{ block.id }}" role="region" aria-label="{{ niche_name | escape }}" hidden>
+          <div class="niche-panel-inner">
+            <div class="niche-panel-head">
+              {%- if block.settings.subtitle != blank -%}<div class="section-eyebrow">{{ block.settings.subtitle | escape }}</div>{%- endif -%}
+              <h3>{{ niche_name | escape }}</h3>
+            </div>
+            <div class="niche-panel-body">
+              <div class="rte">{{ block.settings.story }}</div>
+              <div class="niche-panel-links">
+                {%- if niche_product != nil -%}
+                  <a href="{{ niche_product.url }}" class="btn btn-ghost-gold btn-sm">{{ section.settings.shop_label | replace: '[name]', niche_name | escape }}</a>
+                {%- endif -%}
+                <a href="{% render 'safe-url', url: niche_link %}" class="text-link">{{ section.settings.guide_label | escape }}</a>
+              </div>
+            </div>
+            <button type="button" class="nav-icon-btn niche-panel-close" data-niche-close aria-label="{{ 'sections.header.close_menu' | t }}">{% render 'icon', name: 'close', size: 18 %}</button>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 </section>
 
@@ -43,18 +113,22 @@
     { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "chosen with purpose" },
     { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "ingredients", "info": "Menus can link here with /#ingredients" },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Full Ingredient Guide" },
-    { "type": "url", "id": "button_link", "label": "Button link", "info": "Leave empty to link to /pages/ingredients" }
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Leave empty to link to /pages/ingredients" },
+    { "type": "text", "id": "open_label", "label": "Hint under each ingredient", "default": "Tap to read" },
+    { "type": "text", "id": "shop_label", "label": "Shop button", "default": "Shop [name]" },
+    { "type": "text", "id": "guide_label", "label": "Guide link", "default": "Read the full ingredient guide" }
   ],
   "blocks": [
     {
       "type": "ingredient",
       "name": "Ingredient",
       "settings": [
-        { "type": "product", "id": "product", "label": "Product", "info": "Uses the product's image and link automatically." },
-        { "type": "image_picker", "id": "image", "label": "Image (overrides product image)" },
-        { "type": "text", "id": "name", "label": "Name (overrides product title)", "default": "Rosemary" },
+        { "type": "image_picker", "id": "image", "label": "Ingredient picture", "info": "Upload your ingredient photo. Leave empty to use the product photo." },
+        { "type": "text", "id": "name", "label": "Name", "default": "Rosemary", "info": "Also finds the matching product by title." },
         { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Scalp circulation" },
-        { "type": "url", "id": "link", "label": "Link (overrides product link)" }
+        { "type": "richtext", "id": "story", "label": "Benefits & uses (opens when tapped)", "default": "<p>Tell shoppers what this ingredient does and how it works in the oil.</p>" },
+        { "type": "product", "id": "product", "label": "Product (optional)", "info": "Leave empty to find the product whose title contains the name." },
+        { "type": "url", "id": "link", "label": "Guide link", "info": "Defaults to /pages/ingredients" }
       ]
     }
   ],

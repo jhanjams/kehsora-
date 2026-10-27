@@ -1,11 +1,11 @@
 {%- liquid
+  capture product_meta
+    render 'combo-meta', product: product
+  endcapture
   assign is_combo_product = false
-  for tag in product.tags
-    assign tag_lower = tag | downcase | strip
-    if tag_lower == 'combo'
-      assign is_combo_product = true
-    endif
-  endfor
+  if product_meta contains "true|"
+    assign is_combo_product = true
+  endif
 -%}
 {%- unless is_combo_product -%}
 {%- liquid

@@ -4,21 +4,19 @@
   pick which concentrates they want; the picks are saved on the cart line and
   order as line item properties ("Concentrate 1: Rosemary …").
 
-  Configure each combo product with tags:
-    combo          → marks it as a combo (cards show "Build your combo")
-    pick-2 / pick-3 / pick-5 → how many concentrates to choose
-    with-base-oil  → the base oil is included automatically
-  Sits on the normal product template and only appears for products tagged
-  "combo" (main-product hides itself for those), so no template switching.
+  Combos are detected by snippets/combo-meta (title or tags), so
+  "Any 2 Concentrates + Base Oil – Combo Offer" picks 2 and adds the base oil.
+  Sits on the normal product template and only appears for combo products
+  (main-product hides itself for those), so no template switching.
 {%- endcomment -%}
 {%- liquid
+  capture product_meta
+    render 'combo-meta', product: product
+  endcapture
   assign is_combo_product = false
-  for tag in product.tags
-    assign tag_lower = tag | downcase | strip
-    if tag_lower == 'combo'
-      assign is_combo_product = true
-    endif
-  endfor
+  if product_meta contains "true|"
+    assign is_combo_product = true
+  endif
   assign show_builder = is_combo_product
   if section.settings.require_combo_tag == false
     assign show_builder = true
@@ -95,8 +93,8 @@
 {
   "name": "Combo builder",
   "settings": [
-    { "type": "paragraph", "content": "Tag combo products with: combo, pick-2 / pick-3 / pick-5, and with-base-oil when the base oil is included. Price the combo product itself (e.g. ₹1,350)." },
-    { "type": "checkbox", "id": "require_combo_tag", "label": "Only show for products tagged “combo”", "default": true, "info": "Lets this section sit on the normal product template: regular products are unaffected." },
+    { "type": "paragraph", "content": "Combos are recognised from their title: “Any 2 Concentrates – Combo Offer” lets shoppers pick 2, “3 Concentrates” picks 3, “All 5” includes everything, and “Base Oil” in the title adds the base oil. Tags (combo, pick-2, with-base-oil) also work and win over the title." },
+    { "type": "checkbox", "id": "require_combo_tag", "label": "Only show for combo products", "default": true, "info": "Lets this section sit on the normal product template: regular products are unaffected." },
     { "type": "range", "id": "default_pick", "label": "Concentrates to choose (when no pick- tag)", "min": 1, "max": 10, "step": 1, "default": 3 },
     { "type": "product_list", "id": "choices", "label": "Concentrates to choose from", "limit": 12, "info": "Leave empty to use every product whose title contains the text below." },
     { "type": "text", "id": "match_text", "label": "Match products whose title contains", "default": "Concentrate" },

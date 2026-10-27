@@ -7,12 +7,12 @@
     assign combo_total = combos.size
   else
     for p in collections.all.products
-      for tag in p.tags
-        assign tl = tag | downcase
-        if tl == 'combo'
-          assign combo_total = combo_total | plus: 1
-        endif
-      endfor
+      capture p_meta
+        render 'combo-meta', product: p
+      endcapture
+      if p_meta contains "true|"
+        assign combo_total = combo_total | plus: 1
+      endif
     endfor
   endif
 -%}
@@ -35,18 +35,14 @@
       {%- else -%}
         {%- assign shown = 0 -%}
         {%- for p in collections.all.products -%}
-          {%- assign p_is_combo = false -%}
-          {%- for tag in p.tags -%}
-            {%- assign tl = tag | downcase -%}
-            {%- if tl == 'combo' -%}{%- assign p_is_combo = true -%}{%- endif -%}
-          {%- endfor -%}
-          {%- if p_is_combo -%}
+          {%- capture p_meta -%}{% render 'combo-meta', product: p %}{%- endcapture -%}
+          {%- if p_meta contains "true|" -%}
             {% render 'product-card', card_product: p %}
             {%- assign shown = shown | plus: 1 -%}
           {%- endif -%}
         {%- endfor -%}
         {%- if shown == 0 and request.design_mode -%}
-          <p class="editor-hint">Tag your combo products with “combo”, or pick them in this section’s settings.</p>
+          <p class="editor-hint">Combo products are found by their title (“Combo”, “Bundle”, “Any 2…”), or pick them in this section’s settings.</p>
         {%- endif -%}
       {%- endif -%}
     </div>

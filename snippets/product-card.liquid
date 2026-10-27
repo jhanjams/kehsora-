@@ -6,7 +6,7 @@
     - benefit line: metafield custom.short_benefit
     - rating: review app metafields (if present)
     - price / compare-at: Shopify prices
-    - combos (tag "combo"): button links to the combo builder instead of adding
+    - combos (see snippets/combo-meta): button links to the combo builder instead of adding
   Usage: {% render 'product-card', card_product: product %}
 {%- endcomment -%}
 {%- if card_product != blank -%}
@@ -25,14 +25,13 @@
     assign benefit = card_product.metafields.custom.short_benefit.value
     assign card_variant = card_product.selected_or_first_available_variant
     assign image_alt = card_product.featured_media.alt | default: card_product.title
+    capture card_meta
+      render 'combo-meta', product: card_product
+    endcapture
     assign is_combo = false
-    for tag in card_product.tags
-      assign tag_lower = tag | downcase
-      if tag_lower == 'combo'
-        assign is_combo = true
-        break
-      endif
-    endfor
+    if card_meta contains "true|"
+      assign is_combo = true
+    endif
     if is_combo and kicker == blank
       assign kicker = 'Combo offer'
     endif

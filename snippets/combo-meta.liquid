@@ -1,0 +1,69 @@
+{%- comment -%}
+  Works out whether a product is a combo offer, how many concentrates the
+  shopper picks, and whether the base oil is included. Tags win when present
+  (combo, pick-2 / pick-3 / pick-5, with-base-oil); otherwise it reads the title,
+  so "Any 2 Concentrates + Base Oil – Combo Offer" just works.
+  Output: "combo|pick|base", e.g. "true|2|true". pick is 99 for "all", 0 if unknown.
+  Usage: {%- capture meta -%}{% render 'combo-meta', product: p %}{%- endcapture -%}
+         {%- assign meta = meta | strip | split: '|' -%}
+{%- endcomment -%}
+{%- liquid
+  assign cm_combo = false
+  assign cm_base = false
+  assign cm_pick = 0
+  assign cm_title = product.title | downcase
+  assign cm_type = product.type | downcase
+  assign cm_pad = ' ' | append: cm_title | append: ' '
+
+  for tag in product.tags
+    assign t = tag | downcase | strip
+    if t == 'combo' or t == 'bundle' or t == 'combo-offer'
+      assign cm_combo = true
+    endif
+    if t contains 'pick-'
+      assign n = t | remove: 'pick-' | plus: 0
+      if n > 0
+        assign cm_pick = n
+      endif
+    endif
+    if t == 'with-base-oil'
+      assign cm_base = true
+    endif
+  endfor
+
+  if cm_title contains 'combo' or cm_title contains 'bundle' or cm_type contains 'combo' or cm_type contains 'bundle'
+    assign cm_combo = true
+  endif
+  if cm_pad contains ' any '
+    assign cm_combo = true
+  endif
+
+  if cm_combo
+    if cm_title contains 'base oil' or cm_title contains 'base-oil' or cm_title contains '+ base' or cm_title contains 'with base'
+      assign cm_base = true
+    endif
+    if cm_pick == 0
+      if cm_pad contains ' all '
+        assign cm_pick = 99
+      else
+        assign cm_chars = cm_title | split: ''
+        for ch in cm_chars
+          if '123456789' contains ch
+            assign cm_pick = ch | plus: 0
+            break
+          endif
+        endfor
+      endif
+    endif
+    if cm_pick == 0
+      if cm_pad contains ' two ' or cm_pad contains ' duo '
+        assign cm_pick = 2
+      elsif cm_pad contains ' three ' or cm_pad contains ' trio '
+        assign cm_pick = 3
+      elsif cm_pad contains ' five '
+        assign cm_pick = 99
+      endif
+    endif
+  endif
+-%}
+{{- cm_combo }}|{{ cm_pick }}|{{ cm_base -}}
