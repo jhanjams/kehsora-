@@ -15,7 +15,7 @@
   endif
   assign short_name = choice.title
   if strip_text != blank
-    assign short_name = choice.title | remove: strip_text
+    assign short_name = choice.title | remove: strip_text | strip
   endif
   assign kicker = choice.metafields.custom.kicker.value | default: choice.type
 -%}

@@ -42,7 +42,8 @@
       @supports (zoom: 0.5) {
         @media (min-width: 1024px) {
           :root { --zoom: {{ page_scale | times: 0.01 }}; }
-          html { zoom: var(--zoom); }
+          /* layout keeps the zoomed-out look, text stays comfortably readable (about 95% of normal size) */
+          html { zoom: var(--zoom); font-size: max(100%, calc(95% / var(--zoom))); }
         }
       }
       {%- endif %}

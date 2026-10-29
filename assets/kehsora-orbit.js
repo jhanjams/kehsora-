@@ -226,26 +226,42 @@
       if (focusTarget) setTimeout(function () { focusTarget.focus({ preventScroll: true }); }, 700);
     }
 
+    // Next / previous: the bottle stays centred — the current one fades and
+    // settles back while the next rises into the same place (a crossfade).
+    var swapTimers = [];
     function swap(i) {
       var n2 = spots.length;
       i = ((i % n2) + n2) % n2;
       if (i === current) return;
+      // a quick second tap finishes the running swap first
+      swapTimers.forEach(clearTimeout); swapTimers = [];
+      spots.forEach(function (s, k) {
+        s.classList.remove('is-leaving', 'is-swapping-in', 'is-dropping');
+        if (k !== current) s.classList.remove('is-active');
+      });
       var prev = spotFor(current);
+      var next = spotFor(i);
       prev.classList.add('is-leaving');
       prev.setAttribute('aria-hidden', 'true');
-      var next = spotFor(i);
       current = i;
       setDots(i);
-      setTimeout(function () {
-        prev.classList.remove('is-active', 'is-leaving');
-        next.classList.add('is-active', 'is-dropping');
+      var overlap = reduceMotion ? 0 : 200;
+      swapTimers.push(setTimeout(function () {
+        next.classList.add('is-active', 'is-swapping-in');
         next.setAttribute('aria-hidden', 'false');
-        setTimeout(function () { next.classList.remove('is-dropping'); }, 1200);
-      }, reduceMotion ? 0 : 420);
+      }, overlap));
+      swapTimers.push(setTimeout(function () {
+        prev.classList.remove('is-active', 'is-leaving');
+      }, reduceMotion ? 0 : 620));
+      swapTimers.push(setTimeout(function () {
+        next.classList.remove('is-swapping-in');
+      }, reduceMotion ? 0 : 1400));
     }
 
     function close() {
       if (current < 0) return;
+      swapTimers.forEach(clearTimeout); swapTimers = [];
+      spots.forEach(function (s, k) { if (k !== current) s.classList.remove('is-active'); s.classList.remove('is-leaving', 'is-swapping-in', 'is-dropping'); });
       var spot = spotFor(current);
       spot.classList.add('is-leaving');
       spot.setAttribute('aria-hidden', 'true');
