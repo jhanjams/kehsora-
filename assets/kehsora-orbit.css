@@ -124,22 +124,12 @@
 .spot:not(.is-cutout) .spot-bottle img { object-fit: cover; }
 .spot.is-active .spot-bottle { opacity: 1; animation: spotFloat 6s ease-in-out 1.2s infinite; }
 .spot.is-dropping .spot-bottle { animation: spotDrop 1.15s cubic-bezier(.2, .9, .25, 1.15) both, spotFloat 6s ease-in-out 1.2s infinite; }
-.spot.is-leaving .spot-bottle { opacity: 0; transform: translateY(10px) rotate(-9deg) scale(.9); transition: transform .55s var(--ease), opacity .42s ease; animation: none; }
-/* next / previous: the new bottle rises into the same spot while the old one fades */
-.spot.is-swapping-in .spot-bottle { animation: spotSwapIn .75s cubic-bezier(.22, .8, .24, 1) both, spotFloat 6s ease-in-out .75s infinite; }
-.spot.is-swapping-in .spot-side { transition-delay: .25s; }
-.spot.is-swapping-in .spot-body { transition-delay: .3s; }
-.spot.is-leaving { z-index: 0; }
-.spot.is-swapping-in { z-index: 1; }
+.spot.is-leaving .spot-bottle { opacity: 0; transform: rotate(-9deg) scale(.82); transition: transform .38s ease-in, opacity .32s ease-in; animation: none; }
 @keyframes spotDrop {
   0% { transform: translateY(-75vh) rotate(-38deg); opacity: 0; }
   35% { opacity: 1; }
   70% { transform: translateY(2vh) rotate(-6deg); }
   100% { transform: translateY(0) rotate(-9deg); opacity: 1; }
-}
-@keyframes spotSwapIn {
-  0% { opacity: 0; transform: translateY(18px) rotate(-9deg) scale(.94); }
-  100% { opacity: 1; transform: translateY(0) rotate(-9deg) scale(1); }
 }
 @keyframes spotFloat { 0%, 100% { transform: translateY(0) rotate(-9deg); } 50% { transform: translateY(-12px) rotate(-7deg); } }
 
@@ -210,5 +200,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spot.is-dropping .spot-bottle, .spot.is-active .spot-bottle, .spot.is-swapping-in .spot-bottle { animation: none; opacity: 1; }
+  .spot.is-dropping .spot-bottle, .spot.is-active .spot-bottle { animation: none; opacity: 1; }
 }

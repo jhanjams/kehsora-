@@ -5,7 +5,7 @@
   endif
   assign limit = section.settings.products_to_show
 -%}
-<section class="section" id="{{ section.settings.anchor | default: section.id | handle }}">
+<section class="section featured-products{% if section.settings.wide %} is-wide{% endif %}" id="{{ section.settings.anchor | default: section.id | handle }}">
   <div class="container">
     <div class="section-head reveal">
       <div>
@@ -17,7 +17,7 @@
       {%- endif -%}
     </div>
 
-    <div class="product-grid reveal-stagger">
+    <div class="product-grid reveal-stagger{% if limit == 5 %} grid-5{% endif %}">
       {%- if featured.products_count > 0 -%}
         {%- liquid
           assign shown = 0
@@ -68,7 +68,8 @@
     { "type": "collection", "id": "collection", "label": "Collection", "info": "Leave empty to show all products." },
     { "type": "checkbox", "id": "hide_combos", "label": "Hide combo offers", "default": true },
     { "type": "text", "id": "only_match", "label": "Only show products whose title contains", "info": "e.g. Concentrate. Leave empty to show every product." },
-    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 2, "max": 12, "step": 1, "default": 5, "info": "5 shows all five concentrates in one row." },
+    { "type": "checkbox", "id": "wide", "label": "Use a wider layout", "default": true },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore All" },
     { "type": "url", "id": "button_link", "label": "Button link" },
     { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "bestsellers", "info": "Lets menus link to this section, e.g. /#bestsellers" }

@@ -979,3 +979,13 @@ button, .btn, a.button { font-size: 1rem; } /* ~16px */
 /* header icons sized with the text so they don't look tiny next to it */
 .nav-icons .nav-icon-btn svg { width: 1.3rem; height: 1.3rem; }
 @media (max-width: 560px) { .nav-icons .nav-icon-btn svg { width: 1.25rem; height: 1.25rem; } }
+
+/* Bestsellers: all five concentrates in one wider row */
+.featured-products.is-wide .container { max-width: 1520px; }
+.product-grid.grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(2rem, 3vw, 3rem) clamp(.9rem, 1.5vw, 1.5rem); }
+@media (max-width: 1080px) { .product-grid.grid-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) {
+  .product-grid.grid-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* odd one out sits centred under the others */
+  .product-grid.grid-5 > :last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - .45rem); justify-self: center; }
+}
