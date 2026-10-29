@@ -249,10 +249,10 @@
         prev.classList.remove('is-active', 'is-leaving');
         next.classList.add('is-active', 'is-dropping');
         next.setAttribute('aria-hidden', 'false');
-      }, reduceMotion ? 0 : 380));
+      }, reduceMotion ? 0 : 140));
       swapTimers.push(setTimeout(function () {
         next.classList.remove('is-dropping');
-      }, reduceMotion ? 0 : 1600));
+      }, reduceMotion ? 0 : 1150));
     }
 
     function close() {

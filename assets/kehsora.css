@@ -989,3 +989,5 @@ button, .btn, a.button { font-size: 1rem; } /* ~16px */
   /* odd one out sits centred under the others */
   .product-grid.grid-5 > :last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - .45rem); justify-self: center; }
 }
+/* Phones & tablets: text a touch smaller than the full size (between the older two versions) */
+@media (max-width: 860px) { html { font-size: 96%; } }

@@ -108,7 +108,9 @@
 .spot-word { display: inline-block; overflow: hidden; padding-bottom: .06em; }
 .spot-word > span { display: inline-block; transform: translateY(110%); transition: transform .9s var(--ease); transition-delay: calc(.12s + var(--i) * .08s); }
 .spot.is-active .spot-word > span { transform: none; }
-.spot.is-leaving .spot-word > span { transform: translateY(-110%); transition-delay: 0s; transition-duration: .5s; }
+.spot.is-leaving .spot-word > span { transform: translateY(-110%); transition-delay: 0s; transition-duration: .3s; }
+/* next / previous: the new name rises in quickly behind the falling bottle */
+.spot.is-dropping .spot-word > span { transition-duration: .7s; transition-delay: calc(.05s + var(--i) * .06s); }
 
 .spot-bottle {
   grid-column: 2; grid-row: 1; z-index: 2;
@@ -123,12 +125,16 @@
 .spot:not(.is-cutout) .spot-bottle { border-radius: 999px 999px 8px 8px; overflow: hidden; outline: 1px solid var(--gold-line); outline-offset: 6px; }
 .spot:not(.is-cutout) .spot-bottle img { object-fit: cover; }
 .spot.is-active .spot-bottle { opacity: 1; animation: spotFloat 6s ease-in-out 1.2s infinite; }
-.spot.is-dropping .spot-bottle { animation: spotDrop 1.15s cubic-bezier(.2, .9, .25, 1.15) both, spotFloat 6s ease-in-out 1.2s infinite; }
-.spot.is-leaving .spot-bottle { opacity: 0; transform: rotate(-9deg) scale(.82); transition: transform .38s ease-in, opacity .32s ease-in; animation: none; }
+.spot.is-dropping .spot-bottle { animation: spotDrop .9s cubic-bezier(.22, .9, .3, 1.08) both, spotFloat 6s ease-in-out .9s infinite; }
+.spot.is-leaving .spot-bottle { opacity: 0; transform: rotate(-9deg) scale(.92); transition: transform .16s ease-out, opacity .16s ease-out; animation: none; }
+.spot-bottle { will-change: transform, opacity; }
+.spot.is-dropping .spot-side { transition-delay: .25s; }
+.spot.is-dropping .spot-body { transition-delay: .3s; }
+.spot.is-leaving .spot-side, .spot.is-leaving .spot-body { transition-duration: .2s; }
 @keyframes spotDrop {
-  0% { transform: translateY(-75vh) rotate(-38deg); opacity: 0; }
-  35% { opacity: 1; }
-  70% { transform: translateY(2vh) rotate(-6deg); }
+  0% { transform: translateY(-70vh) rotate(-26deg); opacity: 0; }
+  14% { opacity: 1; }
+  72% { transform: translateY(1.5vh) rotate(-7deg); }
   100% { transform: translateY(0) rotate(-9deg); opacity: 1; }
 }
 @keyframes spotFloat { 0%, 100% { transform: translateY(0) rotate(-9deg); } 50% { transform: translateY(-12px) rotate(-7deg); } }
