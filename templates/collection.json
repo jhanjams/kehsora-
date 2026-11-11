@@ -13,22 +13,22 @@
         "f1": {
           "type": "filter",
           "settings": {
-            "label": "Dandruff & Scalp Build-up",
-            "keywords": "Pumpkin"
+            "label": "Thinning & Growth",
+            "keywords": "Peppermint, Cedarwood"
           }
         },
         "f2": {
           "type": "filter",
           "settings": {
-            "label": "Roots & Strength",
-            "keywords": "Jojoba"
+            "label": "Dandruff & Build-up",
+            "keywords": "Tea Tree, Jojoba"
           }
         },
         "f3": {
           "type": "filter",
           "settings": {
-            "label": "Dryness & Frizz",
-            "keywords": "Almond"
+            "label": "Itchy & Sensitive Scalp",
+            "keywords": "Lavender"
           }
         }
       },
@@ -42,7 +42,7 @@
         "eyebrow": "The full range",
         "all_heading": "Concentrates, ",
         "all_heading_emphasis": "made to work",
-        "all_text": "Five hero ingredients, each at real concentration. Blend into the oil you already love — 30ml of concentrate into 150ml of base oil.",
+        "all_text": "Seven hero ingredients, each at real concentration. Blend into the oil you already love — 30ml of concentrate into 150ml of base oil.",
         "products_per_page": 24,
         "separate_combos": true,
         "combos_eyebrow": "Better together",

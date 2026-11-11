@@ -10,7 +10,7 @@
         <a href="{% render 'safe-url', url: niche_btn %}" class="btn btn-outline btn-sm">{{ section.settings.button_label | escape }}</a>
       {%- endif -%}
     </div>
-    <div class="niche-row reveal-stagger" data-niches>
+    <div class="niche-row reveal-stagger" data-niches style="--niche-cols: {{ section.blocks.size | at_most: 7 | at_least: 1 }};">
       {%- for block in section.blocks -%}
         {%- liquid
           assign niche_product = nil
@@ -109,7 +109,7 @@
   "name": "Ingredient arches",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What’s actually inside" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Five ingredients," },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Seven ingredients," },
     { "type": "text", "id": "heading_emphasis", "label": "Heading (italic gold part)", "default": "chosen with purpose" },
     { "type": "text", "id": "anchor", "label": "Anchor ID", "default": "ingredients", "info": "Menus can link here with /#ingredients" },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Full Ingredient Guide" },

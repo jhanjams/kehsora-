@@ -3,7 +3,7 @@
   shopper picks, and whether the base oil is included. Tags win when present
   (combo, pick-2 / pick-3 / pick-5, with-base-oil); otherwise it reads the title,
   so "Any 2 Concentrates + Base Oil – Combo Offer" just works.
-  Output: "combo|pick|base", e.g. "true|2|true". pick is 99 for "all", 0 if unknown.
+  Output: "combo|pick|base", e.g. "true|2|true". pick is 99 for "all" (no number), 0 if unknown.
   Usage: {%- capture meta -%}{% render 'combo-meta', product: p %}{%- endcapture -%}
          {%- assign meta = meta | strip | split: '|' -%}
 {%- endcomment -%}
@@ -42,17 +42,21 @@
     if cm_title contains 'base oil' or cm_title contains 'base-oil' or cm_title contains '+ base' or cm_title contains 'with base'
       assign cm_base = true
     endif
+    comment
+      A number in the title wins ("Bundle of All 5" = choose any 5), so a
+      bundle never silently grows when new concentrates are added. "All"
+      with no number ("All Concentrates") includes every concentrate.
+    endcomment
     if cm_pick == 0
-      if cm_pad contains ' all '
+      assign cm_chars = cm_title | split: ''
+      for ch in cm_chars
+        if '123456789' contains ch
+          assign cm_pick = ch | plus: 0
+          break
+        endif
+      endfor
+      if cm_pick == 0 and cm_pad contains ' all '
         assign cm_pick = 99
-      else
-        assign cm_chars = cm_title | split: ''
-        for ch in cm_chars
-          if '123456789' contains ch
-            assign cm_pick = ch | plus: 0
-            break
-          endif
-        endfor
       endif
     endif
     if cm_pick == 0
@@ -61,7 +65,7 @@
       elsif cm_pad contains ' three ' or cm_pad contains ' trio '
         assign cm_pick = 3
       elsif cm_pad contains ' five '
-        assign cm_pick = 99
+        assign cm_pick = 5
       endif
     endif
   endif

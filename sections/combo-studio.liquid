@@ -7,7 +7,7 @@
   comment
     Offers come from this section's blocks when they point at real products.
     Otherwise every combo product in the store is listed automatically, in
-    the order: 2 + base oil, any 3, any 2, all 5, all 5 + base oil, others.
+    the order: 2 + base oil, any 3, any 2, any 5 / all, any 5 / all + base oil, others.
   endcomment
   assign entry_handles = ''
   assign entry_blocks = ''
@@ -96,8 +96,8 @@
               endcapture
               assign c_meta = c_meta | strip | split: '|'
               assign c_pick = c_meta[1] | plus: 0
-              if c_pick >= 5
-                assign auto_label = section.settings.all_tab | default: 'All 5'
+              if c_pick == 99
+                assign auto_label = section.settings.all_tab | default: 'All'
               else
                 assign auto_label = section.settings.any_tab | default: 'Any [count]' | replace: '[count]', c_pick
               endif
@@ -166,9 +166,9 @@
     { "type": "checkbox", "id": "show_mandala", "label": "Show mandala", "default": true },
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Combo offer" },
     { "type": "text", "id": "details_label", "label": "Link to combo page", "default": "View offer details" },
-    { "type": "paragraph", "content": "Leave the blocks empty to list every combo product automatically (2 + base oil, any 3, any 2, all 5, all 5 + base oil). Add blocks only to choose the offers and their order yourself." },
+    { "type": "paragraph", "content": "Leave the blocks empty to list every combo product automatically (2 + base oil, any 3, any 2, any 5, any 5 + base oil). Add blocks only to choose the offers and their order yourself." },
     { "type": "text", "id": "any_tab", "label": "Tab label for pick-N combos", "default": "Any [count]" },
-    { "type": "text", "id": "all_tab", "label": "Tab label for all-included combos", "default": "All 5" },
+    { "type": "text", "id": "all_tab", "label": "Tab label for all-included combos", "default": "All" },
     { "type": "text", "id": "base_tab", "label": "Base oil tab suffix", "default": "Base Oil" },
     { "type": "header", "content": "Choosing concentrates" },
     { "type": "range", "id": "default_pick", "label": "Concentrates to choose (when a combo has no pick- tag)", "min": 1, "max": 10, "step": 1, "default": 3 },
