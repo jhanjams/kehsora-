@@ -125,19 +125,13 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Shows an “Add the base oil” option on every combo and concentrate. To charge the offer price, create a Shopify automatic discount: Discounts → Create discount → Buy X get Y (see the theme notes)."
+        "content": "Shows an “Add the base oil” option on every concentrate page. To charge the offer price, create a Shopify automatic discount: Discounts → Create discount → Buy X get Y."
       },
       {
         "type": "checkbox",
         "id": "base_addon_enable",
         "label": "Show the base oil option",
         "default": true
-      },
-      {
-        "type": "product",
-        "id": "base_addon_product",
-        "label": "Base oil product",
-        "info": "Leave empty to use the product whose title contains the text below."
       },
       {
         "type": "text",
@@ -162,6 +156,18 @@
         "id": "base_addon_note",
         "label": "Price note",
         "default": "with your concentrates"
+      }
+    ]
+  },
+  {
+    "name": "Products",
+    "settings": [
+      {
+        "type": "text",
+        "id": "hidden_products",
+        "label": "Hide these products everywhere",
+        "default": "Pumpkin Seed, Sweet Almond",
+        "info": "Comma separated words from product titles. Matching products never show in bestsellers, the shop, combos, search or related products — even if they are still active."
       }
     ]
   }

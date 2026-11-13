@@ -38,6 +38,8 @@
         -%}
         {%- for product in featured.products -%}
           {%- if shown >= limit -%}{%- break -%}{%- endif -%}
+          {%- capture p_hidden -%}{% render 'product-hidden', product: product %}{%- endcapture -%}
+          {%- if p_hidden != blank -%}{%- continue -%}{%- endif -%}
           {%- if only_match != blank -%}
             {%- assign p_title = product.title | downcase -%}
             {%- unless p_title contains only_match -%}{%- continue -%}{%- endunless -%}

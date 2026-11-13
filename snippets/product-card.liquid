@@ -9,7 +9,8 @@
     - combos (see snippets/combo-meta): button links to the combo builder instead of adding
   Usage: {% render 'product-card', card_product: product %}
 {%- endcomment -%}
-{%- if card_product != blank -%}
+{%- capture card_hidden -%}{%- if card_product != blank -%}{% render 'product-hidden', product: card_product %}{%- endif -%}{%- endcapture -%}
+{%- if card_product != blank and card_hidden == blank -%}
   {%- liquid
     assign badge = card_product.metafields.custom.badge.value
     if badge == blank

@@ -31,7 +31,14 @@
   endcomment
   assign choice_count = 0
   if use_list
-    assign choice_count = choice_list.size
+    for p in choice_list
+      capture p_hidden
+        render 'product-hidden', product: p
+      endcapture
+      if p_hidden == blank
+        assign choice_count = choice_count | plus: 1
+      endif
+    endfor
   else
     for p in collections.all.products
       assign p_title = p.title | downcase
@@ -39,7 +46,10 @@
         capture p_meta
           render 'combo-meta', product: p
         endcapture
-        unless p_meta contains "true|"
+        capture p_hidden
+          render 'product-hidden', product: p
+        endcapture
+        unless p_meta contains "true|" or p_hidden != blank
           assign choice_count = choice_count | plus: 1
         endunless
       endif
@@ -100,6 +110,8 @@
           <div class="combo-choices{% if all_included %} is-locked{% endif %}" data-combo-choices data-pick="{{ pick_count }}" data-all="{{ all_included }}">
             {%- if use_list -%}
               {%- for p in choice_list -%}
+                {%- capture p_hidden -%}{% render 'product-hidden', product: p %}{%- endcapture -%}
+                {%- if p_hidden != blank -%}{%- continue -%}{%- endif -%}
                 {% render 'combo-choice', choice: p, size_match: size_match, strip_text: cfg.name_strip, locked: all_included %}
               {%- endfor -%}
             {%- else -%}
@@ -118,6 +130,12 @@
                       render 'combo-meta', product: p
                     endcapture
                     if p_meta contains "true|"
+                      assign skip = true
+                    endif
+                    capture p_hidden
+                      render 'product-hidden', product: p
+                    endcapture
+                    if p_hidden != blank
                       assign skip = true
                     endif
                   endunless
@@ -163,10 +181,6 @@
               </div>
             </div>
           {%- endif -%}
-
-          {%- unless with_base -%}
-            {% render 'base-oil-addon', exclude: combo %}
-          {%- endunless -%}
 
           <p class="combo-savings" data-combo-savings hidden></p>
 

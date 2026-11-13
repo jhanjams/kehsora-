@@ -1,0 +1,19 @@
+{%- comment -%}
+  Outputs "hidden" when a product should not appear anywhere on the site —
+  discontinued products listed in Theme settings → Products → "Hide these
+  products everywhere" (matched by title, e.g. "Pumpkin Seed, Sweet Almond").
+  So a product that is still active in Shopify can't sneak back into
+  bestsellers, the shop page, combos or search.
+  Usage: {%- capture h -%}{% render 'product-hidden', product: p %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign ph_title = product.title | downcase
+  assign ph_words = settings.hidden_products | downcase | split: ','
+  for ph_w in ph_words
+    assign ph_key = ph_w | strip
+    if ph_key != blank and ph_title contains ph_key
+      echo 'hidden'
+      break
+    endif
+  endfor
+-%}

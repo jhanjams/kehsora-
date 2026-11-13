@@ -22,30 +22,63 @@
 
   if tab_count == 0
     comment
-      Order: any 2, any 3, any 5 (and other counts), all. Combos that
-      already include the base oil are left out when "Hide combos that
-      include the base oil" is on — the base oil is a tick-box on every combo.
+      Every combo product, ordered: any 2, any 2 + base oil, any 3, any 3 +
+      base oil, any 5, any 5 + base oil, all, all + base oil. Two products
+      that are the same offer ("Bundle of All 5" and "Any 5") show once —
+      the one whose title says "Any" wins.
     endcomment
+    assign seen_keys = ','
     assign r1 = ''
     assign r2 = ''
     assign r3 = ''
     assign r4 = ''
-    assign r5 = ''
     assign r6 = ''
-    for p in collections.all.products
-      capture p_meta
-        render 'combo-meta', product: p
-      endcapture
-      assign p_meta = p_meta | strip | split: '|'
-      if p_meta[0] == 'true'
+    for pass in (1..2)
+      for p in collections.all.products
+        capture p_meta
+          render 'combo-meta', product: p
+        endcapture
+        assign p_meta = p_meta | strip | split: '|'
+        if p_meta[0] != 'true'
+          continue
+        endif
+        capture p_hidden
+          render 'product-hidden', product: p
+        endcapture
+        if p_hidden != blank
+          continue
+        endif
+        if p_meta[2] == 'true' and section.settings.hide_base_combos
+          continue
+        endif
+        assign p_title = p.title | downcase
+        assign p_pad = ' ' | append: p_title
+        assign says_any = false
+        if p_pad contains ' any '
+          assign says_any = true
+        endif
+        comment
+          pass 1 takes the "Any …" titles, pass 2 the rest
+        endcomment
+        if pass == 1 and says_any == false
+          continue
+        endif
+        if pass == 2 and says_any
+          continue
+        endif
+        assign p_key = ',' | append: p_meta[1] | append: '-' | append: p_meta[2] | append: ','
+        if seen_keys contains p_key
+          continue
+        endif
+        assign seen_keys = seen_keys | append: p_key
         assign p_pick = p_meta[1] | plus: 0
         assign p_entry = p.handle | append: ','
         if p_meta[2] == 'true'
-          if section.settings.hide_base_combos
-            continue
-          endif
-          assign r5 = r5 | append: p_entry
-        elsif p_pick == 2
+          assign p_entry = p_entry | prepend: 'b:'
+        else
+          assign p_entry = p_entry | prepend: 'a:'
+        endif
+        if p_pick == 2
           assign r1 = r1 | append: p_entry
         elsif p_pick == 3
           assign r2 = r2 | append: p_entry
@@ -56,13 +89,31 @@
         else
           assign r6 = r6 | append: p_entry
         endif
-        assign entry_blocks = entry_blocks | append: '-,'
         assign tab_count = tab_count | plus: 1
-      endif
+      endfor
     endfor
-    assign entry_handles = r1 | append: r2 | append: r3 | append: r4 | append: r5 | append: r6
+    comment
+      Within each group: plain first, then "+ Base Oil"
+    endcomment
+    assign ordered = ''
+    assign groups = r1 | append: '|' | append: r2 | append: '|' | append: r3 | append: '|' | append: r4 | append: '|' | append: r6 | split: '|'
+    for grp in groups
+      assign grp_items = grp | split: ','
+      for it in grp_items
+        if it contains 'a:'
+          assign ordered = ordered | append: it | remove: 'a:' | append: ','
+          assign entry_blocks = entry_blocks | append: '-,'
+        endif
+      endfor
+      for it in grp_items
+        if it contains 'b:'
+          assign ordered = ordered | append: it | remove: 'b:' | append: ','
+          assign entry_blocks = entry_blocks | append: '-,'
+        endif
+      endfor
+    endfor
+    assign entry_handles = ordered
   endif
-
   assign concentrate_count = 0
   assign conc_match = section.settings.match_text | default: 'Concentrate' | downcase
   for p in collections.all.products
@@ -71,7 +122,10 @@
       capture p_meta
         render 'combo-meta', product: p
       endcapture
-      unless p_meta contains "true|"
+      capture p_hidden
+        render 'product-hidden', product: p
+      endcapture
+      unless p_meta contains "true|" or p_hidden != blank
         assign concentrate_count = concentrate_count | plus: 1
       endunless
     endif
@@ -192,10 +246,10 @@
     { "type": "checkbox", "id": "show_mandala", "label": "Show mandala", "default": true },
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Combo offer" },
     { "type": "text", "id": "details_label", "label": "Link to combo page", "default": "View offer details" },
-    { "type": "paragraph", "content": "Leave the blocks empty to list every combo product automatically (any 2, any 3, any 5, all). Add blocks only to choose the offers and their order yourself." },
+    { "type": "paragraph", "content": "Leave the blocks empty to list every combo product automatically (any 2, any 3, any 5, all — each followed by its + Base Oil version). Add blocks only to choose the offers and their order yourself." },
     { "type": "text", "id": "any_tab", "label": "Tab label for pick-N combos", "default": "Any [count]" },
     { "type": "text", "id": "all_tab", "label": "Tab label for all-included combos", "default": "All [count]", "info": "[count] becomes the number of concentrates." },
-    { "type": "checkbox", "id": "hide_base_combos", "label": "Hide combos that include the base oil", "default": true, "info": "The base oil is offered as a tick-box on every combo instead." },
+    { "type": "checkbox", "id": "hide_base_combos", "label": "Hide combos that include the base oil", "default": false },
     { "type": "text", "id": "all_image_file", "label": "Picture for the all-concentrates combo", "default": "combo-all-concentrates.jpg", "info": "Theme file used when that combo product has no photo of its own." },
     { "type": "text", "id": "base_tab", "label": "Base oil tab suffix", "default": "Base Oil" },
     { "type": "header", "content": "Choosing concentrates" },

@@ -13,7 +13,10 @@
         capture ph_meta
           render 'combo-meta', product: ph_p
         endcapture
-        unless ph_meta contains "true|"
+        capture ph_hidden
+          render 'product-hidden', product: ph_p
+        endcapture
+        unless ph_meta contains "true|" or ph_hidden != blank
           echo ph_p.handle
           break
         endunless

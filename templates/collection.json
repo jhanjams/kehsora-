@@ -34,7 +34,7 @@
         "f4": {
           "type": "filter",
           "settings": {
-            "label": "Shine & Frizz",
+            "label": "Frizz & Shine",
             "keywords": "Jojoba, Bhringraj"
           }
         }
@@ -57,7 +57,7 @@
         "combos_heading": "Combo",
         "combos_heading_emphasis": "offers",
         "combos_text": "Pick your concentrates and save — every combo ships together.",
-        "hide_base_combos": true
+        "hide_base_combos": false
       }
     },
     "divider": {

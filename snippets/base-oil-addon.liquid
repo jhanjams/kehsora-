@@ -7,9 +7,8 @@
 {%- endcomment -%}
 {%- if settings.base_addon_enable -%}
 {%- liquid
-  assign addon = settings.base_addon_product
-  if addon == blank or addon.id == blank
-    assign addon = nil
+  assign addon = nil
+  if true
     assign addon_key = settings.base_addon_match | default: 'Base Oil' | downcase
     for p in collections.all.products
       assign p_title = p.title | downcase
