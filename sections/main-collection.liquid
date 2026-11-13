@@ -36,6 +36,7 @@
         endcomment
         assign oil_count = 0
         assign combo_count = 0
+        assign vis_titles = ''
         for product in collection.products
           capture p_hidden
             render 'product-hidden', product: product
@@ -54,7 +55,27 @@
           else
             assign oil_count = oil_count | plus: 1
           endif
+          assign vis_titles = vis_titles | append: '|' | append: product.title | downcase
         endfor
+        comment
+          Concentrates from Theme settings → Products that aren't live yet
+          still show on the all-products page (first page only).
+        endcomment
+        assign missing_names = ''
+        if settings.range_fill and collection.handle == 'all' and paginate.current_page == 1
+          assign range = settings.range_names | split: ','
+          for r in range
+            assign r_name = r | strip
+            assign r_key = r_name | downcase
+            if r_name != blank
+              unless vis_titles contains r_key
+                assign missing_names = missing_names | append: r_name | append: ','
+                assign oil_count = oil_count | plus: 1
+              endunless
+            endif
+          endfor
+        endif
+        assign missing_names = missing_names | split: ','
       -%}
       <div class="shop-toolbar">
         {%- if section.blocks.size > 0 -%}
@@ -107,6 +128,25 @@
                 {% render 'product-card', card_product: product %}
               </div>
             {%- endunless -%}
+          {%- endfor -%}
+          {%- for r_name in missing_names -%}
+            {%- liquid
+              assign p_title = r_name | downcase
+              assign p_filters = ''
+              for block in section.blocks
+                assign words = block.settings.keywords | downcase | split: ','
+                for w in words
+                  assign kw = w | strip
+                  if kw != blank and p_title contains kw
+                    assign p_filters = p_filters | append: ' ' | append: block.id
+                    break
+                  endif
+                endfor
+              endfor
+            -%}
+            <div class="shop-item" data-filters="all{{ p_filters }}">
+              {% render 'concentrate-card', name: r_name %}
+            </div>
           {%- endfor -%}
         </div>
         <div class="shop-empty" data-shop-empty hidden>

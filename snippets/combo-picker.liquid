@@ -56,6 +56,47 @@
     endfor
   endif
 
+  comment
+    Concentrates from Theme settings → Products whose product isn't live yet
+    are still offered (the picks are recorded on the combo's order line).
+  endcomment
+  assign range_missing = ''
+  assign ref_value = 0
+  if settings.range_fill and use_list == false
+    assign range = settings.range_names | split: ','
+    for r in range
+      assign r_name = r | strip
+      assign r_key = r_name | downcase
+      if r_name == blank
+        continue
+      endif
+      assign r_found = false
+      for p in collections.all.products
+        assign p_title = p.title | downcase
+        if p.id != combo.id and p_title contains r_key and p_title contains match_text
+          capture p_meta
+            render 'combo-meta', product: p
+          endcapture
+          capture p_hidden
+            render 'product-hidden', product: p
+          endcapture
+          unless p_meta contains "true|" or p_hidden != blank
+            assign r_found = true
+            if ref_value == 0
+              assign ref_value = p.selected_or_first_available_variant.price
+            endif
+            break
+          endunless
+        endif
+      endfor
+      unless r_found
+        assign range_missing = range_missing | append: r_name | append: ','
+        assign choice_count = choice_count | plus: 1
+      endunless
+    endfor
+  endif
+  assign range_missing_list = range_missing | split: ','
+
   assign all_included = false
   if pick_count >= choice_count and choice_count > 0
     assign all_included = true
@@ -115,10 +156,48 @@
                 {% render 'combo-choice', choice: p, size_match: size_match, strip_text: cfg.name_strip, locked: all_included %}
               {%- endfor -%}
             {%- else -%}
+              {%- assign rendered_ids = '|' -%}
+              {%- if settings.range_fill -%}
+                {%- assign range = settings.range_names | split: ',' -%}
+                {%- for r in range -%}
+                  {%- liquid
+                    assign r_name = r | strip
+                    assign r_key = r_name | downcase
+                    assign r_product = nil
+                    if r_name != blank
+                      for p in collections.all.products
+                        assign p_title = p.title | downcase
+                        if p.id != combo.id and p_title contains r_key and p_title contains match_text
+                          capture p_meta
+                            render 'combo-meta', product: p
+                          endcapture
+                          capture p_hidden
+                            render 'product-hidden', product: p
+                          endcapture
+                          unless p_meta contains "true|" or p_hidden != blank
+                            assign r_product = p
+                            break
+                          endunless
+                        endif
+                      endfor
+                    endif
+                  -%}
+                  {%- if r_product != nil -%}
+                    {%- assign rendered_ids = rendered_ids | append: r_product.id | append: '|' -%}
+                    {% render 'combo-choice', choice: r_product, size_match: size_match, strip_text: cfg.name_strip, locked: all_included %}
+                  {%- elsif range_missing_list contains r_name -%}
+                    {% render 'combo-choice', virtual_name: r_name, virtual_value: ref_value, locked: all_included %}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
               {%- for p in collections.all.products -%}
                 {%- liquid
                   assign p_title = p.title | downcase
                   assign skip = false
+                  assign p_id_key = '|' | append: p.id | append: '|'
+                  if rendered_ids contains p_id_key
+                    assign skip = true
+                  endif
                   if p.id == combo.id
                     assign skip = true
                   endif

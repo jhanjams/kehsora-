@@ -1,0 +1,25 @@
+{%- comment -%}
+  Short "what it's for" line for a concentrate, by name.
+  Usage: {%- capture k -%}{% render 'concentrate-kicker', name: 'Peppermint' %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign ck_key = name | downcase | strip
+  case ck_key
+    when 'bhringraj'
+      echo 'Hair fall & roots'
+    when 'rosemary'
+      echo 'Growth & circulation'
+    when 'peppermint'
+      echo 'Growth & stimulation'
+    when 'tea tree'
+      echo 'Dandruff & clarifying'
+    when 'jojoba'
+      echo 'Scalp & balance'
+    when 'lavender'
+      echo 'Calm & soothe'
+    when 'cedarwood'
+      echo 'Thinning & balance'
+    else
+      echo 'Hair oil concentrate'
+  endcase
+-%}

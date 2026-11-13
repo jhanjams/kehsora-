@@ -21,6 +21,8 @@
       {%- if featured.products_count > 0 -%}
         {%- liquid
           assign shown = 0
+          assign shown_titles = ''
+
           assign only_match = section.settings.only_match | downcase | strip
           if only_match != blank
             assign match_found = false
@@ -50,7 +52,20 @@
           {%- endif -%}
           {% render 'product-card', card_product: product %}
           {%- assign shown = shown | plus: 1 -%}
+          {%- assign shown_titles = shown_titles | append: '|' | append: product.title | downcase -%}
         {%- endfor -%}
+        {%- if settings.range_fill and section.settings.hide_combos -%}
+          {%- assign range = settings.range_names | split: ',' -%}
+          {%- for r in range -%}
+            {%- assign r_name = r | strip -%}
+            {%- assign r_key = r_name | downcase -%}
+            {%- if r_name == blank or shown >= limit -%}{%- continue -%}{%- endif -%}
+            {%- unless shown_titles contains r_key -%}
+              {% render 'concentrate-card', name: r_name %}
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
       {%- else -%}
         {%- for i in (1..limit) -%}
           {% render 'product-card', card_product: blank %}

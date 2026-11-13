@@ -404,7 +404,7 @@ strong { font-weight: 500; color: var(--cream); }
 .niche:focus-visible .arch-frame, .niche[aria-expanded="true"] .arch-frame { outline: 1px solid var(--gold); outline-offset: 5px; }
 .niche-name { display: block; font-family: 'Lora', var(--font-brand); font-size: 1.45rem; font-weight: 400; color: var(--cream); transition: color .3s; }
 .niche:hover .niche-name, .niche[aria-expanded="true"] .niche-name { color: var(--gold-light); }
-.niche-sub { display: block; font-size: .84rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-top: 0.3rem; }
+.niche-sub { display: flex; align-items: flex-start; justify-content: center; min-height: 2.9em; font-size: .84rem; line-height: 1.45; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-top: 0.3rem; }
 .niche-more { display: inline-block; margin-top: .7rem; font-size: .82rem; letter-spacing: .24em; text-transform: uppercase; color: var(--cream-faint); border-bottom: 1px solid var(--gold-line); padding-bottom: 2px; transition: color .3s; }
 .niche:hover .niche-more { color: var(--gold-light); }
 .niche[aria-expanded="true"] .niche-more { opacity: 0; }
@@ -854,7 +854,8 @@ button, .btn, a.button { font-size: 1rem; } /* ~16px */
 .ritual-warnings strong { color: var(--cream); font-weight: 500; }
 .ritual-certs { margin-top: clamp(4rem, 8vw, 6.5rem); padding-top: clamp(3rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
 .ritual-certs .section-head p { max-width: 34rem; }
-.cert-row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.6rem); }
+.cert-row { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(1rem, 2vw, 1.6rem); }
+.cert-row > .cert { flex: 0 0 calc((100% - 5 * clamp(1rem, 2vw, 1.6rem)) / 6); min-width: 0; }
 .cert { display: flex; flex-direction: column; gap: .35rem; text-align: center; }
 .cert-sheet { display: block; aspect-ratio: 10 / 13; overflow: hidden; background: #f6f1e7; border: 1px solid var(--gold-line); padding: 6px; margin-bottom: .8rem; transition: transform .5s var(--ease), border-color .3s; }
 .cert-sheet img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
@@ -866,11 +867,11 @@ button, .btn, a.button { font-size: 1rem; } /* ~16px */
 .cert-viewer img { width: 100%; height: auto; display: block; background: #fff; }
 .cert-viewer-title { position: absolute; top: 1.1rem; left: 1.2rem; font-size: .84rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-light); }
 .cert-viewer-close { position: absolute; top: .5rem; right: .5rem; }
-@media (max-width: 1080px) { .cert-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 1080px) { .cert-row > .cert { flex-basis: calc((100% - 2 * clamp(1rem, 2vw, 1.6rem)) / 3); } }
 @media (max-width: 860px) {
   .ritual-grid { grid-template-columns: 1fr; }
   .ritual-steps { grid-template-columns: 1fr; }
-  .cert-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cert-row > .cert { flex-basis: calc((100% - clamp(1rem, 2vw, 1.6rem)) / 2); }
 }
 
 /* ---- Product reviews ---- */
@@ -1021,3 +1022,12 @@ button, .btn, a.button { font-size: 1rem; } /* ~16px */
 .cert-sheet-pending { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .8rem; background: rgba(10, 1, 4, .25); border-style: dashed; color: var(--gold); text-align: center; padding: 1rem; }
 .cert.is-pending:hover .cert-sheet { transform: none; }
 .cert-pending-text { font-size: .74rem; letter-spacing: .18em; text-transform: uppercase; color: var(--cream-muted); line-height: 1.5; }
+
+/* concentrate shown before its product is live */
+.product-card-media.is-cutout { display: grid; place-items: center; }
+.product-card-media.is-cutout img { width: auto; height: 88%; object-fit: contain; filter: drop-shadow(0 18px 18px rgba(10, 1, 4, .5)); }
+.product-card.is-preview .btn { margin-top: auto; }
+/* concern cards never push into the story column */
+.concern-layout > * { min-width: 0; }
+.concern-layout.has-pair .concern-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.product-card.is-preview .btn { white-space: normal; text-align: center; line-height: 1.3; padding-top: .6rem; padding-bottom: .6rem; }

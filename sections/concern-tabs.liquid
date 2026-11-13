@@ -22,6 +22,7 @@
               non-combo products whose title contains one of the keywords.
             endcomment
             assign picked = ''
+            assign missing_kw = ''
             assign first_product = nil
             if block.settings.product != blank and block.settings.product.id != blank
               assign picked = picked | append: block.settings.product.handle | append: ','
@@ -35,11 +36,14 @@
             endif
             if picked == ''
               assign words = block.settings.keywords | downcase | split: ','
+              assign words_orig = block.settings.keywords | split: ','
               for w in words
                 assign kw = w | strip
                 if kw == blank
                   continue
                 endif
+                assign kw_found = false
+                assign kw_name = words_orig[forloop.index0] | strip
                 for p in collections.all.products
                   assign p_title = p.title | downcase
                   if p_title contains kw
@@ -48,6 +52,7 @@
                     endcapture
                     unless p_meta contains "true|"
                       assign p_key = p.handle | append: ','
+                      assign kw_found = true
                       unless picked contains p_key
                         assign picked = picked | append: p_key
                         if first_product == nil
@@ -58,17 +63,28 @@
                     endunless
                   endif
                 endfor
+                if kw_found == false and settings.range_fill
+                  assign missing_kw = missing_kw | append: kw_name | append: ','
+                endif
               endfor
             endif
             assign picked = picked | split: ','
+            assign missing_kw = missing_kw | split: ','
           -%}
           <div class="concern-panel{% if forloop.first %} active{% endif %}" id="panel-{{ block.id }}" role="tabpanel" {{ block.shopify_attributes }}>
-            <div class="concern-layout{% if picked.size > 1 %} has-pair{% endif %}">
+            {%- assign card_total = picked.size | plus: missing_kw.size -%}
+            <div class="concern-layout{% if card_total > 1 %} has-pair{% endif %}">
               <div class="concern-cards">
-                {%- if picked.size > 0 -%}
+                {%- if card_total > 0 -%}
                   {%- for h in picked limit: 2 -%}
                     {% render 'product-card', card_product: all_products[h] %}
                   {%- endfor -%}
+                  {%- assign room = 2 | minus: picked.size -%}
+                  {%- if room > 0 -%}
+                    {%- for kw_name in missing_kw limit: room -%}
+                      {% render 'concentrate-card', name: kw_name %}
+                    {%- endfor -%}
+                  {%- endif -%}
                 {%- else -%}
                   {% render 'product-card', card_product: blank %}
                 {%- endif -%}
@@ -78,7 +94,7 @@
                 {% render 'heading', tag: 'h3', text: block.settings.heading, emphasis: block.settings.heading_emphasis %}
                 <div class="rte">{{ block.settings.text }}</div>
                 {%- if block.settings.link_label != blank -%}
-                  {%- if picked.size > 1 -%}
+                  {%- if card_total > 1 -%}
                     <a href="{{ routes.all_products_collection_url }}" class="text-link">{{ block.settings.link_label_pair | default: block.settings.link_label | escape }}</a>
                   {%- elsif first_product != nil -%}
                     <a href="{{ first_product.url }}" class="text-link">{{ block.settings.link_label | escape }}</a>

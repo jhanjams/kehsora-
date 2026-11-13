@@ -1,6 +1,8 @@
 {%- comment -%}
   One selectable concentrate in the combo builder.
   Usage: {% render 'combo-choice', choice: product, size_match: '30ml', strip_text: ' Hair Oil Concentrate', locked: false %}
+  A concentrate that isn't live yet: pass virtual_name (and virtual_value, its
+  price in cents for the "worth" line) instead of choice.
 {%- endcomment -%}
 {%- liquid
   assign value_variant = choice.selected_or_first_available_variant
@@ -18,13 +20,33 @@
     assign short_name = choice.title | remove: strip_text | strip
   endif
   assign kicker = choice.metafields.custom.kicker.value | default: choice.type
+  assign choice_title = choice.title
+  assign choice_value = value_variant.price
+  if virtual_name != blank
+    assign short_name = virtual_name | strip
+    assign choice_title = short_name | append: ' Hair Oil Concentrate'
+    assign choice_value = virtual_value | default: 0
+    capture kicker
+      render 'concentrate-kicker', name: short_name
+    endcapture
+    assign kicker = kicker | strip
+  endif
+  capture cc_photo
+    unless choice.featured_media
+      render 'product-photo', title: choice_title
+    endunless
+  endcapture
+  assign cc_photo = cc_photo | strip
+  if cc_photo == blank and virtual_name != blank
+    assign cc_photo = 'bottle-' | append: short_name | handle | append: '.png'
+  endif
 -%}
 <button type="button"
   class="combo-choice{% if locked %} is-selected{% endif %}"
   data-combo-choice
-  data-title="{{ choice.title | escape }}"
-  data-value="{{ value_variant.price }}"
-  data-img="{%- if choice.featured_media -%}{{ choice.featured_media | image_url: width: 240 }}{%- else -%}{%- capture cc_photo -%}{% render 'product-photo', title: choice.title %}{%- endcapture -%}{%- assign cc_photo = cc_photo | strip -%}{%- if cc_photo != blank -%}{{ cc_photo | asset_url }}{%- endif -%}{%- endif -%}"
+  data-title="{{ choice_title | escape }}"
+  data-value="{{ choice_value }}"
+  data-img="{%- if choice.featured_media -%}{{ choice.featured_media | image_url: width: 240 }}{%- elsif cc_photo != blank -%}{{ cc_photo | asset_url }}{%- endif -%}"
   aria-pressed="{% if locked %}true{% else %}false{% endif %}"
   {% if locked %}disabled{% endif %}>
   <span class="combo-choice-img">

@@ -9,6 +9,7 @@
 {{ 'kehsora-orbit.css' | asset_url | stylesheet_tag }}
 {%- liquid
   assign item_count = 0
+  assign not_live = ''
   for block in section.blocks
     assign p = block.settings.product
     if p == blank or p.id == blank
@@ -22,6 +23,9 @@
     endif
     if p != blank and p.id != blank
       assign item_count = item_count | plus: 1
+    elsif block.settings.cutout != blank or block.settings.cutout_file != blank
+      assign item_count = item_count | plus: 1
+      assign not_live = not_live | append: block.settings.name | append: ', '
     endif
   endfor
 -%}
@@ -56,7 +60,9 @@
             endif
           endif
         -%}
-        {%- if p != blank and p.id != blank -%}
+        {%- assign has_p = false -%}
+        {%- if p != blank and p.id != blank -%}{%- assign has_p = true -%}{%- endif -%}
+        {%- if has_p or block.settings.cutout != blank or block.settings.cutout_file != blank -%}
           {%- liquid
             assign short = block.settings.name | default: p.title | remove: ' Hair Oil Concentrate' | remove: ' Concentrate'
             assign cut = block.settings.cutout
@@ -81,6 +87,9 @@
       {%- endfor -%}
     </div>
 
+    {%- if not_live != blank and request.design_mode -%}
+      <p class="editor-hint orbit-not-live">Not live on your Online Store yet: {{ not_live | remove_last: ', ' }}. In Shopify admin open each product, set Status to Active and tick “Online Store” under Sales channels — then its price and Add to cart appear here.</p>
+    {%- endif -%}
     {%- if item_count == 0 and request.design_mode -%}
       <p class="editor-hint orbit-empty">Add a “Bottle” block for each concentrate and pick its product.</p>
     {%- endif -%}
@@ -102,7 +111,9 @@
             endif
           endif
         -%}
-        {%- if p != blank and p.id != blank -%}
+        {%- assign has_p = false -%}
+        {%- if p != blank and p.id != blank -%}{%- assign has_p = true -%}{%- endif -%}
+        {%- if has_p or block.settings.cutout != blank or block.settings.cutout_file != blank -%}
           {%- liquid
             assign short = block.settings.name | default: p.title | remove: ' Hair Oil Concentrate' | remove: ' Concentrate'
             assign words = short | split: ' '
@@ -132,11 +143,19 @@
               {%- if block.settings.origin != blank -%}<span class="spot-muted">{{ block.settings.origin | escape }}</span>{%- endif -%}
             </div>
             <div class="spot-side spot-right">
-              <span data-spot-price>{{ v.price | money }}</span>
-              <span class="spot-muted" data-spot-size>{% unless p.has_only_default_variant %}{{ v.title | escape }}{% endunless %}</span>
+              {%- if has_p -%}
+                <span data-spot-price>{{ v.price | money }}</span>
+                <span class="spot-muted" data-spot-size>{% unless p.has_only_default_variant %}{{ v.title | escape }}{% endunless %}</span>
+              {%- endif -%}
             </div>
             <div class="spot-body">
               <p class="spot-desc">{{ block.settings.text | default: p.description | strip_html | truncatewords: 34 | escape }}</p>
+              {%- unless has_p -%}
+                {%- assign story_link = '/pages/ingredients#' | append: short | handle -%}
+                <div class="spot-actions">
+                  <a href="{% render 'safe-url', url: story_link %}" class="btn btn-gold">{{ section.settings.story_label | default: 'Discover' | escape }} {{ short | escape }}</a>
+                </div>
+              {%- else -%}
               {%- form 'product', p, id: spot_form, class: 'spot-form', data-product-form: '', novalidate: 'novalidate' -%}
                 {%- unless p.has_only_default_variant -%}
                   <div class="size-options spot-sizes">
@@ -156,6 +175,7 @@
                   <a href="{{ p.url }}" class="btn btn-outline">{{ section.settings.details_label | escape }}</a>
                 </div>
               {%- endform -%}
+              {%- endunless -%}
             </div>
           </article>
           {%- assign idx = idx | plus: 1 -%}
@@ -188,6 +208,7 @@
     { "type": "text", "id": "ring_text", "label": "Ring text", "default": "ROOTED IN AYURVEDA ✦ REAL CONCENTRATION ✦ SMALL-BATCH MADE ✦ " },
     { "type": "range", "id": "speed", "label": "Ring speed", "min": 0, "max": 10, "step": 1, "default": 3, "info": "0 = still" },
     { "type": "text", "id": "back_label", "label": "Back button", "default": "All concentrates" },
+    { "type": "text", "id": "story_label", "label": "Button for a concentrate that isn't live yet", "default": "Discover" },
     { "type": "text", "id": "details_label", "label": "Details button", "default": "View details" },
     { "type": "text", "id": "prev_label", "label": "Previous label", "default": "Previous concentrate" },
     { "type": "text", "id": "next_label", "label": "Next label", "default": "Next concentrate" },

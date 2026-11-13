@@ -168,6 +168,20 @@
         "label": "Hide these products everywhere",
         "default": "Pumpkin Seed, Sweet Almond",
         "info": "Comma separated words from product titles. Matching products never show in bestsellers, the shop, combos, search or related products — even if they are still active."
+      },
+      {
+        "type": "text",
+        "id": "range_names",
+        "label": "Your concentrates",
+        "default": "Bhringraj, Rosemary, Peppermint, Tea Tree, Jojoba, Lavender, Cedarwood",
+        "info": "Comma separated. Used to always show your full range in bestsellers, Shop All and Shop by Concern."
+      },
+      {
+        "type": "checkbox",
+        "id": "range_fill",
+        "label": "Show every concentrate even before its product is live",
+        "default": true,
+        "info": "A concentrate whose product isn't available on the Online Store yet shows its photo and a link to its ingredient story. Its real price and Add to cart appear as soon as the product is live."
       }
     ]
   }

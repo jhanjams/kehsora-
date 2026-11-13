@@ -131,6 +131,35 @@
     endif
   endfor
 
+  if settings.range_fill
+    assign range = settings.range_names | split: ','
+    for r in range
+      assign r_key = r | strip | downcase
+      if r_key == blank
+        continue
+      endif
+      assign r_found = false
+      for p in collections.all.products
+        assign p_title = p.title | downcase
+        if p_title contains r_key and p_title contains conc_match
+          capture p_meta
+            render 'combo-meta', product: p
+          endcapture
+          capture p_hidden
+            render 'product-hidden', product: p
+          endcapture
+          unless p_meta contains "true|" or p_hidden != blank
+            assign r_found = true
+            break
+          endunless
+        endif
+      endfor
+      unless r_found
+        assign concentrate_count = concentrate_count | plus: 1
+      endunless
+    endfor
+  endif
+
   assign entry_handles = entry_handles | split: ','
   assign entry_blocks = entry_blocks | split: ','
 -%}
