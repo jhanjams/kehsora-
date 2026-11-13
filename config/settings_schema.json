@@ -119,5 +119,50 @@
         "info": "Shows a progress bar in the cart. Set 0 to hide. This only displays progress; set the actual free-shipping rate in Settings › Shipping and delivery."
       }
     ]
+  },
+  {
+    "name": "Base oil offer",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Shows an “Add the base oil” option on every combo and concentrate. To charge the offer price, create a Shopify automatic discount: Discounts → Create discount → Buy X get Y (see the theme notes)."
+      },
+      {
+        "type": "checkbox",
+        "id": "base_addon_enable",
+        "label": "Show the base oil option",
+        "default": true
+      },
+      {
+        "type": "product",
+        "id": "base_addon_product",
+        "label": "Base oil product",
+        "info": "Leave empty to use the product whose title contains the text below."
+      },
+      {
+        "type": "text",
+        "id": "base_addon_match",
+        "label": "Base oil title contains",
+        "default": "Base Oil"
+      },
+      {
+        "type": "text",
+        "id": "base_addon_price",
+        "label": "Offer price in ₹ (with concentrates)",
+        "default": "299"
+      },
+      {
+        "type": "text",
+        "id": "base_addon_label",
+        "label": "Option text",
+        "default": "Add the Kehsora Base Oil"
+      },
+      {
+        "type": "text",
+        "id": "base_addon_note",
+        "label": "Price note",
+        "default": "with your concentrates"
+      }
+    ]
   }
 ]

@@ -164,6 +164,10 @@
             </div>
           {%- endif -%}
 
+          {%- unless with_base -%}
+            {% render 'base-oil-addon', exclude: combo %}
+          {%- endunless -%}
+
           <p class="combo-savings" data-combo-savings hidden></p>
 
           <div class="pdp-actions">

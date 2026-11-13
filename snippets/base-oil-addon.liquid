@@ -1,0 +1,54 @@
+{%- comment -%}
+  "Add the base oil" option shown with combos and concentrates. Ticking it
+  adds the base oil to the cart together with the concentrate(s).
+  The lower price (Theme settings → Base oil offer) is applied by a Shopify
+  automatic discount (Buy X get Y) — the cart then shows the real ₹ price.
+  Usage: {% render 'base-oil-addon', exclude: product %}
+{%- endcomment -%}
+{%- if settings.base_addon_enable -%}
+{%- liquid
+  assign addon = settings.base_addon_product
+  if addon == blank or addon.id == blank
+    assign addon = nil
+    assign addon_key = settings.base_addon_match | default: 'Base Oil' | downcase
+    for p in collections.all.products
+      assign p_title = p.title | downcase
+      if p_title contains addon_key and p.id != exclude.id
+        capture p_meta
+          render 'combo-meta', product: p
+        endcapture
+        unless p_meta contains "true|"
+          assign addon = p
+          break
+        endunless
+      endif
+    endfor
+  endif
+-%}
+{%- if addon != nil and addon.id != exclude.id -%}
+  {%- liquid
+    assign addon_variant = addon.selected_or_first_available_variant
+    assign offer_price = settings.base_addon_price | times: 100
+  -%}
+  {%- if addon_variant.available -%}
+    <label class="addon-option">
+      <input type="checkbox" data-addon value="{{ addon_variant.id }}">
+      <span class="addon-check" aria-hidden="true"></span>
+      <span class="addon-img">
+        {%- if addon.featured_media -%}{{ addon.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+      </span>
+      <span class="addon-text">
+        <span class="addon-title">{{ settings.base_addon_label | default: 'Add the Kehsora Base Oil' | escape }}</span>
+        <span class="addon-price">
+          {%- if offer_price > 0 and offer_price < addon_variant.price -%}
+            <strong>{{ offer_price | money }}</strong> <s>{{ addon_variant.price | money }}</s>
+            <span class="addon-note">{{ settings.base_addon_note | default: 'with your concentrates' | escape }}</span>
+          {%- else -%}
+            <strong>{{ addon_variant.price | money }}</strong>
+          {%- endif -%}
+        </span>
+      </span>
+    </label>
+  {%- endif -%}
+{%- endif -%}
+{%- endif -%}

@@ -87,3 +87,17 @@ A complete Shopify theme for Kehsora: a continuous deep-maroon background, warm 
   videos are shown.
 - **Ingredient arches** open a paragraph on tap. Upload ingredient pictures in
   the block's "Ingredient picture" setting.
+
+## Seven concentrates and the base oil offer (November 2026)
+
+- **Range:** Bhringraj, Rosemary, Peppermint, Tea Tree, Jojoba, Lavender, Cedarwood
+  (Pumpkin Seed and Sweet Almond removed). All seven ride the landing ring.
+- **Combos:** Any 2, Any 3, Any 5 and All (a combo titled "All Concentrates…", or
+  "All 7…"). A number in the title wins over "all". Combos that include the base
+  oil are hidden (setting on the combo studio and collection sections).
+- **Base oil offer** (Theme settings → Base oil offer): a tick-box on every combo
+  and concentrate page adds the base oil to the cart. The offer price is charged
+  by a Shopify automatic discount — Discounts → Create discount → Buy X get Y:
+  customer buys any 1 concentrate or combo, gets the base oil at ₹100 off.
+- **Certificates:** blocks with "Text while the certificate isn't uploaded yet"
+  show a "Report coming soon" card until an image or PDF link is added.

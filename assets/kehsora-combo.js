@@ -133,11 +133,16 @@
     function add() {
       var fd = new FormData(form);
       var item = { id: Number(fd.get('id')), quantity: parseInt(fd.get('quantity'), 10) || 1, properties: properties() };
-      if (window.Kehsora && window.Kehsora.addToCart) return window.Kehsora.addToCart([item]);
+      var items = [item];
+      // "Add the base oil" ticked: it goes into the cart with the combo
+      Array.prototype.forEach.call(form.querySelectorAll('[data-addon]:checked'), function (a) {
+        items.push({ id: Number(a.value), quantity: 1 });
+      });
+      if (window.Kehsora && window.Kehsora.addToCart) return window.Kehsora.addToCart(items);
       return fetch((window.KehsoraConfig && window.KehsoraConfig.routes.cartAdd || '/cart/add') + '.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ items: [item] })
+        body: JSON.stringify({ items: items })
       }).then(function (r) {
         return r.json().then(function (d) { if (!r.ok || d.status) throw new Error(d.description || d.message); return d; });
       });

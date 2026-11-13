@@ -23,6 +23,7 @@
 
 {%- liquid
   assign separate = section.settings.separate_combos
+  assign hide_base = section.settings.hide_base_combos
 -%}
 <section class="section" style="padding-top: 1rem;" data-shop>
   <div class="container">
@@ -39,6 +40,9 @@
           capture p_meta
             render 'combo-meta', product: product
           endcapture
+          if hide_base and p_meta contains "true|" and p_meta contains "|true"
+            continue
+          endif
           if separate and p_meta contains "true|"
             assign combo_count = combo_count | plus: 1
           else
@@ -64,6 +68,7 @@
         <div class="product-grid">
           {%- for product in collection.products -%}
             {%- capture p_meta -%}{% render 'combo-meta', product: product %}{%- endcapture -%}
+            {%- if hide_base and p_meta contains "true|" and p_meta contains "|true" -%}{%- continue -%}{%- endif -%}
             {%- unless separate and p_meta contains "true|" -%}
               {%- liquid
                 assign p_title = product.title | downcase
@@ -119,6 +124,7 @@
           <div class="product-grid">
             {%- for product in collection.products -%}
               {%- capture p_meta -%}{% render 'combo-meta', product: product %}{%- endcapture -%}
+              {%- if hide_base and p_meta contains "|true" -%}{%- continue -%}{%- endif -%}
               {%- if p_meta contains "true|" -%}
                 {% render 'product-card', card_product: product %}
               {%- endif -%}
@@ -150,6 +156,7 @@
     { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
     { "type": "header", "content": "Combo offers" },
     { "type": "checkbox", "id": "separate_combos", "label": "Show combos in their own section", "default": true },
+    { "type": "checkbox", "id": "hide_base_combos", "label": "Hide combos that include the base oil", "default": true, "info": "The base oil is offered as a tick-box on every combo instead." },
     { "type": "text", "id": "combos_eyebrow", "label": "Combos eyebrow", "default": "Better together" },
     { "type": "text", "id": "combos_heading", "label": "Combos heading", "default": "Combo" },
     { "type": "text", "id": "combos_heading_emphasis", "label": "Combos heading (italic gold part)", "default": "offers" },

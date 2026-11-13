@@ -152,17 +152,24 @@
   }
 
   /* Product forms (product cards + product page) */
+  // Items for a product form, plus any ticked add-ons (e.g. the base oil offer)
+  function formItems(form) {
+    var fd = new FormData(form);
+    var items = [{ id: Number(fd.get('id')), quantity: parseInt(fd.get('quantity'), 10) || 1 }];
+    Array.prototype.forEach.call(form.querySelectorAll('[data-addon]:checked'), function (a) {
+      items.push({ id: Number(a.value), quantity: 1 });
+    });
+    return items;
+  }
+
   document.addEventListener('submit', function (e) {
     var form = e.target.closest('[data-product-form]');
     if (!form) return;
     if (!window.fetch) return; // no JS fallback: normal form post to /cart/add
     e.preventDefault();
-    var fd = new FormData(form);
-    var id = fd.get('id');
-    var qty = parseInt(fd.get('quantity'), 10) || 1;
     var btn = form.querySelector('[type="submit"]');
     if (btn) btn.setAttribute('aria-busy', 'true');
-    addToCart([{ id: Number(id), quantity: qty }])
+    addToCart(formItems(form))
       .then(afterAdd)
       .catch(function (err) { toast(err.message || strings.error); })
       .finally(function () { if (btn) btn.removeAttribute('aria-busy'); });
@@ -176,9 +183,8 @@
     if (buyNow) {
       e.preventDefault();
       var form = buyNow.closest('form');
-      var fd = new FormData(form);
       buyNow.setAttribute('aria-busy', 'true');
-      addToCart([{ id: Number(fd.get('id')), quantity: parseInt(fd.get('quantity'), 10) || 1 }])
+      addToCart(formItems(form))
         .then(function () { window.location.href = '/checkout'; })
         .catch(function (err) { toast(err.message || strings.error); buyNow.removeAttribute('aria-busy'); });
       return;

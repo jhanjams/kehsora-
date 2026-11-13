@@ -92,6 +92,11 @@
 
           <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
 
+          {%- assign title_lower = product.title | downcase -%}
+          {%- if title_lower contains 'concentrate' -%}
+            {% render 'base-oil-addon', exclude: product %}
+          {%- endif -%}
+
           <div class="pdp-actions">
             <div class="qty qty-lg">
               <button type="button" data-qty-step="-1" aria-label="{{ 'cart.decrease_generic' | t }}">&minus;</button>

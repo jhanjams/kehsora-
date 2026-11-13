@@ -30,13 +30,21 @@
             "label": "Itchy & Sensitive Scalp",
             "keywords": "Lavender"
           }
+        },
+        "f4": {
+          "type": "filter",
+          "settings": {
+            "label": "Shine & Frizz",
+            "keywords": "Jojoba, Bhringraj"
+          }
         }
       },
       "block_order": [
         "f0",
         "f1",
         "f2",
-        "f3"
+        "f3",
+        "f4"
       ],
       "settings": {
         "eyebrow": "The full range",
@@ -48,7 +56,8 @@
         "combos_eyebrow": "Better together",
         "combos_heading": "Combo",
         "combos_heading_emphasis": "offers",
-        "combos_text": "Pick your concentrates and save — every combo ships together."
+        "combos_text": "Pick your concentrates and save — every combo ships together.",
+        "hide_base_combos": true
       }
     },
     "divider": {

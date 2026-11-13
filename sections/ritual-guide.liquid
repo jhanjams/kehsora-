@@ -86,6 +86,15 @@
                   <span class="cert-title">{{ block.settings.title | escape }}</span>
                   {%- if block.settings.subtitle != blank -%}<span class="cert-sub">{{ block.settings.subtitle | escape }}</span>{%- endif -%}
                 </a>
+              {%- elsif block.settings.pending_text != blank -%}
+                <div class="cert is-pending" {{ block.shopify_attributes }}>
+                  <span class="cert-sheet cert-sheet-pending">
+                    <span class="cert-pending-mark" aria-hidden="true">{% render 'icon', name: 'shield', size: 26 %}</span>
+                    <span class="cert-pending-text">{{ block.settings.pending_text | escape }}</span>
+                  </span>
+                  <span class="cert-title">{{ block.settings.title | escape }}</span>
+                  {%- if block.settings.subtitle != blank -%}<span class="cert-sub">{{ block.settings.subtitle | escape }}</span>{%- endif -%}
+                </div>
               {%- endif -%}
             {%- endif -%}
           {%- endfor -%}
@@ -157,7 +166,8 @@
         { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Batch tested" },
         { "type": "image_picker", "id": "image", "label": "Certificate image" },
         { "type": "text", "id": "image_file", "label": "…or theme asset file name", "info": "e.g. coa-rosemary.jpg. Used when no image is uploaded." },
-        { "type": "url", "id": "file", "label": "Link to PDF (optional)", "info": "Upload the PDF in Content → Files and paste its link. Opens instead of the image." }
+        { "type": "url", "id": "file", "label": "Link to PDF (optional)", "info": "Upload the PDF in Content → Files and paste its link. Opens instead of the image." },
+        { "type": "text", "id": "pending_text", "label": "Text while the certificate isn't uploaded yet", "info": "e.g. Report coming soon. Leave empty to hide this certificate until it's uploaded." }
       ]
     }
   ],
