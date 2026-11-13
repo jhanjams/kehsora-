@@ -24,12 +24,14 @@
   data-combo-choice
   data-title="{{ choice.title | escape }}"
   data-value="{{ value_variant.price }}"
-  data-img="{%- if choice.featured_media -%}{{ choice.featured_media | image_url: width: 240 }}{%- endif -%}"
+  data-img="{%- if choice.featured_media -%}{{ choice.featured_media | image_url: width: 240 }}{%- else -%}{%- capture cc_photo -%}{% render 'product-photo', title: choice.title %}{%- endcapture -%}{%- assign cc_photo = cc_photo | strip -%}{%- if cc_photo != blank -%}{{ cc_photo | asset_url }}{%- endif -%}{%- endif -%}"
   aria-pressed="{% if locked %}true{% else %}false{% endif %}"
   {% if locked %}disabled{% endif %}>
   <span class="combo-choice-img">
     {%- if choice.featured_media -%}
       {{ choice.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+    {%- elsif cc_photo != blank -%}
+      <img src="{{ cc_photo | asset_url }}" alt="" loading="lazy" width="160" height="150">
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
     {%- endif -%}

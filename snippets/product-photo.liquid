@@ -1,0 +1,22 @@
+{%- comment -%}
+  Kehsora's own photo for a product that has no photo in Shopify yet:
+  outputs the theme file name (e.g. product-peppermint.jpg) when the title
+  matches one of the new concentrates (combos get the seven-bottle line-up), otherwise nothing. As soon as the
+  product gets its own photo in Shopify, that photo is used instead.
+  Usage: {%- capture f -%}{% render 'product-photo', title: product.title %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign pp_title = title | downcase
+  assign pp_pad = ' ' | append: pp_title
+  if pp_title contains 'combo' or pp_title contains 'bundle' or pp_pad contains ' any '
+    echo 'combo-all-concentrates.jpg'
+  elsif pp_title contains 'peppermint'
+    echo 'product-peppermint.jpg'
+  elsif pp_title contains 'tea tree'
+    echo 'product-tea-tree.jpg'
+  elsif pp_title contains 'lavender'
+    echo 'product-lavender.jpg'
+  elsif pp_title contains 'cedarwood'
+    echo 'product-cedarwood.jpg'
+  endif
+-%}

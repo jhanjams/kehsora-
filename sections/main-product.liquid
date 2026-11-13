@@ -35,8 +35,12 @@
 
       <div class="pdp-gallery">
         <div class="pdp-gallery-main" data-gallery-main>
+          {%- capture pdp_photo -%}{%- unless featured_media -%}{% render 'product-photo', title: product.title %}{%- endunless -%}{%- endcapture -%}
+          {%- assign pdp_photo = pdp_photo | strip -%}
           {%- if featured_media -%}
             {{ featured_media.preview_image | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 860px) 55vw, 100vw', loading: 'eager', fetchpriority: 'high', alt: main_alt }}
+          {%- elsif pdp_photo != blank -%}
+            <img src="{{ pdp_photo | asset_url }}" alt="{{ product.title | escape }}" width="1295" height="1215" fetchpriority="high">
           {%- else -%}
             {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
           {%- endif -%}

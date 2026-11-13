@@ -34,6 +34,13 @@
             endif
           endif
           assign niche_image = block.settings.image | default: niche_product.featured_image
+          assign niche_photo = ''
+          if niche_image == blank
+            capture niche_photo
+              render 'product-photo', title: block.settings.name
+            endcapture
+            assign niche_photo = niche_photo | strip
+          endif
           assign niche_name = block.settings.name | default: niche_product.title
           assign has_story = false
           if block.settings.story != blank
@@ -44,6 +51,8 @@
           <span class="arch-frame">
             {%- if niche_image != blank -%}
               {{ niche_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 1080px) 20vw, (min-width: 560px) 33vw, 50vw', alt: niche_name }}
+            {%- elsif niche_photo != blank -%}
+              <img src="{{ niche_photo | asset_url }}" alt="{{ niche_name | escape }}" loading="lazy" width="1295" height="1215">
             {%- else -%}
               {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}

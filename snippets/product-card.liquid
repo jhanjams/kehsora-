@@ -40,8 +40,12 @@
   <article class="product-card" data-handle-card="{{ card_product.handle }}">
     <a href="{{ card_product.url }}" class="product-card-media" tabindex="-1" aria-hidden="true">
       {%- if badge != blank -%}<span class="product-badge">{{ badge | upcase | escape }}</span>{%- endif -%}
+      {%- capture card_photo -%}{%- unless card_product.featured_media -%}{% render 'product-photo', title: card_product.title %}{%- endunless -%}{%- endcapture -%}
+      {%- assign card_photo = card_photo | strip -%}
       {%- if card_product.featured_media -%}
         {{ card_product.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 1080px) 25vw, (min-width: 560px) 50vw, 50vw', alt: image_alt }}
+      {%- elsif card_photo != blank -%}
+        <img src="{{ card_photo | asset_url }}" alt="{{ card_product.title | escape }}" loading="lazy" width="1295" height="1215">
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
       {%- endif -%}

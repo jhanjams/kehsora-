@@ -5,8 +5,12 @@
 {%- assign line_alt = item.product.title -%}
 <div class="cart-line" data-cart-line="{{ line }}">
   <a class="cart-line-img" href="{{ item.url }}">
+    {%- capture line_photo -%}{%- unless item.image -%}{% render 'product-photo', title: item.product.title %}{%- endunless -%}{%- endcapture -%}
+    {%- assign line_photo = line_photo | strip -%}
     {%- if item.image -%}
       {{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: line_alt }}
+    {%- elsif line_photo != blank -%}
+      <img src="{{ line_photo | asset_url }}" alt="{{ line_alt | escape }}" loading="lazy" width="240" height="225">
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
     {%- endif -%}
